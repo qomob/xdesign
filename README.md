@@ -188,12 +188,3 @@ XDesign/
 ```
 
 ---
-
-## 与 canvas-design 的关系
-
-| 技能 | 定位 | 输出格式 |
-|---|---|---|
-| **XDesign** | 交互/动态 HTML 设计（原型/演示/动画） | HTML, PPTX, PDF |
-| **canvas-design** | 静态视觉艺术（海报/插画/壁纸） | PNG, PDF |
-
-两者可以组合使用：用 canvas-design 生成视觉素材，再用 XDesign 交互式呈现。
