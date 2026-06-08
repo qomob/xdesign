@@ -141,3 +141,12 @@ When receiving "GitHub connected" message, greet briefly and invite user to past
 ## No-op Tools
 
 The `update_todos` tool doesn't block or provide useful output — call next tool immediately in the same message.
+
+## Showing Files to the User
+
+- `show_to_user` — Mid-task preview. Opens file in user's tab bar.
+- `done` — End-of-turn delivery. Opens in user's tab AND returns console errors.
+- `show_html` — Open in preview iframe. Use before `get_webview_logs`.
+- Reading a file does NOT show it to the user — use one of the above tools.
+
+For multi-page projects, link between pages with `<a>` tags using relative URLs.
