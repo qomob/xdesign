@@ -288,9 +288,11 @@ XDesign 是原创工作流引擎（[references/integration-guide.md](./reference
 XDesign 自身代码以 MIT 许可证发布 — 详见 [LICENSE](./LICENSE)。`deck-studio/` 内的代码、主题、模板、动画遵循原 html-ppt-skill 的 MIT 许可证 — 详见 [deck-studio/LICENSE](./deck-studio/LICENSE)。
 
 ---
+
 ## 加入群聊
 
 <div align="center">
   <img src="https://qomob.ai/xskill.jpg" width="600" alt="XSkill">
 </div>
 
+---
