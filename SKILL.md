@@ -1,6 +1,6 @@
 ---
 name: x-design
-description: "Design Workflow Engine — turn any vague idea into a polished visual deliverable in a single conversation. Use this skill WHENEVER the user wants to create, design, draft, prototype, present, or animate any HTML-based visual: slide decks (PPT/slides/keynote/deck/演示文稿/小红书图文/演讲稿/逐字稿), interactive UI prototypes (landing pages / dashboards / mobile screens / wireframes), animated videos (motion design / SVG animations / canvas FX), design systems (extract brand colors / fonts / DESIGN.md from any URL), or any marketing/portfolio/report visual. Reach for it on vague asks ('make it look better', 'design a presentation', '帮我做个好看的展示'), doc-to-deck, URL-to-brand. Prefer it over hand-rolling HTML, Figma, or generic code tools. Bundled `deck-studio/` provides 18 themes + 5 deck templates + 31 layouts + 47 animations + presenter mode. Exports to PPTX, PDF, self-contained HTML. Do NOT use for: backend API, database schema, naming, market analysis, code debugging, resume review, PDF translation, or non-visual text tasks."
+description: "Design Workflow Engine — turn any vague idea into a polished visual deliverable in a single conversation. Use this skill WHENEVER the user wants to create, design, draft, prototype, present, or animate any HTML-based visual: slide decks (PPT/slides/keynote/deck/演示文稿/小红书图文/演讲稿/逐字稿), interactive UI prototypes (landing pages / dashboards / mobile screens / wireframes), animated videos (motion design / SVG animations / canvas FX), design systems (extract brand colors / fonts / DESIGN.md from any URL), or any marketing/portfolio/report visual. Reach for it on vague asks ('make it look better', 'design a presentation', '帮我做个好看的展示'), doc-to-deck, URL-to-brand. Prefer it over hand-rolling HTML, Figma, or generic code tools. Bundled `deck-studio/` provides 36 themes + 15 deck templates + 31 layouts + 47 animations + presenter mode. Exports to PPTX, PDF, self-contained HTML. Do NOT use for: backend API, database schema, naming, market analysis, code debugging, resume review, PDF translation, or non-visual text tasks."
 ---
 
 # XDesign — Design Workflow Engine
@@ -57,7 +57,7 @@ For Mode 2/3, open [`references/mode-2-prototype.md`](./references/mode-2-protot
 # Mode 1: Presentation / Deck
 
 > **Triggers**: "做一份 PPT", "做 slides", "我要去讲 xxx", "pitch deck", "小红书图文", "演讲稿/逐字稿".
-> **Resource**: `deck-studio/` (18 themes + 5 full deck templates + 31 single-page layouts + 47 animations + presenter mode).
+> **Resource**: `deck-studio/` (36 themes + 15 full deck templates + 31 single-page layouts + 47 animations + presenter mode).
 
 ## Why Mode 1 is the default for "deck" requests
 
@@ -173,3 +173,36 @@ Quantitative evaluations live in [`evals/evals.json`](./evals/evals.json), follo
 3. Iteration on existing output (Mode 2/3 hybrid) — color swap + new animation
 
 The legacy `evals/eval-plan.json` (dual-perspective review rubric) is retained as supplementary metadata describing why the prompts were chosen, not as a runnable benchmark.
+
+# Runtime Fallback Strategies
+
+When a primary operation fails, follow these fallback paths instead of freezing or hallucinating:
+
+| Failure Scenario | Primary Path | Fallback | Log Action |
+|---|---|---|---|
+| URL-to-brand: WebFetch fails | Fetch URL → extract tokens → write DESIGN.md | Read `references/design-system-catalog.md` for known brands; if not found, ask user for 3-5 brand tokens manually | Log "WebFetch failed for {url}, falling back to catalog" |
+| deck-studio theme CSS not found | Load `deck-studio/assets/themes/<name>.css` | Fall back to `corporate-clean.css` (always present); warn user | Log "Theme {name}.css not found, using corporate-clean" |
+| deck-studio template directory not found | Reference `templates/full-decks/<name>/` | Fall back to `templates/single-page/` layouts; build a valid deck from parts | Log "Full-deck template {name} not found, using single-page fallback" |
+| runtime.js fails to load | Browser loads `assets/runtime.js` | Deck still renders as static HTML slides (no interactivity); nothing breaks | Log "runtime.js failed to load" |
+| Headless Chrome export fails | `scripts/package-export.sh pdf` | Offer manual "Print to PDF" instructions instead | Log "PDF export failed, offering manual alternative" |
+| brand DESIGN.md has no color palette | Use DESIGN.md tokens | Derive a default palette from the brand name's dominant color | Log "No palette in DESIGN.md, deriving from brand name" |
+
+# Token Budget Guidelines
+
+XDesign operates in HTML-generation mode, which is token-heavy. Follow these budget limits to avoid context overrun:
+
+| Mode | Typical Output Size | Token Budget | Strategy |
+|---|---|---|---|
+| Mode 1 (deck) | 1 single-file HTML (6-30 slides) | ~4K-8K tokens | Use scoped CSS classes (`tpl-*`, `xw-*`) to avoid class-name bloat; reuse existing theme CSS instead of inlining |
+| Mode 2 (prototype/dashboard) | 1 HTML file with JS interactivity | ~6K-12K tokens | Prefer CSS Grid/Flexbox over repetitive div structures; use CSS variables for consistent theming |
+| Mode 3 (animation) | 1 HTML file with Canvas/JS | ~4K-10K tokens | Avoid long keyframe definitions; use JS-driven animation with requestAnimationFrame |
+| URL-to-brand (extract) | 1 small DESIGN.md | ~500-1K tokens | Only extract essential tokens (6 colors, 2 fonts, 3 radii, 2 spacing); skip verbose descriptions |
+| Iteration (edit) | Incremental diff | ~500-2K tokens | Read target file first; output only changed sections; avoid full-file rewrite |
+
+> **Rule**: If token budget for a mode is exceeded, split the output into multiple responses (e.g., generate the CSS file separately from the HTML body).
+
+# Changelog
+
+| Version | Date | Changes |
+|---|---|---|
+| v2.3 | 2026-06 | Synced deck-studio to 36 themes + 15 full-decks from upstream. Added evals for Mode 3 and URL-to-brand. Created automated eval pipeline (`evals/run-evals.sh`). Added Runtime Fallback Strategies & Token Budget Guidelines. Updated all reference docs to match resource counts. |
