@@ -50,6 +50,23 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 
 ---
 
+## 能力速览（v2.4-v2.5 新增）
+
+除了基础的"三模式生成"，XDesign 还内置以下机制来减少返工、提升输出质量：
+
+| 能力 | 版本 | 做什么 |
+|------|------|--------|
+| **验证第一步必带** | v2.5 | 投入完整交付物前先出最小可验证样本（1-3 张 slides / 1 个关键页面 / 1 帧动效），确认方向对了再做全量 |
+| **设计方向顾问** | v2.5 | 模糊需求（"帮我做个好看的"）时生成 3 个差异化视觉方向让用户选，不凭直觉硬做 |
+| **品牌资产协议** | v2.5 | 涉及真实品牌时强制走"问 → 搜 → 下载 → 验证 → 固化"5 步流程，不凭记忆猜品牌色 |
+| **事实验证 #0** | v2.5 | 涉及具体产品/技术时先 WebSearch 验证，避免为"还没发布的产品"做发布动画 |
+| **Format Auto-Detect** | v2.4 | CSV/JSON/SQL/Markdown 表格自动跳过设计系统阶段，直接生成图表或数据看板 |
+| **Template Matching** | v2.4 | 按 `scenario` / `recommended` 字段从 15 个 deck 模板中智能推荐最匹配的 |
+| **Streaming Preview** | v2.4 | >8 页 deck 拆两轮生成：先出 5 页预览确认方向，再生成完整 deck |
+| **Cross-Agent Compatibility** | v2.4 | `deck-studio/` 可被 Claude Code / Cursor / Codex 等其他 agent 独立使用，不依赖 XDesign 路由 |
+
+---
+
 ## 支持的项目类型
 
 | 类型 | 说明 | 输出 | 模式 |
@@ -59,6 +76,8 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 | **Interactive Prototype** | 可交互的产品/UI 原型 | HTML | Mode 2 |
 | **Landing Page** | 落地页/营销页面 | HTML | Mode 2 |
 | **Design System** | 品牌设计系统/UI Kit | DESIGN.md + 组件示例 | Mode 2 |
+| **URL-to-Brand** | 给一个网址，提取品牌色/字体/设计令牌 | DESIGN.md（可直接复用） | Mode 2 |
+| **数据可视化** | CSV/JSON/SQL/Markdown 表格 → 交互图表或数据看板 | HTML（table/chart/dashboard） | Mode 2 |
 | **Animated Video** | 时间轴动画/动效设计 | HTML | Mode 3 |
 | **Wireframe** | 低保真线框图/故事板 | HTML | Mode 2 |
 
@@ -66,7 +85,28 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 
 ## 快速开始
 
-### 1. 写一个结构化的 Prompt
+### 路径 A：做一份演示文稿（Mode 1，默认路由）
+
+最常见的入口。说"做一份 PPT / slides / deck"即可触发。
+
+```
+做一个产品发布 PPT
+主题：AI 编程助手新产品发布
+听众：技术开发者
+风格：暗色科技感
+页数：10-12 页
+需要演讲者模式（逐字稿）
+```
+
+XDesign 会：
+1. 匹配 `tokyo-night` / `cyberpunk-neon` 等暗色主题
+2. 推荐从 `templates/full-decks/product-launch/` 拷贝起始模板
+3. 先出 3 张代表性 slides 让你确认方向
+4. 确认后生成完整 deck，按 `S` 键进演讲者模式
+
+> **>8 页时**：自动启用 Streaming Preview——先出 5 页预览，确认方向后再生成完整 deck。
+
+### 路径 B：设计一个产品界面（Mode 2）
 
 **不要这样写：**
 > 做个APP界面
@@ -93,7 +133,16 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 2. 3种 Dashboard 布局方案
 ```
 
-### 2. 正确的设计流程
+### 路径 C：直接喂数据（Format Auto-Detect）
+
+CSV / JSON / SQL / Markdown 表格会自动跳过设计系统阶段，直接生成图表或数据看板：
+
+```
+把这个 CSV 做成一个数据看板
+[粘贴 CSV 数据]
+```
+
+### 正确的设计流程
 
 ```
 品牌资料上传 → 设计系统提取 → Wireframe（低保真）→ 确认布局 → 高保真设计 → 导出
@@ -142,15 +191,15 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 
 ### 导出能力
 
-| 格式 | 说明 | 模式 |
-|---|---|---|
-| **Standalone HTML** | 单文件自包含，离线可用 | Mode 1 + 2 |
-| **PPTX (editable)** | 原生文本/形状，可在 PowerPoint 编辑 | Mode 2 |
-| **PPTX (screenshots)** | 逐页截图，像素级精确 | Mode 1 + 2 |
-| **PDF** | 浏览器打印导出 | Mode 1 + 2 |
-| **PNG (per slide)** | `deck-studio/scripts/render.sh` 走 headless Chrome | Mode 1 |
-| **Canva** | 导出为可编辑的 Canva 设计 | Mode 2 |
-| **React Code** | 转为可开发的 React 组件 | Mode 2 |
+| 格式 | 说明 | 模式 | 命令 |
+|---|---|---|---|
+| **Standalone HTML** | 单文件自包含，离线可用 | Mode 1 + 2 | 直接生成 |
+| **PDF** | 浏览器打印 / headless Chrome 导出 | Mode 1 + 2 | `./scripts/package-export.sh pdf <file>` |
+| **PPTX (lossy)** | 通过 pandoc 转换，可在 PowerPoint 编辑（有损，适合 review） | Mode 2 | `./scripts/package-export.sh pptx <file>` |
+| **PNG (per slide)** | `deck-studio/scripts/render.sh` 走 headless Chrome | Mode 1 | `deck-studio/scripts/render.sh <file> <pages>` |
+| **WeChat** | Juice-inlined CSS，粘贴到公众号编辑器 | Mode 1 + 2 | `./scripts/package-export.sh social wechat <file>` |
+| **小红书 (XHS)** | 2× retina PNG，适配小红书图文 | Mode 1 + 2 | `./scripts/package-export.sh social xhs <file>` |
+| **X / Twitter** | 2× retina PNG | Mode 1 + 2 | `./scripts/package-export.sh social x <file>` |
 
 ---
 
@@ -163,15 +212,13 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 | **Make a deck（fused）** | HTML 幻灯片演示 + 主题循环 + 演讲者模式 | Mode 1 |
 | Animated video | 时间轴动效设计 | Mode 3 |
 | Interactive prototype | 可交互的产品原型 | Mode 2 |
-| Make tweakable | 添加设计内调参控件 | Mode 2 |
+| Make tweakable | 添加设计内调参控件（Tweaks 面板） | Mode 2 |
 | Frontend design | 品牌系统外的美学方向 | Mode 2 |
 | Wireframe | 线框图/故事板 | Mode 2 |
 | Create design system | 创建设计系统/UI Kit | Mode 2 |
-| Export as PPTX | 导出 PowerPoint | Mode 2 |
+| Export as PPTX | 导出 PowerPoint（有损） | Mode 2 |
 | Save as PDF | 导出 PDF | Mode 1 + 2 |
 | Save as standalone HTML | 导出独立 HTML | Mode 1 + 2 |
-| Send to Canva | 导出到 Canva | Mode 2 |
-| Handoff to Claude Code | 开发者交接包 | Mode 2 |
 
 ---
 
