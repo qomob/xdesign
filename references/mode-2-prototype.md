@@ -21,6 +21,48 @@ You MAY talk about capabilities in user-centric terms (e.g. "I can create HTML p
 
 ---
 
+## Junior Designer Workflow (mandatory early-show pattern)
+
+Do not disappear into a long build and emerge with a "finished" deliverable. The cost of guessing wrong on direction is hours of rework; the cost of showing early is 30 seconds of the user's attention.
+
+### The 4-checkpoint rhythm
+
+| Checkpoint | What to show | When | User action |
+|---|---|---|---|
+| **CP1 — Assumptions** | A structured list: target audience, visual direction, content scope, placeholders needed | Before writing any HTML | Confirm or correct each assumption |
+| **CP2 — Wireframe** | Low-fidelity structure: gray boxes, text labels, layout grid — no color, no typography | After CP1 confirmation | Approve information hierarchy before visual polish |
+| **CP3 — First hi-fi screen** | One representative screen with real design tokens applied | After CP2 confirmation | Confirm visual direction before generating remaining screens |
+| **CP4 — Full deliverable** | All screens/pages with content, interactions, Tweaks | After CP3 confirmation | Final review and iteration |
+
+### HTML reasoning block (include at the top of every file)
+
+```html
+<!--
+DESIGN REASONING
+================
+Target audience: [who sees this]
+Visual direction: [chosen style + why]
+Content scope: [what must appear]
+Key assumptions:
+  1. [assumption — flag for user confirmation]
+  2. [assumption]
+Placeholders needed:
+  - [element]: [what real content is needed]
+Brand tokens: [source — DESIGN.md name, brand-spec.md, or "derived via Direction Advisor"]
+-->
+```
+
+This block is not decoration — it forces design decisions to be explicit and reviewable. The user can read the reasoning and catch a wrong assumption before any visual work happens.
+
+### Anti-pattern: the "big reveal"
+
+❌ Writing a complete 10-screen prototype, then showing it all at once.
+✅ Showing CP1 (assumptions) → getting a thumbs up → CP2 (wireframe) → thumbs up → CP3 (one screen) → thumbs up → CP4 (full build).
+
+**Why:** "理解错了早改比晚改便宜100倍." A wrong assumption caught at CP1 costs 2 minutes to fix. The same assumption caught at CP4 costs 2 hours — the entire visual layer must be regenerated.
+
+---
+
 ## Design for Failure
 
 Design generation is inherently non-deterministic. The point isn't to avoid failure — it's to recover fast.
@@ -125,8 +167,43 @@ These come up so often they're worth naming explicitly.
 - Create a system up front. Intentional visual variety and rhythm. 1-2 background colors max per deck.
 - Scale: 1920×1080 slides → text ≥24px. Print → ≥12pt. Mobile hit targets ≥44px.
 - CSS: `text-wrap: pretty`, CSS grid, advanced effects.
-- Avoid AI slop: aggressive gradients, emoji, rounded-corner-left-border, SVG-drawn imagery, overused fonts (Inter, Roboto, Arial, Fraunces, system fonts).
 - Outside existing brand system → invoke **Frontend design** sub-skill.
+
+---
+
+## Anti-AI-Slop Rules (with WHY and boundaries)
+
+AI slop is the visual average of training data — the patterns so common in AI-generated content that they carry zero brand signal. Using them makes every brand look the same, which means no brand gets recognized. The rules below explain **why** each pattern is slop and **when** it is legitimately acceptable.
+
+### Patterns to avoid
+
+| Pattern | Why it's slop | Legitimate exception |
+|---|---|---|
+| Aggressive purple-to-blue gradients | The universal "tech feel" formula — appears on every SaaS/AI/web3 landing page in training data. Carries no brand information. | The brand itself uses this gradient as a signature (e.g., Stripe's gradient is intentional, not default) |
+| Emoji as functional icons | Training data pairs every bullet point with an emoji. Signals "unprofessional filler" to design-literate viewers. | The brand's own design system uses emoji (e.g., Notion), or the audience is explicitly casual/children |
+| Rounded cards + left-border accent | The Material/Tailwind-era default. So common it has become visual noise — readers tune it out. | The brand's component library explicitly retains this pattern |
+| SVG-drawn faces/scenes/objects | AI-drawn SVG figures have inconsistent proportions and uncanny facial features. Worse than no illustration. | **Almost never acceptable** — use real photos (Wikimedia/Unsplash/AI-generated raster) or honest placeholders instead |
+| CSS silhouettes replacing real product photos | Generates a "generic tech animation" — black bg + accent glow + rounded rectangle. Every hardware product looks identical, brand recognition drops to zero. | **Never** — run the [Brand Asset Protocol](./brand-asset-protocol.md) to fetch real product photos first |
+| Inter/Roboto/Arial as display font | So common that readers cannot distinguish "a designed product" from "a demo page." | The brand's spec explicitly uses these fonts (e.g., Stripe uses a tuned Inter variant) |
+| Uniform dark-blue bg (#0D1117) + generic neon glow | A specific combination that signals "copy-pasted SaaS landing page." Not all dark themes are banned — only this lazy shorthand. | Developer-tool products whose brand identity is genuinely this aesthetic |
+
+### The judgment boundary
+
+The only valid reason to break a slop rule is: **the brand itself uses this pattern as part of its identity.** When the brand spec says "use purple gradient," the gradient is no longer slop — it is a brand signature.
+
+**Do not over-block:** dramatic cinematic lighting, warm-toned cyber aesthetics, and dark narrative scenes are NOT slop — they carry strong authorial intent. Only the specific "uniform dark-blue + generic neon glow" shorthand is banned.
+
+### What to do instead (positive direction)
+
+- ✅ Use `text-wrap: pretty` + CSS Grid + advanced CSS properties — typographic detail is a "taste signal" that distinguishes designed work from generic output
+- ✅ Use `oklch()` or colors from the brand spec — never invent new colors mid-design, as each invented color dilutes brand recognition
+- ✅ Prefer real photos (Wikimedia Commons, Unsplash, AI-generated raster) over hand-drawn SVG — raster images are more accurate and more textured
+- ✅ Use 「」quotes in Chinese text, not "" — a typographic detail that signals "this was proofread"
+- ✅ Polish one detail to 120%, leave others at 80% — taste means concentrating effort where it matters, not applying uniform polish
+
+### Isolating counter-examples
+
+When the task itself requires showing bad design (e.g., "什么是 AI slop" comparison page), do not fill the entire page with slop. Instead, isolate the counter-example inside a **clearly labeled container** — dashed border + "反例 · 不要这样做" badge — so it serves the narrative without polluting the page's visual language.
 
 ---
 

@@ -1,3 +1,13 @@
+---
+name: 演讲者模式模板 · Presenter Mode Reveal 🎤
+mode: deck
+scenario: general
+surface: slides
+recommended: 50
+tags: ["presentation", "speaker", "presenter", "notes"]
+example_id: sample-presenter-mode-reveal
+example_format: markdown
+---
 # 演讲者模式模板 · Presenter Mode Reveal 🎤
 
 **专门为带逐字稿的技术分享/演讲设计的 deck 模板。**

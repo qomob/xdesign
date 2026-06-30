@@ -2,7 +2,7 @@
 
 > Design Workflow Engine — 将想法到可交付物的全流程压缩为对话。
 > 你不是在用"画图工具"，你是在驱动一个 **产品经理 + 初级设计师 + 前端开发** 的合体。
-> v1.x 已融合 [html-ppt-skill](https://github.com/lewislulu/html-ppt-skill) → 内置 **deck-studio/** 子模块（18 主题 + 31 布局 + 47 动效 + 演讲者模式）。
+> v2.5 已融合 [html-ppt-skill](https://github.com/lewislulu/html-ppt-skill) → 内置 **deck-studio/** 子模块（36 主题 + 31 单页布局 + 15 full-deck 模板 + 47 动效 + 演讲者模式），并新增**决策支持层**（设计方向顾问 + 品牌资产协议 + 反 AI slop + 图片前置 + 事实验证）。
 
 ---
 
@@ -20,6 +20,18 @@ XDesign 是一个 AI 驱动的设计流程引擎。它不是一个模板工具�
 - 💡 **设计解释** — 不仅做设计，还能解释设计逻辑，充当设计导师
 - 🎤 **演讲者模式（fused）** — 4 卡片可拖拽的 presenter 视图（当前页/下页/提词器/计时器）
 
+### v2.5 新增：决策支持层
+
+当用户"不知道要什么"或"涉及真实品牌"时，XDesign 不再凭直觉硬做，而是走结构化决策流程：
+
+| 机制 | 触发场景 | 做什么 |
+|------|---------|--------|
+| **设计方向顾问** | 模糊需求（"帮我做个好看的"），无品牌/参考 | 生成 3 个差异化视觉方向（信息优先 → 平衡 → 概念主导），让用户看着选 |
+| **品牌资产协议** | 涉及真实品牌/产品 | 5 步硬流程（问 → 搜官方 → 下载 → 验证 → 固化 brand-spec.md），绝不凭记忆猜品牌色 |
+| **反 AI slop 规则** | 所有 Mode 2/3 产出 | 每条 slop 规则附带 WHY 解释 + 合法例外边界，保护品牌识别度 |
+| **图片素材前置** | 内容型设计（历史/自然/产品/人物） | PPAF 循环 Phase 1.5：先取真图再设计，不用色块糊弄 |
+| **事实验证 #0** | 涉及具体产品/技术 | 开工前 WebSearch 验证产品存在性/版本号，避免基于错误假设返工 |
+
 ---
 
 ## 三模式路由
@@ -28,7 +40,7 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 
 | 触发词 | 模式 | 走哪条路 |
 |---|---|---|
-| 做一份 PPT、slides、keynote、演讲、pitch deck、带逐字稿 | **Mode 1: Presentation / Deck** | `deck-studio/` 子模块（18 主题 + 31 布局 + 5 full-deck 模板） |
+| 做一份 PPT、slides、keynote、演讲、pitch deck、带逐字稿 | **Mode 1: Presentation / Deck** | `deck-studio/` 子模块（36 主题 + 31 单页布局 + 15 full-deck 模板） |
 | 设计 APP、原型、dashboard、落地页、组件、UI Kit | **Mode 2: Visual Design / Prototype** | 原 XDesign 流程（Design System → Wireframe → Hi-Fi + React+Babel） |
 | 动效视频、时间轴动画、motion design | **Mode 3: Animation / Video** | 原 XDesign `animations.jsx` 路径 |
 
@@ -112,9 +124,9 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 
 ### Mode 1 资源（deck-studio/）
 
-- **18 个主题** — 极简（minimal-white, japanese-minimal）/ 商务（corporate-clean, pitch-deck-vc）/ 暗色（dracula, catppuccin-mocha, gruvbox-dark）/ 强调（bauhaus, memphis-pop, cyberpunk-neon）/ 工程（blueprint, engineering-whiteprint）
-- **31 个单页布局** — 封面/目录/章节分隔、bullets/双列/三列、stat-highlight/KPI/表格/Chart.js 4 种图、代码/diff/终端、流程/架构/思维导图/时间轴/甘特/路线图、hero/grid/CTA/Thanks
-- **5 个完整 deck 模板** — product-launch / pitch-deck / tech-sharing / weekly-report / course-module（每个都是目录结构，带 scoped CSS）
+- **36 个主题** — 极简（minimal-white, japanese-minimal, nord, rose-pine）/ 商务（corporate-clean, pitch-deck-vc, swiss-grid, editorial-serif）/ 暗色（dracula, catppuccin-mocha, gruvbox-dark, tokyo-night, solarized-light）/ 强调（bauhaus, memphis-pop, cyberpunk-neon, vaporwave, y2k-chrome, rainbow-gradient）/ 工程（blueprint, engineering-whiteprint, sharp-mono, terminal-green）/ 社交（xiaohongshu-white, soft-pastel, sunset-warm, magazine-bold）
+- **31 个单页布局** — 封面/目录/章节分隔、bullets/双列/三列、stat-highlight/KPI/表格/Chart 4 种图、代码/diff/终端、流程/架构/思维导图/时间轴/甘特/路线图、hero/grid/CTA/Thanks
+- **15 个完整 deck 模板** — product-launch / pitch-deck / tech-sharing / weekly-report / course-module / presenter-mode-reveal / testing-safety-alert / hermes-cyber-terminal / graphify-dark-graph / knowledge-arch-blueprint / obsidian-claude-gradient / dir-key-nav-minimal / xhs-pastel-card / xhs-post / xhs-white-editorial（每个都是目录结构，带 scoped CSS + 扩展 frontmatter 用于场景筛选）
 - **47 个动效** — 27 个 CSS 命名入场动画（fade-up / rise-in / zoom-pop / path-draw / parallax-tilt...）+ 20 个 canvas FX（粒子/烟花/矩阵雨/神经网络/知识图谱/星座...）
 - **演讲者模式** — S 键弹出 4 卡片：当前页 + 下一页 + 提词器 + 计时器
 
@@ -195,9 +207,9 @@ XDesign 内置多语言设计指导：
 ### 做 PPT 时先定主题
 明确主题能省 3 轮迭代。模糊就给 2-3 候选：
 - 投资人 pitch → `pitch-deck-vc` / `corporate-clean` / `bauhaus`
-- 技术分享 → `catppuccin-mocha` / `dracula` / `blueprint`
-- 小红书 → `xiaohongshu-white`（**注意：本仓库当前未下载，需先 `ls deck-studio/assets/themes/` 确认**）
-- 学术报告 → `academic-paper` / `editorial-serif`
+- 技术分享 → `catppuccin-mocha` / `dracula` / `blueprint` / `tokyo-night`
+- 小红书 → `xiaohongshu-white` / `soft-pastel` / `rainbow-gradient`
+- 学术报告 → `academic-paper` / `editorial-serif` / `minimal-white`
 
 ---
 
@@ -230,11 +242,13 @@ XDesign/
 │       └── ... 共 58 个
 ├── references/
 │   ├── design-system-catalog.md      # 58 品牌索引
+│   ├── design-direction-advisor.md   # v2.5 设计方向顾问（模糊需求 Fallback）
+│   ├── brand-asset-protocol.md       # v2.5 品牌资产协议（5 步硬流程）
 │   ├── technical-specs.md            # 技术规范
-│   ├── workflow-guide.md             # 高手玩法
+│   ├── workflow-guide.md             # 高手玩法（PPAF + 图片前置 + Tweaks 模板）
 │   ├── integration-guide.md          # 融合架构 + 路由表 + 适配层
 │   ├── deck-studio-catalog.md        # deck-studio 资源速查
-│   ├── mode-2-prototype.md           # Mode 2/3 详细规则（PPAF、React+Babel、Starter Components）
+│   ├── mode-2-prototype.md           # Mode 2/3 详细规则（反 slop + Junior Designer + React+Babel）
 │   └── schemas.md                    # DESIGN.md / tokens / evals schema
 ├── evals/
 │   ├── evals.json                    # 3 个可执行 evals
@@ -255,7 +269,7 @@ XDesign/
     │   ├── base.css                  # 设计令牌 + 布局原语
     │   ├── fonts.css                 # webfont imports
     │   ├── runtime.js                # 键盘 + 演讲者 + 主题循环
-    │   ├── themes/                   # 18 个主题 CSS
+    │   ├── themes/                   # 36 个主题 CSS
     │   └── animations/               # animations.css + 20 个 FX
     ├── references/                   # themes.md / layouts.md / animations.md / full-decks.md / authoring-guide.md / presenter-mode.md
     ├── templates/
@@ -264,7 +278,7 @@ XDesign/
     │   ├── layout-showcase.html      # 31 布局展示
     │   ├── animation-showcase.html
     │   ├── full-decks-index.html
-    │   ├── full-decks/               # 5 个 full-deck 模板
+    │   ├── full-decks/               # 15 个 full-deck 模板
     │   └── single-page/              # 31 个单页布局
     └── scripts/
         ├── new-deck.sh
