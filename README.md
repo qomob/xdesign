@@ -15,22 +15,10 @@ XDesign 是一个 AI 驱动的设计流程引擎。它不是一个模板工具�
 - 🧠 **设计系统提取** — 从品牌资料自动提取颜色/字体/组件规范
 - 📐 **线框图 → 高保真** — 渐进式设计流程，先确认结构再打磨视觉
 - 🎛️ **实时调参** — Tweaks 面板让用户在设计中即时调整参数
-- 📤 **多格式导出** — PPTX、PDF、独立 HTML、Canva、React 组件代码
+- 📤 **多格式导出** — PDF、PPTX、独立 HTML、WeChat/小红书/X 社交导出
 - 🌍 **多语言支持** — CJK、RTL、欧洲语言的本地化设计指导
 - 💡 **设计解释** — 不仅做设计，还能解释设计逻辑，充当设计导师
 - 🎤 **演讲者模式（fused）** — 4 卡片可拖拽的 presenter 视图（当前页/下页/提词器/计时器）
-
-### v2.5 新增：决策支持层
-
-当用户"不知道要什么"或"涉及真实品牌"时，XDesign 不再凭直觉硬做，而是走结构化决策流程：
-
-| 机制 | 触发场景 | 做什么 |
-|------|---------|--------|
-| **设计方向顾问** | 模糊需求（"帮我做个好看的"），无品牌/参考 | 生成 3 个差异化视觉方向（信息优先 → 平衡 → 概念主导），让用户看着选 |
-| **品牌资产协议** | 涉及真实品牌/产品 | 5 步硬流程（问 → 搜官方 → 下载 → 验证 → 固化 brand-spec.md），绝不凭记忆猜品牌色 |
-| **反 AI slop 规则** | 所有 Mode 2/3 产出 | 每条 slop 规则附带 WHY 解释 + 合法例外边界，保护品牌识别度 |
-| **图片素材前置** | 内容型设计（历史/自然/产品/人物） | PPAF 循环 Phase 1.5：先取真图再设计，不用色块糊弄 |
-| **事实验证 #0** | 涉及具体产品/技术 | 开工前 WebSearch 验证产品存在性/版本号，避免基于错误假设返工 |
 
 ---
 
@@ -157,7 +145,7 @@ CSV / JSON / SQL / Markdown 表格会自动跳过设计系统阶段，直接生�
 2. **Wireframe Before Hi-Fi** — 先确认布局和信息层级，再升级视觉
 3. **多版本生成** — 不要"再改一下"，而是一次给 3 种不同方案
 
-### 3. 三种迭代方式
+### 三种迭代方式
 
 | 方式 | 适合场景 | 示例 |
 |---|---|---|
@@ -293,13 +281,13 @@ XDesign/
 │       └── ... 共 58 个
 ├── references/
 │   ├── design-system-catalog.md      # 58 品牌索引
-│   ├── design-direction-advisor.md   # v2.5 设计方向顾问（模糊需求 Fallback）
-│   ├── brand-asset-protocol.md       # v2.5 品牌资产协议（5 步硬流程）
+│   ├── design-direction-advisor.md   # 设计方向顾问 + Three Dials + Brief Inference（v2.5-v2.6）
+│   ├── brand-asset-protocol.md       # 品牌资产协议（5 步硬流程，v2.5）
 │   ├── technical-specs.md            # 技术规范
 │   ├── workflow-guide.md             # 高手玩法（PPAF + 图片前置 + Tweaks 模板）
 │   ├── integration-guide.md          # 融合架构 + 路由表 + 适配层
 │   ├── deck-studio-catalog.md        # deck-studio 资源速查
-│   ├── mode-2-prototype.md           # Mode 2/3 详细规则（反 slop + Junior Designer + React+Babel）
+│   ├── mode-2-prototype.md           # Mode 2/3 详细规则（反 slop 双层 + Pre-flight Check + Junior Designer + React+Babel）
 │   └── schemas.md                    # DESIGN.md / tokens / evals schema
 ├── evals/
 │   ├── evals.json                    # 3 个可执行 evals
