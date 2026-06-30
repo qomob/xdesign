@@ -2,7 +2,7 @@
 
 > Design Workflow Engine — 将想法到可交付物的全流程压缩为对话。
 > 你不是在用"画图工具"，你是在驱动一个 **产品经理 + 初级设计师 + 前端开发** 的合体。
-> v2.5 已融合 [html-ppt-skill](https://github.com/lewislulu/html-ppt-skill) → 内置 **deck-studio/** 子模块（36 主题 + 31 单页布局 + 15 full-deck 模板 + 47 动效 + 演讲者模式），并新增**决策支持层**（设计方向顾问 + 品牌资产协议 + 反 AI slop + 图片前置 + 事实验证）。
+> v2.6 已融合 [html-ppt-skill](https://github.com/lewislulu/html-ppt-skill) → 内置 **deck-studio/** 子模块（36 主题 + 31 单页布局 + 15 full-deck 模板 + 47 动效 + 演讲者模式），并内置**决策支持层**（设计方向顾问 + 品牌资产协议 + 反 AI slop 双层规则 + 图片前置 + 事实验证 + Three Dials + Brief Inference + Pre-flight Check）。
 
 ---
 
@@ -50,7 +50,7 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 
 ---
 
-## 能力速览（v2.4-v2.5 新增）
+## 能力速览（v2.4-v2.6）
 
 除了基础的"三模式生成"，XDesign 还内置以下机制来减少返工、提升输出质量：
 
@@ -60,6 +60,10 @@ XDesign 内部有 **3 种工作模式**，按用户意图自动分发：
 | **设计方向顾问** | v2.5 | 模糊需求（"帮我做个好看的"）时生成 3 个差异化视觉方向让用户选，不凭直觉硬做 |
 | **品牌资产协议** | v2.5 | 涉及真实品牌时强制走"问 → 搜 → 下载 → 验证 → 固化"5 步流程，不凭记忆猜品牌色 |
 | **事实验证 #0** | v2.5 | 涉及具体产品/技术时先 WebSearch 验证，避免为"还没发布的产品"做发布动画 |
+| **Design Preference Layer** | v2.6 | 反 AI slop 双层规则——视觉模式层 + 设计偏好层（排版/颜色/布局/动效的深层 bias 纠正） |
+| **Three Dials** | v2.6 | 内部配置变量 `DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY`（1-10），从用户信号自动推断，对用户不可见 |
+| **Brief Inference** | v2.6 | 6 维信号扫描（页面类型/vibe 词/参考/受众/品牌资产/隐藏约束），能推断就不问，输出一句话 Design Read |
+| **Pre-flight Check** | v2.6 | CP4 交付前 10 项机械检查（颜色锁、饱和度、italic 降部、占位符、marquee 数、reduced-motion、移动端命中区等） |
 | **Format Auto-Detect** | v2.4 | CSV/JSON/SQL/Markdown 表格自动跳过设计系统阶段，直接生成图表或数据看板 |
 | **Template Matching** | v2.4 | 按 `scenario` / `recommended` 字段从 15 个 deck 模板中智能推荐最匹配的 |
 | **Streaming Preview** | v2.4 | >8 页 deck 拆两轮生成：先出 5 页预览确认方向，再生成完整 deck |

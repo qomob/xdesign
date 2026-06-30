@@ -91,16 +91,77 @@ When the user's domain doesn't match any row, default to: `corporate-clean` (A) 
 
 ---
 
+## Three Dials (internal configuration variables)
+
+Once a direction is chosen (or during generation), set three internal variables that govern layout, motion, and density decisions. **These are invisible to the user** — they are configuration for the agent, recorded in the HTML reasoning block.
+
+| Dial | Range | 1 = | 10 = | Baseline |
+|------|-------|-----|------|----------|
+| `DESIGN_VARIANCE` | 1-10 | Perfect symmetry, centered layouts | Asymmetric, experimental, bento grids | 7 |
+| `MOTION_INTENSITY` | 1-10 | Static, hover-only | Cinematic, scroll-driven, physics | 5 |
+| `VISUAL_DENSITY` | 1-10 | Art gallery, generous whitespace | Dense dashboard, packed data | 4 |
+
+### Dial inference from user signals
+
+| User signal | VARIANCE | MOTION | DENSITY |
+|---|---|---|---|
+| "简约 / clean / calm / editorial / Linear 风格" | 4-5 | 3-4 | 2-3 |
+| "高端消费 / Apple 风格 / luxury / brand" | 6-7 | 5-6 | 3-4 |
+| "活泼 / wild / Dribbble / Awwwards / experimental / agency" | 8-9 | 7-9 | 3-4 |
+| "落地页 / portfolio / marketing site（默认）" | 6-8 | 5-7 | 3-5 |
+| "trust-first / public-sector / regulated / accessibility" | 3-4 | 2-3 | 4-5 |
+| "dashboard / 数据看板 / admin" | 5-6 | 3-4 | 7-8 |
+
+### How dials drive output
+
+- **VARIANCE ≥ 7** → use asymmetric layouts, bento grids, mixed cell sizes, deliberate imbalance
+- **VARIANCE ≤ 5** → use centered or standard grid layouts, predictable hierarchy
+- **MOTION ≥ 6** → add scroll-triggered reveals, parallax, magnetic hover; use Mode 3 animation primitives
+- **MOTION ≤ 4** → hover states only, no scroll animation; respect `prefers-reduced-motion` by default
+- **DENSITY ≥ 6** → compact spacing, multi-column data, smaller type scale, information-rich components
+- **DENSITY ≤ 4** → generous spacing, large type, one idea per viewport, breathing room
+
+### Recording in HTML reasoning block
+
+```html
+<!--
+DESIGN REASONING
+Dials: VARIANCE=7, MOTION=5, DENSITY=4
+Direction: Balanced (B)
+Theme seed: tokyo-night + Vercel tokens
+-->
+```
+
+---
+
 ## Execution flow (5 phases)
 
-### Phase 1 — Clarify (one round, max 3 questions)
+### Phase 1 — Brief Inference (read the room, don't interrogate)
 
-Ask in a single batch:
-1. **Audience & context** — who sees this, what's the emotional goal
-2. **Content scope** — what must appear (sections, data, features)
-3. **Output format** — web page, deck, mobile, dashboard
+Before asking questions, **infer from available signals**. Most of the time the user has already given enough context — you just need to read it.
 
-Also ask for any reference the user can provide: a brand name, a URL, a screenshot, a competitor they like. If the user provides nothing, proceed to Phase 2.
+**6 signal dimensions to scan:**
+
+| Signal | What to look for | If present |
+|---|---|---|
+| **1. Page kind** | Landing page / portfolio / dashboard / deck / animation / redesign | Determines mode routing and template selection |
+| **2. Vibe words** | "简约", "高端", "科技感", "活泼", "editorial", "brutalist", "Linear 风格" | Sets the Three Dials directly (see inference table above) |
+| **3. Reference signals** | Brand name, URL, screenshot, competitor mentioned | Triggers DESIGN.md fast path or Brand Asset Protocol |
+| **4. Audience** | B2B buyers / consumers / developers / recruiters / investors / students | The audience picks the aesthetic, not the designer's taste |
+| **5. Existing brand assets** | Logo, color, type, photography already available | These are starting material, not optional input |
+| **6. Quiet constraints** | Accessibility-first, public-sector, regulated industry, kids' product, trust-first commerce | These constraints **override** aesthetic preference |
+
+**Output a one-line "Design Read" before generating:**
+
+State in one line: *"Reading this as: [page kind] for [audience], with a [vibe] language, leaning toward [design system or aesthetic family]."*
+
+Examples:
+- *"Reading this as: B2B SaaS landing for technical buyers, with a Linear-style minimalist language, leaning toward corporate-clean theme + restrained motion."*
+- *"Reading this as: solo designer portfolio for hiring managers, with an editorial language, leaning toward japanese-minimal theme + scroll-driven animation."*
+
+**When to ask:** Only when the design read genuinely diverges — you cannot confidently infer the direction. Ask **exactly one** question, not a multi-question dump. Example: *"Should this feel closer to Linear-clean or Awwwards-experimental?"*
+
+**When NOT to ask:** If you can confidently infer from context, declare the design read and proceed. Asking unnecessary questions wastes the user's time and signals incompetence.
 
 ### Phase 2 — Restate (≥100 words)
 

@@ -61,6 +61,25 @@ This block is not decoration — it forces design decisions to be explicit and r
 
 **Why:** "理解错了早改比晚改便宜100倍." A wrong assumption caught at CP1 costs 2 minutes to fix. The same assumption caught at CP4 costs 2 hours — the entire visual layer must be regenerated.
 
+### Pre-flight Check (CP4 sub-checklist — run before declaring "done")
+
+Before presenting the full deliverable at CP4, mechanically verify each item. These are objective checks, not subjective judgments — pass/fail only.
+
+| # | Check | How to verify | Fail action |
+|---|---|---|---|
+| 1 | **Color consistency lock** — one accent color used across the entire page | Search the HTML for hex values; all accent instances must match `--color-accent` | Replace inline hex with `var(--color-accent)` |
+| 2 | **No mid-design palette drift** — no new accent colors appeared in later sections | Compare sections 1-3 colors with sections 7-10; any new hue must be in the brand spec | Remove the drift or add to brand spec with justification |
+| 3 | **Accent saturation < 80%** | Check the accent color's HSL/OKLCH saturation value | Reduce saturation until < 80% |
+| 4 | **Italic descender clearance** — no clipped descenders in display type | Scan every italic word containing y/g/j/p/q; verify `leading ≥ 1.1` | Increase line-height or add padding-bottom |
+| 5 | **No orphaned placeholders** — every `[placeholder]` has real content or a labeled TODO | Search for `[` and `TODO` in the HTML | Fill with real content or mark with visible "TODO" badge |
+| 6 | **No hardcoded brand colors** — all brand colors use CSS variables | Search for hex values outside `:root` and `brand-spec.md` | Replace with `var(--brand-*)` |
+| 7 | **Marquee count ≤ 1** — at most one infinite-loop animation per page | Count `animation: ... infinite` occurrences | Remove all but one; justify the survivor |
+| 8 | **`prefers-reduced-motion` respected** — motion has a static fallback | Check for `@media (prefers-reduced-motion: reduce)` block | Add reduced-motion fallback |
+| 9 | **Mobile hit targets ≥ 44px** | Check button/link dimensions on mobile viewport | Resize to ≥ 44px |
+| 10 | **No AI-slop patterns** — scan against the Anti-AI-Slop + Design Preference rules above | Review each section against both rule tables | Fix the tell or justify the override |
+
+**If any check fails, fix it before presenting to the user.** Do not present a deliverable with known mechanical failures — the user trusts that "done" means done.
+
 ---
 
 ## Design for Failure
@@ -204,6 +223,51 @@ The only valid reason to break a slop rule is: **the brand itself uses this patt
 ### Isolating counter-examples
 
 When the task itself requires showing bad design (e.g., "什么是 AI slop" comparison page), do not fill the entire page with slop. Instead, isolate the counter-example inside a **clearly labeled container** — dashed border + "反例 · 不要这样做" badge — so it serves the narrative without polluting the page's visual language.
+
+---
+
+## Design Preference Layer (deeper bias correction)
+
+The anti-slop rules above target **visible visual patterns** (purple gradients, emoji icons, CSS silhouettes). This section targets **deeper cognitive biases** — the LLM's predictable preferences in typography, color, layout, and motion. These biases are harder to spot because each individual choice seems reasonable; it is the *statistical pattern across projects* that reveals the tell.
+
+Each rule has a context-aware override: the goal is not to ban a choice outright, but to make it deliberate.
+
+### Typography bias
+
+| LLM default behavior | Why it's a tell | Deliberate alternative |
+|---|---|---|
+| Reaching for serif fonts (Fraunces, Instrument Serif, Playfair) to signal "creative / premium / editorial" | "Creative brief = serif" is the single most-tested AI tell in production. The model associates serif with sophistication, but applies it indiscriminately. | Default to sans-serif display fonts (Geist, Cabinet Grotesk, Satoshi, Inter Display). Reserve serif for genuine editorial/luxury/heritage contexts where the brand brief explicitly names one. |
+| Injecting a random serif word into a sans-serif headline for "visual interest" | Mixed-family emphasis looks amateurish — it signals "I couldn't figure out how to make this interesting, so I switched fonts." | Use italic or bold of the **same font family** for emphasis. If the headline needs more contrast, increase weight or size, not font family. |
+| Defaulting to Inter everywhere | Inter is the "safe neutral" — so common it has become invisible. Using it signals "I didn't think about fonts." | Try Geist, Outfit, Cabinet Grotesk, or Satoshi first. Inter is acceptable only when the brand explicitly wants a neutral/standard feel or for accessibility-first sites. |
+| Ignoring italic descender clearance | `leading-none` clips descender letters (y, g, j, p, q) in italic display text. The result looks broken on close inspection. | When using italic in display type, use `leading: 1.1` minimum and add padding-bottom reserve on the wrapping element. |
+
+### Color bias
+
+| LLM default behavior | Why it's a tell | Deliberate alternative |
+|---|---|---|
+| Premium-consumer brief → warm beige/cream background + brass/clay/oxblood accents + espresso dark text | This palette is the LLM's universal "expensive" formula — applied to cookware, wellness, artisan, luxury, DTC home goods alike. Every premium brand ends up looking like the same farmhouse. | Question the warm-neutral default. Premium can be cold marble (cool grey + silver), clinical white (white + single jewel accent), or dramatic dark (charcoal + gold). Pick based on the specific brand's emotional register, not the "premium" category. |
+| Mid-design color drift | A warm-grey site suddenly gets a blue CTA in section 7. A rose-accented page gets a teal status badge in the footer. Each choice seems fine in isolation; together they destroy cohesion. | **Color consistency lock:** once an accent color is chosen, it is used on the WHOLE page. Audit every component before shipping — no new accent colors appear mid-design unless the brand spec defines a secondary palette. |
+| Accent saturation > 80% | High-saturation accents scream "digital" — they read as screen colors, not brand colors. Real brand palettes (Stripe, Linear, Notion) use restrained saturation. | Max 1 accent color, saturation < 80% by default. Use `oklch()` to control perceptual lightness and chroma precisely. |
+
+### Layout bias
+
+| LLM default behavior | Why it's a tell | Deliberate alternative |
+|---|---|---|
+| Centered hero over dark gradient mesh | The universal "tech landing page" — title centered, subtitle centered, two CTAs centered, dark background with a blurry gradient blob. So common it has become visual noise. | Try left-aligned hero with asymmetric layout. Try a light background. Try a full-bleed product screenshot instead of abstract decoration. The hero should make the user feel something specific, not "tech-adjacent." |
+| Three equal-height feature cards in a row | The default "features section" — three cards, same size, same structure, icon + title + one line. Readers scan and skip it because the pattern signals "filler." | Vary card sizes (bento grid). Mix media types (one card has a video, another has a stat, another has text). Or kill the section entirely if the features don't earn their space. |
+| Split-header (logo left + nav right + CTA right) on every page | Functional but invisible. Every SaaS site has this exact header. | Experiment with centered navigation, sticky bottom bar on mobile, or a sidebar nav for content-heavy sites. Only default to split-header when the design read says "standard B2B." |
+
+### Motion bias
+
+| LLM default behavior | Why it's a tell | Deliberate alternative |
+|---|---|---|
+| Infinite-loop marquee / infinite-scroll logos | Motion without purpose. The logos scroll forever, conveying no information. It signals "I needed to fill this space with movement." | Motion must be **motivated** — it reveals content (scroll-triggered), provides feedback (hover state), or guides attention (entrance animation). If the motion conveys nothing, remove it. Max one marquee per page. |
+| Micro-animations on everything (every element fades in on scroll) | When everything animates, nothing stands out. The user's attention is diluted across 20 simultaneous entrance animations. | Animate only the first-visible moment of each section. Use stagger for grouped items, not uniform fade-up for every element. Respect `prefers-reduced-motion`. |
+| Decorative particle backgrounds / canvas FX with no narrative purpose | Particles floating behind text — looks impressive in a screenshot, but in production it distracts from content and hurts performance. | Canvas FX belongs in Mode 3 (animation) or as a deliberate hero moment, not as ambient decoration behind every section. If the FX doesn't serve the story, cut it. |
+
+### The meta-rule
+
+Every preference in this section can be summarized as: **if the choice feels like a default, question it.** The LLM's defaults are statistically predictable — that's what makes them tells. The fix is not to ban specific patterns, but to make each choice deliberate and defensible. If you can articulate *why* this font, this color, this layout serves *this specific brand*, the choice is safe. If the answer is "it looked good," it's a tell.
 
 ---
 
