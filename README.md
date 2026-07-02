@@ -188,6 +188,14 @@ XDesign/
 
 ---
 
+### 加入群聊
+
+<div align="center">
+  <img src="https://qomob.ai/xskill.jpg" width="600" alt="XSkill">
+</div>
+
+---
+
 ## License & Attribution
 
 XDesign 自身为 MIT 许可证（见 `LICENSE`）。
