@@ -100,6 +100,7 @@ Once a direction is chosen (or during generation), set three internal variables 
 | `DESIGN_VARIANCE` | 1-10 | Perfect symmetry, centered layouts | Asymmetric, experimental, bento grids | 7 |
 | `MOTION_INTENSITY` | 1-10 | Static, hover-only | Cinematic, scroll-driven, physics | 5 |
 | `VISUAL_DENSITY` | 1-10 | Art gallery, generous whitespace | Dense dashboard, packed data | 4 |
+| `ANIMATION_FREQUENCY` | 1-10 | No animation (100+ uses/day) | Deliberate surprise (first-use/rare) | 5 |
 
 ### Dial inference from user signals
 
@@ -111,6 +112,24 @@ Once a direction is chosen (or during generation), set three internal variables 
 | "落地页 / portfolio / marketing site（默认）" | 6-8 | 5-7 | 3-5 |
 | "trust-first / public-sector / regulated / accessibility" | 3-4 | 2-3 | 4-5 |
 | "dashboard / 数据看板 / admin" | 5-6 | 3-4 | 7-8 |
+| "command palette / 快捷键 / hotkey-driven" | — | **ANIMATION_FREQUENCY = 1** | — |
+| "onboarding / 引导 / first-use" | — | **ANIMATION_FREQUENCY = 9** | — |
+| "toast / notification / 偶尔弹出" | — | **ANIMATION_FREQUENCY = 6** | — |
+
+### Animation frequency strategy (MOTION_INTENSITY × ANIMATION_FREQUENCY)
+
+The two motion dials work together: `MOTION_INTENSITY` sets the ceiling, `ANIMATION_FREQUENCY` sets what's actually appropriate for the usage context.
+
+**Frequency-based rules:**
+
+| Usage frequency | Frequency dial | Maximum motion | Examples |
+|----------------|---------------|----------------|----------|
+| 100+ times/day (hotkeys, command palettes, quick actions) | 1-2 | **No animation** — static only | `Ctrl+K` palette, hover states on nav |
+| 10-50 times/day (lists, navigation, hover interactions) | 3-4 | Hover-only or instant feedback | Row hover, button pressed state |
+| 1-5 times/day (drawers, modals, toasts) | 5-7 | Standard entrance/exit animation | Settings panel, notifications |
+| First-use / rare (onboarding, empty states, celebrations) | 8-10 | Deliberate "wow" moment | Feature discovery, success celebrations |
+
+**Hard rule:** If the user requests animation for a high-frequency interaction (command palette, frequent hover, rapid navigation), the agent MUST warn: "This element triggers 100+ times per day. Animating it will cause fatigue. Recommend static or near-instant feedback instead."
 
 ### How dials drive output
 
@@ -191,6 +210,38 @@ Present the three directions. The user picks one, mixes elements from two, or re
 ### Phase 5 — Converge
 
 Once a direction is confirmed, transition to the standard Mode 2/3 workflow. The chosen theme/tokens become the design system foundation. Do not re-litigate the direction — commit and execute.
+
+---
+
+## Motion Vocabulary (translate vague requests to precise terms)
+
+When the user describes animation vaguely, translate to the correct technical term before generating. This reduces iteration cycles by giving the animation engine precise input.
+
+### Translation table
+
+| User says | Technical term | Implementation |
+|-----------|---------------|----------------|
+| "弹一下" / "pop" | Scale pop | `scale(0.95) → scale(1.02) → scale(1)` with spring easing |
+| "慢慢出现" / "fade in" | Opacity ramp | `opacity: 0 → 1`, duration 200-300ms, ease-out |
+| "从下面滑上来" | Slide-up entrance | `translateY(20px) → 0` + opacity fade |
+| "从中间放大" | Zoom entrance | `scale(0.95) → 1` + opacity (never scale(0) as start) |
+| "iOS 拉到底弹回" | Rubber-band / Elastic | Spring animation with overshoot past target, then settle |
+| "元素从按钮里长出来" | Origin-aware reveal | Set `transform-origin` to trigger point (top of button, not center of popover) |
+| "一个接一个" / "依次" | Stagger sequence | 50-100ms delay between each item's entrance |
+| "悬停时微微变大" | Hover lift | `transform: scale(1.02)` or `translateY(-2px)`, duration 150ms |
+| "按下时缩小" | Press feedback | `transform: scale(0.97)`, duration 100-160ms |
+| "加载完成后变形" | State transition | Morph from loading spinner to final state, duration 200ms |
+| "滚动时才出现" | Scroll-triggered reveal | IntersectionObserver + single entrance animation |
+| "一直动 / 无限循环" | Ambient loop | Reserved for decorative max 1 per page OR loading states |
+| "数字从 0 变到目标" | Number ticker | JS-driven counter with easing, duration 800-1200ms |
+| "骨架屏" | Skeleton shimmer | Shimmer sweep on gray placeholder blocks |
+| "毛玻璃模糊进入" | Blur reveal | `blur(8px) → blur(0)` + opacity |
+
+### When motion is requested without purpose
+
+If the user asks for animation without specifying a functional reason, the agent should:
+1. Apply the above vocabulary to understand the desired visual
+2. Then run the **Animation Reason Checklist** (see mode-2-prototype.md) to validate the animation serves a purpose
 
 ---
 
