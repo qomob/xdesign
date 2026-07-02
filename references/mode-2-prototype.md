@@ -21,6 +21,105 @@ You MAY talk about capabilities in user-centric terms (e.g. "I can create HTML p
 
 ---
 
+## Progressive Intake Interview (for vague requests)
+
+When the user gives a vague request ("做个落地页", "设计一个产品页面", "帮我做个网站"), do NOT ask open-ended questions like "你想要什么风格?" — this forces the user to make design decisions they are not qualified to make. Instead, use **progressive intake**: structured multiple-choice questions that constrain the decision space.
+
+### The 3-round maximum rule
+
+- **Round 1** (always): What are you making + who is it for
+- **Round 2** (if needed): Visual direction — present 3 differentiated options with real brand references
+- **Round 3** (rare): Specific constraints — only if Round 1-2 genuinely miss critical info
+
+**Hard limit: 3 rounds.** If you cannot decide after 3 rounds, proceed with your best inference and show early (CP1). More questions = user fatigue = worse output.
+
+### Round 1 — Core identity (3 questions max, always run)
+
+Ask these as a single grouped question, NOT one-by-one:
+
+```
+To make this page effectively, I need 3 quick things:
+
+1. Who is this for?
+   □ Developers / technical audience
+   □ Business / executives
+   □ Consumers / general public
+   □ Other: ___
+
+2. What's the ONE thing the page should make users do?
+   □ Sign up / Start using
+   □ Understand the product (info)
+   □ Buy / Upgrade
+   □ Other: ___
+
+3. Any visual reference? (name a brand, paste a URL, or skip)
+   □ I'll name a brand/style
+   □ No preference — surprise me
+```
+
+**If user skips Q3:** Proceed with Round 2 to determine visual direction.
+**If user names a brand:** Use DESIGN.md fast path, skip Round 2.
+
+### Round 2 — Visual direction (only if no brand reference given)
+
+Present 3 differentiated directions as real mini-mockups (3-5 lines of HTML each, not text descriptions):
+
+```
+Here are 3 visual directions. Which feels closest?
+
+**A. Information-first** — [render a mini-hero: data-dense, clean grid, one accent]
+   Best for: dashboards, B2B, technical products
+
+**B. Conversion-first** — [render a mini-hero: bold headline, clear CTA, deliberate whitespace]
+   Best for: marketing sites, SaaS, product launches
+
+**C. Concept-led** — [render a mini-hero: strong typography, asymmetric, opinionated palette]
+   Best for: portfolios, personal brands, design-literate audiences
+```
+
+Use the existing 36 themes as ammunition:
+- A → `corporate-clean` / `linear.app` tokens
+- B → `swiss-grid` / `stripe` tokens  
+- C → `neo-brutalism` / `xai` tokens
+
+### Round 3 — Constraints clarification (only if Round 1-2 miss critical info)
+
+Ask ONLY about information essential to the build:
+
+```
+Last question — anything I should know before designing?
+- Content ready? (paste text/logo, or say "generate placeholder")
+- Language? (Chinese / English / both)
+- Sections needed? (hero/features/pricing/CTA/etc.)
+- Hard constraints? (deadline, specific colors, must-include items)
+```
+
+**If user says "都行"/"你定":** Proceed immediately. Do not ask more.
+
+### Agent inference rules (fill gaps automatically)
+
+When the user skips a question, infer from context:
+
+| Signal | Infer visual direction |
+|--------|----------------------|
+| "落地页" + no reference | Direction B (conversion-first) |
+| "dashboard" + "数据" | Direction A (information-first) |
+| "portfolio" + "个人" | Direction C (concept-led) |
+| GitHub link detected | Direction B + developer audience |
+| "简约" / "干净" / "clean" | `corporate-clean` theme seed |
+| "科技感" / "暗黑" | `tokyo-night` or `dracula` theme seed |
+| "活泼" / "彩色" / "creative" | non-neutral theme from colorful category |
+
+After inference, **state your Design Read** before generating:
+
+```
+Reading this as: [product landing] for [technical buyers], 
+with a [conversion-first] visual language, 
+leaning toward [swiss-grid theme + Stripe tokens | dark theme seed].
+```
+
+---
+
 ## Junior Designer Workflow (mandatory early-show pattern)
 
 Do not disappear into a long build and emerge with a "finished" deliverable. The cost of guessing wrong on direction is hours of rework; the cost of showing early is 30 seconds of the user's attention.
@@ -65,6 +164,8 @@ This block is not decoration — it forces design decisions to be explicit and r
 
 Before presenting the full deliverable at CP4, mechanically verify each item. These are objective checks, not subjective judgments — pass/fail only.
 
+**Mode 3 additional checks (#11-17)**: When delivering animation/video output, the Animation-specific checks in the [Animation Reason Checklist](#animation-reason-checklist-mode-3-mandatory-before-generating) section below are mandatory additions.
+
 | # | Check | How to verify | Fail action |
 |---|---|---|---|
 | 1 | **Color consistency lock** — one accent color used across the entire page | Search the HTML for hex values; all accent instances must match `--color-accent` | Replace inline hex with `var(--color-accent)` |
@@ -74,7 +175,7 @@ Before presenting the full deliverable at CP4, mechanically verify each item. Th
 | 5 | **No orphaned placeholders** — every `[placeholder]` has real content or a labeled TODO | Search for `[` and `TODO` in the HTML | Fill with real content or mark with visible "TODO" badge |
 | 6 | **No hardcoded brand colors** — all brand colors use CSS variables | Search for hex values outside `:root` and `brand-spec.md` | Replace with `var(--brand-*)` |
 | 7 | **Marquee count ≤ 1** — at most one infinite-loop animation per page | Count `animation: ... infinite` occurrences | Remove all but one; justify the survivor |
-| 8 | **`prefers-reduced-motion` respected** — motion has a static fallback | Check for `@media (prefers-reduced-motion: reduce)` block | Add reduced-motion fallback |
+| 8 | **`prefers-reduced-motion` granularity** — not "kill all motion" but transform-only removal: opacity/color transitions preserved, transform/position animation removed | Check for `@media (prefers-reduced-motion: reduce)` block that sets `animation-name:none` while keeping `transition:opacity,background-color,color` | Fix reduced-motion block to use granular approach |
 | 9 | **Mobile hit targets ≥ 44px** | Check button/link dimensions on mobile viewport | Resize to ≥ 44px |
 | 10 | **No AI-slop patterns** — scan against the Anti-AI-Slop + Design Preference rules above | Review each section against both rule tables | Fix the tell or justify the override |
 
@@ -268,6 +369,17 @@ Each rule has a context-aware override: the goal is not to ban a choice outright
 ### The meta-rule
 
 Every preference in this section can be summarized as: **if the choice feels like a default, question it.** The LLM's defaults are statistically predictable — that's what makes them tells. The fix is not to ban specific patterns, but to make each choice deliberate and defensible. If you can articulate *why* this font, this color, this layout serves *this specific brand*, the choice is safe. If the answer is "it looked good," it's a tell.
+
+---
+
+## Animation Reason Checklist (Mode 3 mandatory before generating)
+
+> **Moved to [animation-standards.md](./animation-standards.md)** to keep this file under 500 lines.
+> Load that file when the user requests Mode 3 (Animation/Video) deliverables — it contains:
+> - Animation Reason Checklist (5 valid reasons + 4 invalid reasons)
+> - Pre-flight Animation Quality Rules (#11-17, additive to existing CP4 checks)
+> - Physical Correctness Defaults (never scale(0), origin-aware reveals)
+> - Reduced-Motion Granularity (keep color, remove transform)
 
 ---
 
