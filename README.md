@@ -1,70 +1,70 @@
 # XDesign
 
-> Design Workflow Engine — 将想法到可交付物的全流程压缩为对话。
+> Design Workflow Engine — 把想法变成可交付物，一句话就够。
 >
-> 用一句话告诉 XDesign 你要做什么，它帮你完成 **产品定位 → 设计定向 → 结构打磨 → 高保真产出** —— 相当于一个产品经理 + 视觉设计师 + 前端的合体。
+> 告诉 XDesign 你要做什么，它帮你完成 **定向 → 结构 → 高保真** ——  PRODUCT + 设计 + 前端，合体。
 
-**当前版本**：v2.8
+**最新版本**：v2.8 | MIT License
 
 ---
 
 ## 核心哲学
 
-### Human + Agent 同构（Core Principle #0）
+### Human + Agent 同构
 
-XDesign 被设计为**人和 AI agent 使用同一套工具、同一份参考来构建产物**。每张路由表、每个 frontmatter schema、每条 fallback 策略、每项校验规则,同时服务于两类用户——"为 agent 写的文档"和"为人写的文档"是同一份文档。
+XDesign 是**人和 AI agent 用同一套工具、同一份参考做设计**。每张路由表、每条 fallback、每个校验规则，同时服务两类用户。同构承诺：让 agent 更易懂的改动，也让人更易懂。不存在"仅 agent 可读"的隐藏配置。
 
-**同构承诺:**任何让 XDesign 对 agent 更易用的改动,也让人更易用——反之亦然。不存在"仅 agent 可读"的隐藏配置。
+### Guidance over Enforcement
+
+规则是**扶手不是墙**。用户明确要求破例时，确认一次即放行。唯一不可破例的是无障碍硬要求（对比度、键盘可达、焦点环、reduced-motion）。
+
+### Architecture: Foundations → Components → Patterns
+
+视觉能力三层构建，下层托着上层：
+
+```
+Foundations (主题: 调色板 / 字号 / 间距 / 阴影)
+    ↓
+Components (单页构件: 31 种布局)
+    ↓
+Patterns (叙事配方: 8 种多页弧)
+```
 
 ---
 
 ## 三模式路由
 
-XDesign 根据你的意图分发到 3 种工作模式：
-
 | 模式 | 触发词 | 输出 |
 |------|--------|------|
-| **Mode 1 / Presentation** | PPT、slides、演讲、pitch deck、带逐字稿 | HTML deck（36 主题 / 31 布局 / 15 full-deck 模板 / 47 动效 / 演讲者模式） |
-| **Mode 2 / Visual Design** | 落地页、APP、dashboard、组件、UI Kit、原型 | HTML 原型（React+Babel + 线框图→高保真 + DESIGN.md 抽取） |
-| **Mode 3 / Animation** | 动效视频、时间轴、motion design | HTML 动画（Stage + Sprite + Easing） |
+| **Mode 1 / Presentation** | PPT、slides、演讲、pitch deck、逐字稿 | 36 主题 / 31 布局 / 15 模板 / 47 动效 / 演讲者模式 |
+| **Mode 2 / Visual Design** | 落地页、APP、dashboard、原型、组件、UI Kit | 线框图→高保真 / React+Babel / DESIGN.md 抽取 |
+| **Mode 3 / Animation** | 动效视频、时间轴、motion design | Canvas + requestAnimationFrame 时间轴动画 |
 
-### 三层能力架构（v2.8）
-
-XDesign 的视觉能力按三层构建：
-
-| 层 | 提供什么 | 在哪里 |
-|---|---|---|
-| **Foundations** | 视觉令牌：调色板、字号比例、间距系统、阴影层级 | `deck-studio/assets/themes/`、deck-studio references |
-| **Components** | 单页构件：31 种布局（封面、数据展示、图表、流程图、收尾页等） | `deck-studio/templates/single-page/`、[layouts.md](deck-studio/references/layouts.md) |
-| **Patterns** | 多页叙事配方：8 种久经考验的叙事弧（融资路演、落地页、数据看板、叙事演讲、对比、流程、周报、课程） | [references/patterns.md](references/patterns.md) |
-
-> 模式是默认值，不是强制——如果用户提供了自己的结构，尊重它。
+> ⚠️ 模糊意图时先问一次 —— 30 秒问题省 1 小时返工。
 
 ---
 
 ## 快速开始
 
-### 路径 A — 做一份演示 PPT
+### A. 做演示 PPT
 
 ```
 做一个产品发布 PPT
-听众：技术开发者  风格：暗色科技感  页数：10-12  带演讲者模式（逐字稿+计时器）
+听众：技术开发者  风格：暗色科技感  页数：12  带演讲者模式（逐字稿+计时器）
 ```
 
-→ 匹配 `tokyo-night` 主题 → 先出 3 张预览确认方向 → 全量生成 → `S` 键进演讲者模式。
+→ 选主题 → 3 张预览确认 → 全量生成 → `S` 键进演讲者模式。
 
-### 路径 B — 做产品落地页
+### B. 做产品落地页
 
 ```
-做一个 B2B SaaS 后台的落地页
-目标用户：运营人员  风格：简洁冷静  参考：Stripe + Linear  Dashboard 优先展示 3 种布局方案
+做一个 B2B SaaS 后台落地页
+目标用户：运营  风格：简洁冷静  参考：Stripe + Linear  3 种 Dashboard 布局方案
 ```
 
-→ Brief Inference 定向 → 出方向选择 → 定型后出完整页。
+→ Brief Inference 定向 → 出方向选择 → 定型后完整页。
 
-**模糊需求？** XDesign 会自动用 3 轮结构化提问帮你收敛方向（给谁用 / 核心转化目标 / 视觉参考）。
-
-### 路径 C — 数据可视化
+### C. 数据可视化
 
 ```
 把这个 CSV 做成数据看板
@@ -73,182 +73,103 @@ XDesign 的视觉能力按三层构建：
 
 → 自动跳过设计系统 → 识别数据结构 → 直接生成图表看板。
 
----
-
-## 核心能力一览（v2.4-v2.8）
-
-| 版本 | 能力 | 用途 |
-|------|------|------|
-| v2.8 | **Human+Agent 同构** | 路由表/文档/fallback 策略同时服务人和 agent，不存在仅 agent 可读的隐藏配置 |
-| v2.8 | **三层架构 (Foundations→Components→Patterns)** | Patterns 层是复合叙事配方（pitch、落地页、看板等），避免每次从零拼单页 |
-| v2.8 | **统一 CLI `xdesign`** | `xdesign export/theme/brand/proto/eject/lint/dist` 子命令统一入口 |
-| v2.8 | **Swizzle / Open internals** | `data-block-id` 标注可复用子构件，`xdesign eject` 一键弹出，不用复制整页 |
-| v2.8 | **Delta 主题** | 品牌定制只需 10 行覆盖 `--accent` 等令牌，无需 fork 整个主题文件 |
-| v2.8 | **Vibe-tests** | 3 个视觉质量 eval，测试 anti-slop / 叙事节奏 / 动效理由是否真正落实 |
-| v2.8 | **Agent Playbook 分离** | agent 专属决策指南从 SKILL.md 核心抽出，SKILL.md 回归"是什么+能做什么" |
-| v2.8 | **Guidance over Enforcement** | 规则是扶手不是墙——用户明确要求破例时，确认一次即放行（无障碍硬要求除外） |
-| v2.7 | **Progressive Intake** | 模糊需求时 ≤3 轮多选提问，自动推断方向，不让用户做设计决策 |
-| v2.7 | **Four Dials** | `DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY / ANIMATION_FREQUENCY`（1-10）从上下文自动推断 |
-| v2.7 | **Motion Vocabulary** | "弹一下" → scale pop、"依次出现" → stagger sequence，精确翻译 |
-| v2.7 | **Animation Reason Checklist** | Mode 3 每个动画必须服务于功能（空间一致性/状态指示/关系解释/防迷失/反馈），否则删除 |
-| v2.7 | **Pre-flight Animation Rules** | 新增动画专项：时长边界、缓动曲线、GPU 层属性、触控安全 |
-| v2.7 | **Physical Correctness** | 入场从 `scale(0.96)+opacity:0` 开始；reduced-motion 拆解为 transform=none + preserve color |
-| v2.6 | **Anti-AI-Slop** | 双层 slop 纠正（视觉模式层 + 排版/颜色/布局/动效的深层 bias 排查） |
-| v2.6 | **Pre-flight Check** | CP4 交付前 10 项机械检查（颜色锁、饱和度、italic 降部、占位符、marquee 数、触控区…） |
-| v2.5 | **Design Direction Advisor** | 无品牌时出 3 个差异化方向（Information-first / Conversion-first / Concept-led） |
-| v2.5 | **Brand Asset Protocol** | 5 步强制流程：问 → 搜 → 下载 → 验证 → 固化 |
-| v2.5 | **Fact-Verify #0** | 先 WebSearch 验证产品设计前提 |
-| v2.4 | **Streaming Preview** | >8 页先出 5 页预览，确认后再全量 |
-| v2.4 | **Format Auto-Detect** | CSV/JSON/SQL/Markdown 自动识别并跳过设计系统 |
+**模糊需求？** XDesign 自动用 3 轮多选提问帮你收敛（给谁用 / 转化目标 / 视觉参考）。
 
 ---
 
-## CLI 用法（v2.8）
+## CLI 命令
 
 ```bash
 # 导出
-./scripts/xdesign export pdf  <input.html> [output.pdf]
-./scripts/xdesign export pptx <input.html> [output.pptx]
-./scripts/xdesign export social wechat|xhs|x <input.html> [output]
+./scripts/xdesign export pdf  deck.html
+./scripts/xdesign export pptx deck.html
+./scripts/xdesign export social wechat|xhs|x deck.html
 
 # 主题
 ./scripts/xdesign theme list
 ./scripts/xdesign theme validate
 
-# 品牌
-./scripts/xdesign brand add <slug> <display-name> [hex]
+# 品牌 / 原型
+./scripts/xdesign brand add shopify Shopify #95BF47
+./scripts/xdesign proto new my-app linear
 
-# 原型
-./scripts/xdesign proto new <name> [brand-slug]
+# v2.8: 弹出可复用子构件（Swizzle）
+./scripts/xdesign eject templates/single-page/kpi-grid.html kpi-card my-kpi.html
 
-# 弹出（swizzle）子构件
-./scripts/xdesign eject <input.html> <block-id> [output.html]
-
-# 检查 + 打包
+# 检查 / 打包
 ./scripts/xdesign lint
-./scripts/xdesign dist [output-dir]
+./scripts/xdesign dist
 ```
 
 ---
 
-## 支持的项目类型
+## v2.8 新能力
 
-| 类型 | 输出 | 模式 |
-|------|------|------|
-| Pitch Deck / 演讲 PPT | 自包含 HTML（CND webfont，离线可用） | 1 |
-| 小红书图文 | 7 格 bento / hero + Ken Burns | 1 |
-| Interactive Prototype | 可交互产品原型 | 2 |
-| Landing Page | 营销 / SaaS 落地页 | 2 |
-| Design System / UI Kit | DESIGN.md + 组件示例 | 2 |
-| URL → Brand | 从网址提取设计令牌 | 2 |
-| 数据可视化 | 看板 / 图表 / 仪表板 | 2 |
-| Animated Video | 时间轴动画 | 3 |
-| Wireframe | 低保真线框图 / 故事板 | 2 |
+| 能力 | 说明 |
+|------|------|
+| **Human+Agent 同构** | 路由表/fallback/校验规则同时服务人和 agent |
+| **三层架构** | Foundations→Components→Patterns，多层复用 |
+| **统一 CLI** | 一个 `xdesign` 入口替代 7 个分散脚本 |
+| **Swizzle / Eject** | `data-block-id` 标注子构件，`xdesign eject` 一键提取复用 |
+| **Delta 主题** | 品牌定制只需 10 行覆盖 `--accent` 等令牌，不 fork 整个文件 |
+| **Vibe-tests** | 3 个视觉质量 eval：anti-slop / 叙事节奏 / 动效理由 |
+| **Agent Playbook** | agent 决策指南独立成篇，SKILL.md 回归本职 |
+| **Guidance > Enforcement** | 规则是扶手，无障碍以外均可破例 |
 
----
-
-## 导出格式
-
-| 格式 | 说明 | 命令 |
-|------|------|------|
-| **HTML** | 单文件，离线可用 | 默认输出 |
-| **PDF** | 浏览器打印 / headless Chrome | `./scripts/xdesign export pdf <file>` |
-| **PPTX** | pandoc 转换，可在 PowerPoint 编辑（有损，review 用） | `./scripts/xdesign export pptx <file>` |
-| **PNG / slide** | headless Chrome 逐页渲染 | `deck-studio/scripts/render.sh <file> <pages>` |
-| **WeChat** | Juice-inlined 公众号粘贴 | `./scripts/xdesign export social wechat <file>` |
-| **小红书 XHS** | 2× retina PNG | `./scripts/xdesign export social xhs <file>` |
-| **X / Twitter** | 2× retina PNG | `./scripts/xdesign export social x <file>` |
-
----
-
-## 内置 Sub-Skills
-
-按需加载：
-
-| 子技能 | 场景 |
-|--------|------|
-| Make a deck (fused) | Mode 1 演示 + 主题循环 + 演讲者模式 |
-| Animated video | Mode 3 时间轴动效 |
-| Interactive prototype | Mode 2 可交互原型 |
-| Make tweakable | 设计内调参控件（TWEAKS 面板） |
-| Frontend design | 品牌外设计风格探索 |
-| Wireframe | 线框图 / 故事板 |
-| Create design system | 从品牌资料生成 DESIGN.md |
-| Export as PPTX / PDF / HTML | 多格式导出 |
-
----
-
-## 技术架构
-
-```
-Mode 1 (deck-studio/) — 纯静态 HTML/CSS/JS，零构建，CDN webfont
-Mode 2/3 (原 XDesign) — React 18.3.1 + Babel 7.29.0 单 HTML 内嵌
-
-统一输出：单文件 HTML 或自包含目录
-运行：Trae IDE / Claude.ai / 任意浏览器 / GitHub Pages / file:// 均可
-```
-
-### deck-studio 资源
-
-- **36 主题**：极简 / 商务 / 暗色 / 强调 / 工程 / 社交 6 个类别
-- **31 单页布局**：封面、目录、3-列、KPI、图表、代码、流程、路线图…
-  - *v2.8:* 关键子构件标注 `data-block-id`，可通过 `xdesign eject` 弹出复用
-- **15 full-deck 模板**：pitch / product-launch / tech-sharing / weekly-report / course / xhs…
-- **47 动效**：27 CSS 入场动画 + 20 canvas FX（粒子、烟花、矩阵雨、神经网络…）
-- **演讲者模式**：`S` 键弹出当前页 / 下一页 / 提词器 / 计时器
-
-### Mode 2/3 资源
-
-- 58 个品牌 DESIGN.md（Stripe / Linear / Notion / Figma / Vercel / Apple / Tesla…）
-- deck_stage.js / design_canvas.jsx / animations.jsx + iOS/Android/macOS/Browser frame
-
-### Patterns（v2.8）
-
-8 种复合叙事配方，覆盖最常见的交付物类型。详见 [references/patterns.md](references/patterns.md)。
+完整 changelog 见 [SKILL.md](SKILL.md) 底部版本表。
 
 ---
 
 ## Swizzle / Open internals（v2.8）
 
-XDesign 的核心构件彼此开放组合——不需要被锁在闭合的顶级 API 后面。
+核心构件可组合到任何粒度，不需要锁在闭合 API 后面。
 
-**标注了 `data-block-id` 的子构件：**
-
-| block-id | 位置 | 提取什么 |
+| block-id | 来源 | 提取内容 |
 |---|---|---|
-| `kpi-card` | `kpi-grid.html` | 单张 KPI 卡片（标签 + 计数器 + 涨跌） |
-| `hero-counter` | `stat-highlight.html` | 巨型动画数字块 |
-| `process-step` | `process-steps.html` | 单个编号步骤卡 |
-| `cta-buttons` | `cta.html` | 按钮组（primary + outline） |
+| `kpi-card` | `kpi-grid.html` | 单张 KPI 卡片 |
+| `hero-counter` | `stat-highlight.html` | 巨型动画数字 |
+| `process-step` | `process-steps.html` | 单个编号步骤 |
+| `cta-buttons` | `cta.html` | 按钮组 |
 
-**使用：**
 ```bash
-./scripts/xdesign eject templates/single-page/kpi-grid.html kpi-card my-kpi.html
+./scripts/xdesign eject templates/single-page/kpi-grid.html kpi-card kpi-snippet.html
 ```
 
-弹出的块是独立 HTML 片段，自动继承当前主题的 CSS 变量。
+弹出的片段是独立 HTML，自动继承当前主题的 CSS 变量。
 
 ---
 
 ## Delta 主题（v2.8）
 
-品牌定制不需要 fork 整个主题文件。创建一个 **delta 主题**——一个只覆盖与 `base.css` 默认值不同的令牌的小 CSS 文件：
+品牌定制不需要 fork 整个主题文件，写 10 行 delta 即可：
 
 ```css
-/* my-brand-delta.css */
+/* brand-delta.css */
 :root {
-  --accent: #YOUR_BRAND_COLOR;
-  --accent-2: /* 深一点的变化 */;
+  --accent: #YOUR_HEX;
+  --accent-2: /* 深一点 */;
 }
 ```
 
-加载方式：
 ```html
 <link rel="stylesheet" href="../assets/themes/minimal-white.css">
-<link rel="stylesheet" href="../assets/themes/my-brand-delta.css">
+<link rel="stylesheet" href="../assets/themes/brand-delta.css">
 ```
 
 详见 [deck-studio/references/themes.md](deck-studio/references/themes.md)。
+
+---
+
+## 导出格式
+
+| 格式 | 命令 |
+|------|------|
+| HTML（默认） | 直接输出 |
+| PDF | `xdesign export pdf <file>` |
+| PPTX（review 用） | `xdesign export pptx <file>` |
+| 微信 | `xdesign export social wechat <file>` |
+| 小红书 | `xdesign export social xhs <file>` |
+| X/Twitter | `xdesign export social x <file>` |
 
 ---
 
@@ -256,37 +177,31 @@ XDesign 的核心构件彼此开放组合——不需要被锁在闭合的顶级
 
 ```
 XDesign/
-├── SKILL.md                           # Intent Router + Mode 1/2/3 + Design Direction Advisor
+├── SKILL.md                           # 工作流引擎主文档
 ├── README.md                          # 本文件
-├── LICENSE                            # MIT
-├── THIRD_PARTY_NOTICES.md             # 第三方归属
-├── assets/
-│   └── design-md/                     # 58 个品牌 DESIGN.md
+├── LICENSE / THIRD_PARTY_NOTICES.md
 ├── references/
-│   ├── design-direction-advisor.md    # 设计方向顾问 + Four Dials + Motion Vocabulary
-│   ├── design-system-catalog.md       # 58 品牌索引
-│   ├── mode-2-prototype.md            # Mode 2/3：反 slop + Pre-flight + Junior Designer + Intake
-│   ├── animation-standards.md         # Mode 3：理由清单 + Pre-flight #11-17 + 物理正确性
-│   ├── workflow-guide.md              # 高手玩法（PPAF + 图片前置 + Tweaks）
-│   ├── patterns.md                    # v2.8：复合叙事配方（8 patterns）+ Swizzle 机制
-│   ├── agent-playbook.md              # v2.8：agent 专属决策指南（路由+回退+上下文管理）
+│   ├── patterns.md                    # 8 种叙事配方 + Swizzle 机制
+│   ├── agent-playbook.md              # agent 专属决策指南
+│   ├── mode-2-prototype.md            # Mode 2/3: 反 slop + Pre-flight
+│   ├── animation-standards.md         # Mode 3: 理由清单 + 物理正确性
+│   ├── design-direction-advisor.md    # 方向顾问 + Four Dials
 │   ├── brand-asset-protocol.md        # 品牌资产 5 步协议
-│   ├── technical-specs.md             # 技术规范
-│   ├── integration-guide.md           # 融合架构 + 路由 + 上游同步
-│   ├── deck-studio-catalog.md         # deck-studio 资源速查
-│   └── schemas.md                     # DESIGN.md / tokens / evals schema
-├── evals/
-│   ├── evals.json                     # 8 个 eval（含 3 个 vibe-test）
-│   └── eval-plan.json                 # 双视角评审 rubric（元数据）
+│   ├── workflow-guide.md              # PPAF 循环 + Tweaks
+│   └── ...                            # 其余参考文档
 ├── scripts/
-│   ├── xdesign                        # v2.8：统一 CLI 入口
-│   ├── package-export.sh              # PDF / PPTX / 社交图导出
-│   ├── validate-themes.py             # 主题引用校验
-│   ├── lint-skill.py                  # skill 约定检查
-│   ├── add-brand.sh                   # 品牌 DESIGN.md 脚手架
-│   ├── new-prototype.sh               # 原型脚手架
-│   └── dist.sh                        # 发布 .skill 包
-└── deck-studio/                       # 子模块（原 html-ppt-skill，MIT）
+│   ├── xdesign                        # 统一 CLI 入口
+│   └── package-export.sh / lint-skill.py / ...
+├── evals/                             # 8 个 eval (含 3 个 vibe-test)
+├── deck-studio/                       # 静态 PPT 引擎子模块
+│   ├── assets/
+│   │   ├── themes/                    # 36 主题 + _delta-example.css
+│   │   ├── animations/                # 47 动效
+│   │   └── base.css / fonts.css / runtime.js
+│   └── templates/
+│       ├── single-page/               # 31 布局（含 data-block-id 标注）
+│       └── full-decks/                # 15 完整模板
+└── assets/design-md/                  # 58 品牌 DESIGN.md
 ```
 
 ---
@@ -297,11 +212,10 @@ XDesign/
 |----|------|
 | Prompt 太短 → 输出平庸 | 给目标用户 + 转化目的 + 参考风格 |
 | 没喂品牌素材 → 通用设计 | 先上传 brand assets |
-| 跳 Design System → 风格不统一 | 先建 Design system 再出页面 |
-| PPT 词识别错 → 走错模式 | SKILL.md 路由规则：deck/slides/PPT → Mode 1 |
-| 混用两套 token → 颜色不统一 | deck-studio 用 `var(--text-1)`，DESIGN.md 用自有 token，二选一 |
-| AI slop 问题 | v2.6+ 启用反 slop 双层规则、After-state 采样、Pre-flight Check |
-| 主题品牌定制太笨重 | v2.8+ 用 delta 主题：只需 10 行覆盖 `--accent` 等令牌即可 |
+| 跳 Design System → 风格不统一 | 先定 tokens 再出页面 |
+| 混用两套 token → 颜色跑偏 | deck-studio 用 `var(--text-1)`，brand 用自有 token，二选一 |
+| AI slop | v2.6+ 双层反 slop + Pre-flight Check |
+| 主题定制太笨重 | v2.8 delta 主题：10 行覆盖即可 |
 
 ---
 
@@ -313,8 +227,6 @@ XDesign/
 
 ---
 
-## License & Attribution
+## License
 
-XDesign 自身为 MIT 许可证（见 `LICENSE`）。
-
-`deck-studio/` 子目录是 [html-ppt-skill](https://github.com/lewislulu/html-ppt-skill) 的快照（© 2026 lewis，MIT）。详见 `THIRD_PARTY_NOTICES.md` 与 `deck-studio/LICENSE`。
+XDesign 自身为 MIT。`deck-studio/` 是 [html-ppt-skill](https://github.com/lewislulu/html-ppt-skill) 的快照（© 2026 lewis，MIT）。详见 `THIRD_PARTY_NOTICES.md`。
