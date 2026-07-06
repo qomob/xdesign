@@ -1,0 +1,24 @@
+/* theme: _delta-example */
+/* Delta theme — overrides only what differs from base.css */
+/* Use this as a template for creating minimal brand-specific themes. */
+
+:root {
+  /* Override ONLY the tokens you need to change. */
+  /* Everything else falls back to base.css defaults. */
+
+  /* Brand accent — the one thing most brand themes change */
+  --accent: #95BF47;          /* Shopify green */
+  --accent-2: #5E8E3E;        /* darker variant for hover states */
+
+  /* Optional: tweak surface colors for brand warmth */
+  --bg-soft: #f9fafb;         /* slightly cooler than base */
+
+  /* Optional: brand-specific gradient */
+  --grad: linear-gradient(135deg, #95BF47, #5E8E3E);
+
+  /* Optional: brand font */
+  --font-sans: 'Inter', 'Helvetica Neue', sans-serif;
+}
+
+/* Add any brand-specific component overrides below */
+/* Keep this section minimal — most styling should work with token overrides alone. */

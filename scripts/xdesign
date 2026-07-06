@@ -1,0 +1,244 @@
+#!/usr/bin/env bash
+# xdesign — Unified CLI entry point for XDesign
+# ================================================
+# Why this exists:
+# - Before: agents and humans had to remember which script does what
+#   (package-export.sh for PDF, add-brand.sh for brands, new-prototype.sh
+#   for prototypes, validate-themes.py for theme checks, lint-skill.py for SKILL.md).
+# - After: one entry point, consistent subcommand interface, discoverable via --help.
+#
+# Usage:
+#   xdesign <command> [options]
+#
+# Commands:
+#   export pdf <input.html> [output.pdf]
+#   export pptx <input.html> [output.pptx]
+#   export social wechat <input.html> [output.html]
+#   export social xhs <input.html> [output.png]
+#   export social x <input.html> [output.png]
+#   theme list
+#   theme validate
+#   brand add <slug> <display-name> [primary-color]
+#   proto new <name> [brand-slug]
+#   eject <input.html> <block-id> [output.html]
+#   lint
+#   dist [output-dir]
+#
+# Examples:
+#   xdesign export pdf deck.html
+#   xdesign theme list
+#   xdesign brand add stripe Shopify #95BF47
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILL_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# ---- helpers ----
+
+usage() {
+  cat <<'EOF'
+xdesign — Design Workflow Engine CLI
+
+USAGE:
+  xdesign <command> [options]
+
+COMMANDS:
+  export
+    pdf <input.html> [output.pdf]          Convert HTML deck/prototype to PDF
+    pptx <input.html> [output.pptx]        Convert to PPTX (lossy, review only)
+    social wechat <input.html> [output]     Juice-inline CSS for WeChat editor
+    social xhs <input.html> [output.png]    Render 2× retina PNG for Xiaohongshu
+    social x <input.html> [output.png]      Render 2× retina PNG for X/Twitter
+
+  theme
+    list                                   List all 36 themes with category
+    validate                               Check theme references in templates
+
+  brand
+    add <slug> <display-name> [hex]        Scaffold a new brand DESIGN.md
+
+  proto
+    new <name> [brand-slug]                Scaffold a Mode 2 prototype
+
+  eject
+    <input.html> <block-id> [output.html]  Extract a reusable sub-block from HTML
+
+  lint                                    Lint this skill against conventions
+
+  dist [output-dir]                       Build a clean .skill package
+
+FLAGS:
+  --help, -h                              Show this help
+  --version                               Show version info
+
+ENV:
+  SKILL_ROOT  Override skill root (default: autodetect)
+
+EOF
+}
+
+# Require at least a command
+if [[ $# -lt 1 ]]; then
+  usage >&2
+  exit 1
+fi
+
+CMD="$1"
+shift
+
+case "$CMD" in
+  export)
+    if [[ $# -lt 2 ]]; then
+      echo "[ERR] 'export' requires a format and input file. See 'xdesign --help'." >&2
+      exit 1
+    fi
+    FORMAT="$1"
+    shift
+    if [[ "$FORMAT" == "pdf" || "$FORMAT" == "pptx" ]]; then
+      exec bash "$SCRIPT_DIR/package-export.sh" "$FORMAT" "$@"
+    elif [[ "$FORMAT" == "social" ]]; then
+      exec bash "$SCRIPT_DIR/package-export.sh" social "$@"
+    else
+      echo "[ERR] Unknown export format '$FORMAT'. Use pdf | pptx | social." >&2
+      exit 1
+    fi
+    ;;
+
+  theme)
+    if [[ $# -lt 1 ]]; then
+      echo "[ERR] 'theme' requires a subcommand: list | validate." >&2
+      exit 1
+    fi
+    SUBCMD="$1"
+    shift
+    case "$SUBCMD" in
+      list)
+        echo "# XDesign theme library"
+        echo ""
+        THEME_DIR="$SKILL_ROOT/deck-studio/assets/themes"
+        for css in "$THEME_DIR"/*.css; do
+          name="$(basename "$css" .css)"
+          # Extract first comment line as description
+          desc="$(head -1 "$css" | sed 's/^/\/\* //' | sed 's/ \*\/$//')"
+          echo "  $name"
+        done
+        echo ""
+        echo "$(ls "$THEME_DIR"/*.css | wc -l | tr -d ' ') themes available."
+        ;;
+      validate)
+        exec python3 "$SCRIPT_DIR/validate-themes.py" "$@"
+        ;;
+      *)
+        echo "[ERR] Unknown theme subcommand '$SUBCMD'. Use list | validate." >&2
+        exit 1
+        ;;
+    esac
+    ;;
+
+  brand)
+    if [[ $# -lt 1 ]]; then
+      echo "[ERR] 'brand' requires a subcommand: add." >&2
+      exit 1
+    fi
+    SUBCMD="$1"
+    shift
+    case "$SUBCMD" in
+      add)
+        exec bash "$SCRIPT_DIR/add-brand.sh" "$@"
+        ;;
+      *)
+        echo "[ERR] Unknown brand subcommand '$SUBCMD'. Use add." >&2
+        exit 1
+        ;;
+    esac
+    ;;
+
+  proto)
+    if [[ $# -lt 1 ]]; then
+      echo "[ERR] 'proto' requires a subcommand: new." >&2
+      exit 1
+    fi
+    SUBCMD="$1"
+    shift
+    case "$SUBCMD" in
+      new)
+        exec bash "$SCRIPT_DIR/new-prototype.sh" "$@"
+        ;;
+      *)
+        echo "[ERR] Unknown proto subcommand '$SUBCMD'. Use new." >&2
+        exit 1
+        ;;
+    esac
+    ;;
+
+  eject)
+    if [[ $# -lt 2 ]]; then
+      echo "[ERR] 'eject' requires <input.html> <block-id>. See 'xdesign --help'." >&2
+      exit 1
+    fi
+    INPUT="$1"
+    BLOCK_ID="$2"
+    OUTPUT="${3:-${INPUT%.html}-${BLOCK_ID}.html}"
+    if [[ ! -f "$INPUT" ]]; then
+      echo "[ERR] Input file not found: $INPUT" >&2
+      exit 1
+    fi
+    # Extract block by data-block-id attribute
+    # Looks for: <div data-block-id="..."> ... </div> (first match)
+    python3 - "$INPUT" "$BLOCK_ID" "$OUTPUT" <<'PYEOF'
+import sys, re
+input_path, block_id, output_path = sys.argv[1], sys.argv[2], sys.argv[3]
+with open(input_path, 'r') as f:
+    html = f.read()
+
+# Match any element with data-block-id="block_id" ... up to its closing tag
+pattern = rf'(<\w+[^>]*data-block-id="{re.escape(block_id)}"[^>]*>)(.*?)(</\w+>)'
+# Use DOTALL + non-greedy to capture the first close tag of the same element type
+# For simplicity, we capture between the open tag and the first matching close tag
+match = None
+for m in re.finditer(rf'<(\w+)[^>]*data-block-id="{re.escape(block_id)}"[^>]*>', html):
+    tag = m.group(1)
+    start = m.end()
+    # Find the matching closing tag
+    close_pattern = f'</{tag}>'
+    end = html.find(close_pattern, start)
+    if end != -1:
+        end += len(close_pattern)
+        match = (m.group(0), html[start:end-len(close_pattern)], html[end-len(close_pattern):end])
+        break
+
+if match:
+    full_block = match[0] + match[1] + match[2]
+    with open(output_path, 'w') as f:
+        f.write(full_block)
+    print(f"[OK] Extracted block '{block_id}' to {output_path}")
+else:
+    print(f"[ERR] Block '{block_id}' not found in {input_path}", file=sys.stderr)
+    sys.exit(1)
+PYEOF
+    ;;
+
+  lint)
+    exec python3 "$SCRIPT_DIR/lint-skill.py" "$@"
+    ;;
+
+  dist)
+    exec bash "$SCRIPT_DIR/dist.sh" "$@"
+    ;;
+
+  --help|-h)
+    usage
+    exit 0
+    ;;
+
+  --version)
+    echo "XDesign CLI v2.7"
+    exit 0
+    ;;
+
+  *)
+    echo "[ERR] Unknown command '$CMD'. See 'xdesign --help'." >&2
+    exit 1
+    ;;
+esac
