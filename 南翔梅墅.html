@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>南翔梅墅文化复兴总体规划（2026-2036）</title>
+<style>
+/* ===== 现代新中式主题 · 梅墅 ===== */
+:root {
+  --bg: #faf7f0;
+  --bg-soft: #f2ede0;
+  --surface: #ffffff;
+  --surface-2: #f7f3e9;
+  --border: rgba(80,40,20,.1);
+  --border-strong: rgba(80,40,20,.22);
+  --text-1: #1a1816;
+  --text-2: #5c4e3e;
+  --text-3: #9c8a72;
+  --accent: #c23a2a;
+  --accent-2: #1a1816;
+  --accent-3: #b8944a;
+  --good: #4a6b3e;
+  --warn: #b8944a;
+  --bad: #c23a2a;
+  --grad: linear-gradient(135deg, #c23a2a, #5c2a1a);
+  --grad-soft: linear-gradient(135deg, #f5ede0, #faf7f0);
+  --radius: 2px;
+  --radius-sm: 1px;
+  --radius-lg: 4px;
+  --shadow: 0 1px 0 rgba(80,40,20,.08);
+  --shadow-lg: 0 4px 20px rgba(80,40,20,.1);
+  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', Georgia, serif;
+  --font-display: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', Georgia, serif;
+  --letter-tight: -.02em;
+  --letter-normal: 0;
+  --ease: cubic-bezier(.4,0,.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text-1);
+  font-family:var(--font-sans);font-weight:400;line-height:1.6;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  letter-spacing:var(--letter-normal)}
+a{color:var(--accent);text-decoration:none}
+code,kbd,pre,samp{font-family:'JetBrains Mono',monospace}
+
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--bg)}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:64px 96px;
+  box-sizing:border-box;
+  opacity:0;pointer-events:none;
+  transition:opacity .45s var(--ease),transform .45s var(--ease);
+  transform:translateX(30px);
+  overflow:hidden;
+}
+.slide.is-active{opacity:1;pointer-events:auto;transform:translateX(0);z-index:2}
+.slide.is-prev{transform:translateX(-30px)}
+
+/* Typography */
+.kicker{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.16em;text-transform:uppercase}
+h1,.h1{font-family:var(--font-display);font-size:64px;line-height:1.08;font-weight:600;letter-spacing:var(--letter-tight);margin:0 0 16px;color:var(--text-1)}
+h2,.h2{font-family:var(--font-display);font-size:46px;line-height:1.15;font-weight:600;letter-spacing:var(--letter-tight);margin:0 0 12px}
+h3,.h3{font-size:28px;line-height:1.25;font-weight:600;margin:0 0 8px}
+h4,.h4{font-size:20px;line-height:1.3;font-weight:600;margin:0 0 6px}
+.lede{font-size:20px;line-height:1.6;color:var(--text-2);font-weight:300;max-width:60ch}
+.dim{color:var(--text-2)}.dim2{color:var(--text-3)}
+.mono{font-family:'JetBrains Mono',monospace}
+.serif{font-family:var(--font-serif)}
+.gradient-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* Layout */
+.stack>*+*{margin-top:12px}
+.row{display:flex;gap:20px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.center{display:flex;align-items:center;justify-content:center;text-align:center}
+.fill{flex:1}
+.mt-s{margin-top:8px}.mt-m{margin-top:16px}.mt-l{margin-top:28px}.mt-xl{margin-top:40px}
+.mb-s{margin-bottom:8px}.mb-m{margin-bottom:16px}.mb-l{margin-bottom:28px}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px 28px;box-shadow:var(--shadow);position:relative}
+.card-soft{background:var(--surface-2);border:1px solid var(--border)}
+.card-accent{background:var(--surface);border-left:3px solid var(--accent)}
+.card-gold{background:var(--surface);border-left:3px solid var(--accent-3)}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500}
+.tag{display:inline-block;padding:4px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text-2)}
+.tag-accent{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Deck footer */
+.deck-footer{position:absolute;bottom:24px;left:96px;right:96px;display:flex;justify-content:space-between;font-size:12px;color:var(--text-3)}
+.slide-number{font-family:'JetBrains Mono',monospace}
+
+/* Section divider */
+.section-divider{background:var(--grad-soft)}
+.section-divider .chapter-num{font-family:var(--font-display);font-size:140px;line-height:1;color:var(--accent);opacity:.12;position:absolute;right:80px;top:50%;transform:translateY(-50%)}
+
+/* Timeline */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--accent);opacity:.3}
+.timeline-item{position:relative;padding:8px 0 8px 24px}
+.timeline-item::before{content:'';position:absolute;left:-28px;top:14px;width:10px;height:10px;border-radius:50%;border:2px solid var(--accent);background:var(--bg)}
+.timeline-item .year{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--accent)}
+.timeline-item .event{font-size:15px;color:var(--text-2);margin-top:2px}
+
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 14px;border-bottom:2px solid var(--border-strong);font-weight:600;color:var(--text-1);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-2)}
+tr:last-child td{border-bottom:none}
+
+/* Progress bar */
+.progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:var(--accent);border-radius:3px}
+
+/* Number highlight */
+.big-num{font-family:var(--font-display);font-size:72px;line-height:1;font-weight:600;color:var(--accent)}
+.big-num-label{font-size:14px;color:var(--text-3);margin-top:4px}
+
+/* KPI grid */
+.kpi{text-align:center;padding:20px}
+.kpi .val{font-family:var(--font-display);font-size:48px;font-weight:600;color:var(--accent);line-height:1}
+.kpi .lbl{font-size:13px;color:var(--text-3);margin-top:6px;letter-spacing:.04em}
+
+/* Divider ornament */
+.ornament{width:40px;height:2px;background:var(--accent);margin:12px 0}
+
+/* Flow */
+.flow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.flow-step{background:var(--surface);border:1px solid var(--border);padding:16px 24px;border-radius:var(--radius);text-align:center;font-size:14px;font-weight:500}
+.flow-arrow{color:var(--accent);font-size:20px;font-weight:300}
+
+/* Chapter intro */
+.chapter-intro{position:relative}
+.chapter-intro .ch-num{font-family:var(--font-display);font-size:180px;line-height:1;color:var(--accent);opacity:.06;position:absolute;right:60px;top:40px;z-index:0}
+
+/* Special */
+.ink-blot{position:absolute;width:300px;height:300px;background:radial-gradient(ellipse at center, var(--accent) 0%, transparent 70%);opacity:.03;border-radius:50%;pointer-events:none}
+
+/* Responsive adjustments */
+@media(max-width:1200px){.slide{padding:48px 60px}h1,.h1{font-size:48px}h2,.h2{font-size:36px}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- ===== 0. COVER ===== -->
+<section class="slide" data-title="封面">
+  <div class="ink-blot" style="top:-60px;right:-60px;width:400px;height:400px"></div>
+  <p class="kicker">历史建筑活化利用 · 文商旅融合发展总体方案</p>
+  <h1 class="h1">南翔梅墅<br><span style="color:var(--accent)">文化复兴总体规划</span></h1>
+  <p class="lede mt-m">2026 — 2036 · 一座百年宅邸的第四次重生</p>
+  <div class="row mt-xl" style="gap:16px">
+    <span class="tag">南翔古镇核心区</span>
+    <span class="tag">约3,600㎡</span>
+    <span class="tag">三进院落</span>
+    <span class="tag">国家AAAA景区</span>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="1" data-total="52"></span></div>
+</section>
+
+<!-- ===== 1. TOC ===== -->
+<section class="slide" data-title="目录">
+  <p class="kicker">contents</p>
+  <h2 class="h2">报告结构</h2>
+  <div class="grid g2 mt-l" style="gap:14px">
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">01</span>&nbsp;&nbsp;项目本体分析</div>
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">02</span>&nbsp;&nbsp;市场研究</div>
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">03</span>&nbsp;&nbsp;战略定位</div>
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">04</span>&nbsp;&nbsp;总体规划</div>
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">05</span>&nbsp;&nbsp;产品体系</div>
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">06</span>&nbsp;&nbsp;商业模型</div>
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">07</span>&nbsp;&nbsp;投资模型</div>
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">08</span>&nbsp;&nbsp;运营体系</div>
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">09</span>&nbsp;&nbsp;实施计划</div>
+    <div class="card card-accent" style="padding:16px 20px"><span style="color:var(--accent);font-weight:600">10</span>&nbsp;&nbsp;风险控制</div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="2" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 1 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第一章">
+  <div class="ch-num">01</div>
+  <p class="kicker">第一章</p>
+  <h2 class="h2">项目本体分析</h2>
+  <p class="lede">回答"梅墅到底是什么？"——从历史、建筑和第一性原理出发，<br>重新认识这座百年宅邸的底层资产。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="3" data-total="52"></span></div>
+</section>
+
+<!-- 1.1 项目概况 -->
+<section class="slide" data-title="项目概况">
+  <p class="kicker">1.1 · 项目概况</p>
+  <h2 class="h2">项目基本信息</h2>
+  <div class="grid g2 mt-l" style="gap:24px">
+    <div>
+      <div class="card card-soft" style="padding:20px 24px">
+        <h4 style="color:var(--accent)">项目名称</h4><p style="font-size:18px">南翔梅墅（暂定）</p>
+      </div>
+      <div class="card card-soft mt-s" style="padding:20px 24px">
+        <h4 style="color:var(--accent)">建筑面积</h4><p style="font-size:18px">约 3,600 ㎡（三进院落）</p>
+      </div>
+      <div class="card card-soft mt-s" style="padding:20px 24px">
+        <h4 style="color:var(--accent)">项目地址</h4><p style="font-size:18px">上海市嘉定区南翔镇德华路617号</p>
+      </div>
+    </div>
+    <div>
+      <div class="card card-soft" style="padding:20px 24px">
+        <h4 style="color:var(--accent)">区位属性</h4><p style="font-size:15px">国家AAAA级景区 · 南翔古镇核心区</p>
+      </div>
+      <div class="card card-soft mt-s" style="padding:20px 24px">
+        <h4 style="color:var(--accent)">毗邻资源</h4><p style="font-size:14px;line-height:1.8">檀园 · 南翔老街 · 云翔寺 · 南翔双塔 · 古猗园</p>
+      </div>
+      <div class="card card-soft mt-s" style="padding:20px 24px">
+        <h4 style="color:var(--accent)">交通</h4><p style="font-size:14px">地铁11号线南翔站 · 嘉定多路公交 · 推荐自驾（独立停车库）</p>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="4" data-total="52"></span></div>
+</section>
+
+<!-- 1.2 南翔城市脉络 -->
+<section class="slide" data-title="南翔城市脉络">
+  <p class="kicker">1.2 · 南翔城市研究</p>
+  <h2 class="h2">南翔：从千年古镇到文旅目的地</h2>
+  <div class="timeline mt-l" style="max-width:700px">
+    <div class="timeline-item"><div class="year">梁天监年间（502-519）</div><div class="event">白鹤南翔寺建成，南翔因寺得名</div></div>
+    <div class="timeline-item"><div class="year">宋元时期</div><div class="event">商业古镇兴起，棉花、土布贸易繁荣</div></div>
+    <div class="timeline-item"><div class="year">明清时期</div><div class="event">"银南翔"美誉，商贾云集，园林兴盛</div></div>
+    <div class="timeline-item"><div class="year">民国时期</div><div class="event">中西文化交融，梅墅等私家宅邸兴建</div></div>
+    <div class="timeline-item"><div class="year">2000年代</div><div class="event">古镇保护启动，南翔老街获评国家AAAA级景区</div></div>
+    <div class="timeline-item"><div class="year">2026—</div><div class="event" style="color:var(--accent);font-weight:500">文旅深度融合，从"观光"转向"体验目的地"</div></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="5" data-total="52"></span></div>
+</section>
+
+<!-- 1.3 梅墅百年变迁 -->
+<section class="slide" data-title="梅墅百年变迁">
+  <p class="kicker">1.3 · 梅墅历史研究</p>
+  <h2 class="h2">百年四重身份：一座宅邸的演化史</h2>
+  <div class="row mt-l" style="align-items:stretch;gap:0">
+    <div class="card" style="flex:1;border-radius:var(--radius) 0 0 var(--radius);border-right:0">
+      <div class="big-num" style="font-size:48px">1930s</div>
+      <p style="font-weight:600;margin-top:8px">梅墅 · 张志崇私宅</p>
+      <p class="dim" style="font-size:14px">中西合璧私家宅邸<br>占地约4,000㎡<br>毗邻檀园</p>
+    </div>
+    <div class="card" style="flex:1;border-radius:0;border-right:0">
+      <div class="big-num" style="font-size:48px">2009</div>
+      <p style="font-weight:600;margin-top:8px">南翔公馆</p>
+      <p class="dim" style="font-size:14px">高端中式餐饮会所<br>三间两进传统院落<br>弘扬中式传统文化</p>
+    </div>
+    <div class="card" style="flex:1;border-radius:0;border-right:0">
+      <div class="big-num" style="font-size:48px">2021</div>
+      <p style="font-weight:600;margin-top:8px">荣华园</p>
+      <p class="dim" style="font-size:14px">茶宴+宴会模式<br>15间雅包+6间茶室<br>港式午茶+茶宴菜</p>
+    </div>
+    <div class="card card-accent" style="flex:1;border-radius:0 var(--radius) var(--radius) 0">
+      <div class="big-num" style="font-size:48px">2026</div>
+      <p style="font-weight:600;margin-top:8px;color:var(--accent)">第四次重生</p>
+      <p class="dim" style="font-size:14px">历史建筑IP活化<br>文商旅融合空间<br>江南生活方式目的地</p>
+    </div>
+  </div>
+  <p class="lede mt-l" style="font-size:16px">这里已不是"梅墅"原建筑，而是承载百年记忆的<strong>历史场所（Historic Place）</strong>。真正的资产不是砖瓦，而是空间关系、历史故事和文化语境。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="6" data-total="52"></span></div>
+</section>
+
+<!-- 1.4 历史人物与事件 -->
+<section class="slide" data-title="历史人物与事件">
+  <p class="kicker">1.4 · 历史人物与事件</p>
+  <h2 class="h2">张志崇与王文娟事件</h2>
+  <div class="grid g2 mt-l" style="gap:28px">
+    <div class="card card-soft">
+      <h4 style="color:var(--accent)">张志崇</h4>
+      <p class="dim" style="font-size:14px;line-height:1.7">南翔人，1930年代建造梅墅。抗战时期担任上海沪东日本宪兵黑坂部队翻译，为汉奸身份。历史评价需客观对待，不能神化、不能回避。</p>
+      <div class="tag mt-s">史料等级：二级/地方志</div>
+    </div>
+    <div class="card card-soft">
+      <h4 style="color:var(--accent)">1941年王文娟梅墅脱险</h4>
+      <p class="dim" style="font-size:14px;line-height:1.7">越剧名伶王文娟在南翔共和台演出，遭张志崇持枪威逼至梅墅"清唱"。王文娟以全班同进同出为条件与汉奸周旋，最终机智脱险。展现了中国人民不屈的民族气节。</p>
+      <div class="tag mt-s">史料等级：二级/口述史</div>
+    </div>
+  </div>
+  <div class="card card-accent mt-m" style="padding:16px 20px">
+    <p style="font-size:14px;color:var(--text-2);margin:0"><strong style="color:var(--accent)">历史叙事原则：</strong>可作为历史展示，不能娱乐化消费。建立历史可信度矩阵，每一条叙事标注史料等级。</p>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="7" data-total="52"></span></div>
+</section>
+
+<!-- 1.5 建筑价值分析 -->
+<section class="slide" data-title="建筑价值分析">
+  <p class="kicker">1.5 · 建筑研究</p>
+  <h2 class="h2">建筑价值评估：历史场所而非文保建筑</h2>
+  <div class="grid g2 mt-l" style="gap:24px">
+    <div>
+      <h4 style="color:var(--accent)">保留的空间要素</h4>
+      <div class="stack mt-m">
+        <div class="card card-soft" style="padding:14px 18px"><strong>✓ 三进院落</strong>&nbsp;&nbsp;<span class="dim">完整的传统空间序列</span></div>
+        <div class="card card-soft" style="padding:14px 18px"><strong>✓ 中轴布局</strong>&nbsp;&nbsp;<span class="dim">南北向主轴线</span></div>
+        <div class="card card-soft" style="padding:14px 18px"><strong>✓ 回廊系统</strong>&nbsp;&nbsp;<span class="dim">连接各院落</span></div>
+        <div class="card card-soft" style="padding:14px 18px"><strong>✓ 天井</strong>&nbsp;&nbsp;<span class="dim">自然采光与通风</span></div>
+        <div class="card card-soft" style="padding:14px 18px"><strong>✓ 多庭院</strong>&nbsp;&nbsp;<span class="dim">三处庭院，绿意盎然</span></div>
+        <div class="card card-soft" style="padding:14px 18px"><strong>✓ 包厢格局</strong>&nbsp;&nbsp;<span class="dim">独立空间单元</span></div>
+      </div>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">建筑属性判断</h4>
+      <div class="card card-accent mt-m" style="padding:24px">
+        <p style="font-size:15px;line-height:1.7;color:var(--text-2)">非文保建筑，而是<strong style="color:var(--text-1)">历史场所（Historic Place）</strong>。真正留下来的不是原建筑的砖瓦木石，而是空间关系、院落格局和历史记忆。</p>
+        <div class="ornament"></div>
+        <p style="font-size:14px;color:var(--text-3)">这意味着：改造自由度较高，但需遵循历史风貌保护要求，避免过度商业化装修影响建筑价值。</p>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="8" data-total="52"></span></div>
+</section>
+
+<!-- 1.6 第一性原理分析 -->
+<section class="slide" data-title="第一性原理">
+  <p class="kicker">1.6 · 第一性原理</p>
+  <h2 class="h2">历史商业空间的核心公式</h2>
+  <div class="center mt-l" style="flex-direction:column">
+    <div class="row" style="gap:20px;font-size:24px;font-family:var(--font-display)">
+      <span class="card" style="padding:24px 32px;font-size:28px">空间</span>
+      <span style="color:var(--accent);font-size:32px">×</span>
+      <span class="card" style="padding:24px 32px;font-size:28px">故事</span>
+      <span style="color:var(--accent);font-size:32px">×</span>
+      <span class="card" style="padding:24px 32px;font-size:28px">运营</span>
+    </div>
+    <p class="lede mt-l" style="text-align:center">三者缺一不可。目前梅墅的现状：</p>
+    <div class="grid g3 mt-l" style="max-width:800px;width:100%">
+      <div class="card center" style="flex-direction:column;padding:28px">
+        <div style="font-size:40px">★★★★★</div>
+        <p style="font-weight:600;margin-top:8px">空间</p>
+        <p class="dim" style="font-size:13px">三进院落 | 核心区位 | 稀缺性</p>
+      </div>
+      <div class="card center" style="flex-direction:column;padding:28px">
+        <div style="font-size:40px">★★★</div>
+        <p style="font-weight:600;margin-top:8px">故事</p>
+        <p class="dim" style="font-size:13px">百年历史 | 未被充分挖掘</p>
+      </div>
+      <div class="card center" style="flex-direction:column;padding:28px;border:2px solid var(--accent)">
+        <div style="font-size:40px">★</div>
+        <p style="font-weight:600;margin-top:8px;color:var(--accent)">运营</p>
+        <p class="dim" style="font-size:13px">单一业态 | 亟需重建</p>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="9" data-total="52"></span></div>
+</section>
+
+<!-- 1.7 SWOT分析 -->
+<section class="slide" data-title="SWOT分析">
+  <p class="kicker">1.7 · 现状诊断</p>
+  <h2 class="h2">SWOT 分析</h2>
+  <div class="grid g2 mt-l" style="gap:20px">
+    <div class="card card-soft" style="padding:20px">
+      <h4 style="color:var(--good)">S · 优势</h4>
+      <ul style="font-size:14px;color:var(--text-2);padding-left:18px;line-height:2">
+        <li>国家AAAA景区核心区位，不可复制</li>
+        <li>三进院落完整空间格局</li>
+        <li>百年历史IP，故事资源丰富</li>
+        <li>毗邻檀园、双塔等文旅资源</li>
+        <li>独立停车库，自驾友好</li>
+      </ul>
+    </div>
+    <div class="card card-soft" style="padding:20px">
+      <h4 style="color:var(--bad)">W · 劣势</h4>
+      <ul style="font-size:14px;color:var(--text-2);padding-left:18px;line-height:2">
+        <li>非文保建筑，原建筑已不存</li>
+        <li>两度餐饮转型未能持续</li>
+        <li>品牌认知度低，缺乏独立IP</li>
+        <li>南翔游客以短停观光为主</li>
+        <li>运营团队缺乏复合业态经验</li>
+      </ul>
+    </div>
+    <div class="card card-soft" style="padding:20px">
+      <h4 style="color:var(--accent-3)">O · 机会</h4>
+      <ul style="font-size:14px;color:var(--text-2);padding-left:18px;line-height:2">
+        <li>上海文旅消费升级，文化体验需求增长</li>
+        <li>历史建筑活化利用政策支持</li>
+        <li>古镇北入口缺乏核心吸引物</li>
+        <li>江南生活方式IP市场空白</li>
+        <li>夜经济、沉浸式体验趋势</li>
+      </ul>
+    </div>
+    <div class="card card-soft" style="padding:20px">
+      <h4 style="color:var(--text-1)">T · 威胁</h4>
+      <ul style="font-size:14px;color:var(--text-2);padding-left:18px;line-height:2">
+        <li>蟠龙天地、张园等同城竞争</li>
+        <li>周边古镇（乌镇、西塘）分流</li>
+        <li>历史叙事不当可能引发争议</li>
+        <li>投资回报周期不确定性</li>
+        <li>消费降级趋势下的客单价压力</li>
+      </ul>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="10" data-total="52"></span></div>
+</section>
+
+<!-- 1.8 核心矛盾 -->
+<section class="slide" data-title="核心矛盾">
+  <p class="kicker">1.8 · 核心矛盾</p>
+  <h2 class="h2">为什么前两次转型都失败了？</h2>
+  <div class="grid g2 mt-l" style="gap:24px">
+    <div class="card card-accent" style="padding:24px">
+      <h4 style="color:var(--accent)">南翔公馆（2009）</h4>
+      <p class="dim" style="font-size:14px">定位高端中式餐饮，但缺乏差异化内容，与上海大量高端中餐同质化竞争。</p>
+      <div class="tag mt-s">失败原因：单一业态依赖</div>
+    </div>
+    <div class="card card-accent" style="padding:24px">
+      <h4 style="color:var(--accent)">荣华园（2021）</h4>
+      <p class="dim" style="font-size:14px">茶宴+宴会模式，增加了茶文化和艺术元素，但本质上仍是餐饮驱动。</p>
+      <div class="tag mt-s">失败原因：产品同质化，缺乏内容壁垒</div>
+    </div>
+  </div>
+  <div class="card card-gold mt-l" style="padding:24px">
+    <h4 style="color:var(--accent-3)">根本原因</h4>
+    <p class="lede" style="font-size:16px">不是装修问题，也不是经营问题。<strong>是定位问题。</strong>始终把它当作"一家餐厅"在运营，而不是"一处历史场所"。真正的解决方案不是升级餐饮，而是重新定义它是什么。</p>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="11" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 2 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第二章">
+  <div class="ch-num">02</div>
+  <p class="kicker">第二章</p>
+  <h2 class="h2">市场研究</h2>
+  <p class="lede">理解上海文旅消费趋势，对标国内外成功案例，<br>找准梅墅在市场中的独特位置。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="12" data-total="52"></span></div>
+</section>
+
+<!-- 2.1 上海文旅消费趋势 -->
+<section class="slide" data-title="文旅消费趋势">
+  <p class="kicker">2.1 · 宏观趋势</p>
+  <h2 class="h2">上海文旅消费六大趋势</h2>
+  <div class="grid g3 mt-l" style="gap:18px">
+    <div class="card card-soft" style="padding:20px"><h4 style="color:var(--accent)">消费升级</h4><p class="dim" style="font-size:14px">从"观光"到"体验"，从"拍照打卡"到"深度沉浸"</p></div>
+    <div class="card card-soft" style="padding:20px"><h4 style="color:var(--accent)">夜经济</h4><p class="dim" style="font-size:14px">夜间消费占比持续提升，文化夜游、沉浸式夜宴成为新增长点</p></div>
+    <div class="card card-soft" style="padding:20px"><h4 style="color:var(--accent)">沉浸体验</h4><p class="dim" style="font-size:14px">剧本杀、实景演出、沉浸式展览等复合体验需求爆发</p></div>
+    <div class="card card-soft" style="padding:20px"><h4 style="color:var(--accent)">文化消费</h4><p class="dim" style="font-size:14px">非遗、茶道、香道、花艺等传统文化体验受年轻客群追捧</p></div>
+    <div class="card card-soft" style="padding:20px"><h4 style="color:var(--accent)">银发经济</h4><p class="dim" style="font-size:14px">退休人群品质消费力强，文化养生、雅集社交需求旺盛</p></div>
+    <div class="card card-soft" style="padding:20px"><h4 style="color:var(--accent)">企业团建</h4><p class="dim" style="font-size:14px">企业活动从酒店转向有文化底蕴的特色空间</p></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="13" data-total="52"></span></div>
+</section>
+
+<!-- 2.2 对标案例研究 -->
+<section class="slide" data-title="对标案例">
+  <p class="kicker">2.2 · 上海历史建筑活化案例</p>
+  <h2 class="h2">对标分析：上海标杆项目</h2>
+  <div class="table-wrap mt-l">
+    <table>
+      <tr><th>项目</th><th>定位</th><th>成功要素</th><th>可借鉴</th><th>不可复制</th></tr>
+      <tr><td style="font-weight:600">张园</td><td>高端消费</td><td>石库门建筑群+国际品牌</td><td>历史建筑IP化</td><td>重资产模式</td></tr>
+      <tr><td style="font-weight:600">蟠龙天地</td><td>江南商业</td><td>古镇+商业+自然融合</td><td>场景化消费</td><td>大规模开发</td></tr>
+      <tr><td style="font-weight:600">今潮8弄</td><td>青年文化</td><td>石库门+艺术+潮流</td><td>内容驱动流量</td><td>市中心区位</td></tr>
+      <tr><td style="font-weight:600">上生新所</td><td>设计社群</td><td>历史建筑+创意办公+商业</td><td>多元业态组合</td><td>产业园区属性</td></tr>
+      <tr><td style="font-weight:600">愚园路</td><td>城市生活</td><td>街区活化+社区共生</td><td>渐进式更新</td><td>线性街区形态</td></tr>
+      <tr><td style="font-weight:600">思南公馆</td><td>文化体验</td><td>花园洋房+文学+活动</td><td>文化IP运营</td><td>独栋别墅群</td></tr>
+    </table>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="14" data-total="52"></span></div>
+</section>
+
+<!-- 2.3 江南古镇案例 -->
+<section class="slide" data-title="江南古镇案例">
+  <p class="kicker">2.3 · 江南古镇案例</p>
+  <h2 class="h2">江南古镇文旅模式对比</h2>
+  <div class="grid g3 mt-l" style="gap:18px">
+    <div class="card card-accent" style="padding:18px"><h4>乌镇</h4><p class="dim" style="font-size:13px">戏剧节+互联网大会+统一管理<br><span style="color:var(--good)">✓ 内容IP驱动</span><br><span style="color:var(--bad)">✗ 过度商业化</span></p></div>
+    <div class="card card-accent" style="padding:18px"><h4>拈花湾</h4><p class="dim" style="font-size:13px">禅意主题+沉浸演艺+夜游<br><span style="color:var(--good)">✓ 主题鲜明</span><br><span style="color:var(--bad)">✗ 人造感强</span></p></div>
+    <div class="card card-accent" style="padding:18px"><h4>西塘</h4><p class="dim" style="font-size:13px">汉服文化+夜经济+酒吧街<br><span style="color:var(--good)">✓ 年轻客群</span><br><span style="color:var(--bad)">✗ 同质化严重</span></p></div>
+    <div class="card card-accent" style="padding:18px"><h4>朱家角</h4><p class="dim" style="font-size:13px">近郊优势+水乡+音乐节<br><span style="color:var(--good)">✓ 交通便利</span><br><span style="color:var(--bad)">✗ 缺乏深度体验</span></p></div>
+    <div class="card card-accent" style="padding:18px"><h4>南浔</h4><p class="dim" style="font-size:13px">中西合璧建筑+丝绸文化<br><span style="color:var(--good)">✓ 建筑独特</span><br><span style="color:var(--bad)">✗ 运营分散</span></p></div>
+    <div class="card" style="padding:18px;background:var(--grad-soft);border:2px solid var(--accent)">
+      <h4 style="color:var(--accent)">梅墅的机会</h4><p class="dim" style="font-size:13px">不是做一个古镇，而是在古镇中做一个<strong>深度文化目的地</strong>——让游客"进得来、留得住、带得走"</p>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="15" data-total="52"></span></div>
+</section>
+
+<!-- 2.4 南翔竞争格局 -->
+<section class="slide" data-title="南翔竞争格局">
+  <p class="kicker">2.4 · 南翔竞争分析</p>
+  <h2 class="h2">南翔古镇文旅生态：梅墅可以补什么？</h2>
+  <div class="grid g2 mt-l" style="gap:20px">
+    <div>
+      <h4 style="color:var(--accent)">现有资源</h4>
+      <div class="stack mt-m">
+        <div class="card card-soft" style="padding:14px 18px"><strong>古猗园</strong> — 明代园林，观光为主</div>
+        <div class="card card-soft" style="padding:14px 18px"><strong>南翔老街</strong> — 小笼包+购物，短停消费</div>
+        <div class="card card-soft" style="padding:14px 18px"><strong>檀园</strong> — 李流芳私家园林，文化观光</div>
+        <div class="card card-soft" style="padding:14px 18px"><strong>云翔寺/双塔</strong> — 宗教文化，参观为主</div>
+      </div>
+    </div>
+    <div>
+      <h4 style="color:var(--accent)">市场空白</h4>
+      <div class="card card-accent mt-m" style="padding:20px">
+        <ul style="font-size:14px;color:var(--text-2);padding-left:18px;line-height:2.2">
+          <li><strong>缺乏深度体验</strong>：游客"逛一圈就走"，停留时间短</li>
+          <li><strong>缺乏高端餐饮</strong>：商务宴请无合适去处</li>
+          <li><strong>缺乏夜游内容</strong>：天黑后古镇无吸引力</li>
+          <li><strong>缺乏活动空间</strong>：企业活动、婚礼无处举办</li>
+          <li><strong>缺乏文化消费</strong>：非遗、课程、雅集缺位</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="16" data-total="52"></span></div>
+</section>
+
+<!-- 2.5 消费洞察 -->
+<section class="slide" data-title="消费洞察">
+  <p class="kicker">2.5 · 消费洞察</p>
+  <h2 class="h2">目标客群画像</h2>
+  <div class="grid g3 mt-l" style="gap:18px">
+    <div class="card center" style="flex-direction:column;padding:24px">
+      <div style="font-size:36px">🏢</div>
+      <h4 class="mt-s">商务宴请</h4>
+      <p class="dim" style="font-size:13px;text-align:center">企业高管/商务人士<br>客单¥300-800<br>注重私密性/品质感</p>
+      <span class="tag mt-s">一级客群</span>
+    </div>
+    <div class="card center" style="flex-direction:column;padding:24px">
+      <div style="font-size:36px">👨‍👩‍👧</div>
+      <h4 class="mt-s">品质家庭</h4>
+      <p class="dim" style="font-size:13px;text-align:center">30-50岁中产家庭<br>客单¥200-500<br>周末亲子/文化体验</p>
+      <span class="tag mt-s">二级客群</span>
+    </div>
+    <div class="card center" style="flex-direction:column;padding:24px">
+      <div style="font-size:36px">📸</div>
+      <h4 class="mt-s">文化消费者</h4>
+      <p class="dim" style="font-size:13px;text-align:center">25-40岁都市青年<br>客单¥150-400<br>打卡传播/社交分享</p>
+      <span class="tag mt-s">三级客群</span>
+    </div>
+    <div class="card center" style="flex-direction:column;padding:24px">
+      <div style="font-size:36px">💼</div>
+      <h4 class="mt-s">企业客户</h4>
+      <p class="dim" style="font-size:13px;text-align:center">团建/年会/发布会<br>客单¥500-1500/人<br>定制化需求</p>
+      <span class="tag mt-s">四级客群</span>
+    </div>
+    <div class="card center" style="flex-direction:column;padding:24px">
+      <div style="font-size:36px">💍</div>
+      <h4 class="mt-s">婚宴客户</h4>
+      <p class="dim" style="font-size:13px;text-align:center">中式婚礼/生日宴<br>客单¥5000-8000/桌<br>古色古香场景</p>
+      <span class="tag mt-s">五级客群</span>
+    </div>
+    <div class="card center" style="flex-direction:column;padding:24px">
+      <div style="font-size:36px">🎓</div>
+      <h4 class="mt-s">会员/学员</h4>
+      <p class="dim" style="font-size:13px;text-align:center">茶道/香道/书画<br>年费¥3000-20000<br>高粘性/复购</p>
+      <span class="tag mt-s">六级客群</span>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="17" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 3 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第三章">
+  <div class="ch-num">03</div>
+  <p class="kicker">第三章</p>
+  <h2 class="h2">战略定位</h2>
+  <p class="lede">回答"未来十年，它应该成为什么？"<br>不是定义业态，而是定义使命。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="18" data-total="52"></span></div>
+</section>
+
+<!-- 3.1 使命与愿景 -->
+<section class="slide" data-title="使命与愿景">
+  <p class="kicker">3.1 · 使命与愿景</p>
+  <h2 class="h2">江南生活方式的当代复兴</h2>
+  <div class="grid g2 mt-l" style="gap:24px">
+    <div class="card card-accent" style="padding:28px">
+      <h4 style="color:var(--accent)">使命</h4>
+      <p style="font-size:18px;line-height:1.6;font-family:var(--font-serif)">让一座百年宅邸，成为江南生活方式的当代表达。</p>
+      <p class="dim" style="font-size:14px;margin-top:12px">不是复刻历史，而是让传统在当代语境中重新生长。</p>
+    </div>
+    <div class="card card-accent" style="padding:28px">
+      <h4 style="color:var(--accent)">愿景</h4>
+      <p style="font-size:18px;line-height:1.6;font-family:var(--font-serif)">成为上海最具辨识度的历史建筑文商旅融合目的地。</p>
+      <p class="dim" style="font-size:14px;margin-top:12px">十年后，提到"江南生活方式体验"，人们第一个想到梅墅。</p>
+    </div>
+  </div>
+  <div class="card card-gold mt-l" style="padding:20px">
+    <h4 style="color:var(--accent-3)">定位宣言</h4>
+    <p style="font-size:16px;line-height:1.6;font-family:var(--font-serif)">南翔梅墅 = <strong>一处历史场所 × 江南生活方式 × 文化商业平台</strong></p>
+    <p class="dim" style="font-size:14px">不是餐厅，不是茶馆，不是文创园——而是一个"来了就不想走"的江南文化目的地。</p>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="19" data-total="52"></span></div>
+</section>
+
+<!-- 3.2 定位体系 -->
+<section class="slide" data-title="定位体系">
+  <p class="kicker">3.2 · 定位体系</p>
+  <h2 class="h2">六维定位模型</h2>
+  <div class="grid g3 mt-l" style="gap:16px">
+    <div class="card card-soft" style="padding:18px"><h4 style="color:var(--accent)">项目定位</h4><p class="dim" style="font-size:14px">历史建筑活化利用文商旅融合项目</p></div>
+    <div class="card card-soft" style="padding:18px"><h4 style="color:var(--accent)">品牌定位</h4><p class="dim" style="font-size:14px">江南生活方式体验中心<br>Jiangnan Living House</p></div>
+    <div class="card card-soft" style="padding:18px"><h4 style="color:var(--accent)">内容定位</h4><p class="dim" style="font-size:14px">食·茶·香·花·琴·书·器·衣·宴·礼</p></div>
+    <div class="card card-soft" style="padding:18px"><h4 style="color:var(--accent)">客群定位</h4><p class="dim" style="font-size:14px">商务宴请→品质家庭→文化消费者→企业→婚礼→会员</p></div>
+    <div class="card card-soft" style="padding:18px"><h4 style="color:var(--accent)">竞争定位</h4><p class="dim" style="font-size:14px">不与任何餐厅竞争，定义新品类</p></div>
+    <div class="card card-soft" style="padding:18px"><h4 style="color:var(--accent)">消费定位</h4><p class="dim" style="font-size:14px">中高端文化消费 · 综合客单¥260</p></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="20" data-total="52"></span></div>
+</section>
+
+<!-- 3.3 竞争壁垒 -->
+<section class="slide" data-title="竞争壁垒">
+  <p class="kicker">3.3 · 竞争壁垒</p>
+  <h2 class="h2">为什么别人做不了？</h2>
+  <div class="table-wrap mt-l">
+    <table>
+      <tr><th>资源要素</th><th>是否可复制</th><th>说明</th></tr>
+      <tr><td style="font-weight:600">历史建筑 + 三进院落</td><td><span style="color:var(--bad);font-weight:600">❌ 不可复制</span></td><td>南翔古镇核心区，3600㎡院落空间，独一无二</td></tr>
+      <tr><td style="font-weight:600">百年历史故事</td><td><span style="color:var(--bad);font-weight:600">❌ 不可复制</span></td><td>张志崇、王文娟事件、四重身份变迁，形成独特IP</td></tr>
+      <tr><td style="font-weight:600">南翔古镇区位</td><td><span style="color:var(--bad);font-weight:600">❌ 不可复制</span></td><td>国家AAAA景区核心，毗邻檀园、双塔、云翔寺</td></tr>
+      <tr><td style="font-weight:600">江南生活方式内容体系</td><td><span style="color:var(--warn);font-weight:600">△ 可模仿</span></td><td>内容可复制，但需要时间积累和运营能力</td></tr>
+      <tr><td style="font-weight:600">品牌IP</td><td><span style="color:var(--good);font-weight:600">✓ 可以建立</span></td><td>先发优势形成品牌壁垒，后来者需更大投入</td></tr>
+    </table>
+  </div>
+  <p class="lede mt-l" style="font-size:15px">真正的竞争壁垒 = <strong>Location + Heritage + Operation</strong>，三者叠加形成不可复制的护城河。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="21" data-total="52"></span></div>
+</section>
+
+<!-- 3.4 品牌架构 -->
+<section class="slide" data-title="品牌架构">
+  <p class="kicker">3.4 · 品牌架构</p>
+  <h2 class="h2">品牌体系：一核多翼</h2>
+  <div class="center mt-l" style="flex-direction:column">
+    <div class="card" style="padding:28px 48px;text-align:center;border:2px solid var(--accent)">
+      <p style="font-size:13px;color:var(--accent);letter-spacing:.12em">核心品牌</p>
+      <h3 style="font-family:var(--font-display);font-size:32px">南翔梅墅</h3>
+      <p class="dim" style="font-size:14px">江南生活方式体验中心</p>
+    </div>
+    <div style="font-size:20px;color:var(--text-3);margin:8px 0">↓</div>
+    <div class="grid g3" style="max-width:750px;width:100%;gap:12px">
+      <div class="card card-soft" style="padding:16px;text-align:center"><strong>梅墅·宴</strong><br><span class="dim" style="font-size:13px">品质餐饮</span></div>
+      <div class="card card-soft" style="padding:16px;text-align:center"><strong>梅墅·茶</strong><br><span class="dim" style="font-size:13px">茶道体验</span></div>
+      <div class="card card-soft" style="padding:16px;text-align:center"><strong>梅墅·雅集</strong><br><span class="dim" style="font-size:13px">文化课程</span></div>
+      <div class="card card-soft" style="padding:16px;text-align:center"><strong>梅墅·礼</strong><br><span class="dim" style="font-size:13px">婚礼/宴会</span></div>
+      <div class="card card-soft" style="padding:16px;text-align:center"><strong>梅墅·物</strong><br><span class="dim" style="font-size:13px">文创零售</span></div>
+      <div class="card card-soft" style="padding:16px;text-align:center"><strong>梅墅·会</strong><br><span class="dim" style="font-size:13px">会员体系</span></div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="22" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 4 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第四章">
+  <div class="ch-num">04</div>
+  <p class="kicker">第四章</p>
+  <h2 class="h2">总体规划</h2>
+  <p class="lede">基于三进院落的空间逻辑，重新建立从开放到私密、<br>从消费到沉浸的完整体验序列。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="23" data-total="52"></span></div>
+</section>
+
+<!-- 4.1 空间规划逻辑 -->
+<section class="slide" data-title="空间规划逻辑">
+  <p class="kicker">4.1 · 空间规划逻辑</p>
+  <h2 class="h2">三进院落 · 三层体验</h2>
+  <div class="row mt-l" style="align-items:stretch;gap:0">
+    <div class="card" style="flex:1;border-radius:var(--radius) 0 0 var(--radius);border-right:0;padding:32px 24px">
+      <div style="font-size:48px;color:var(--accent);opacity:.3">壹</div>
+      <h4>一进院</h4>
+      <p style="font-size:24px;font-weight:300;color:var(--accent)">开放体验</p>
+      <div class="stack mt-m" style="font-size:13px;color:var(--text-2);line-height:2">
+        <div>游客中心</div><div>文创零售</div><div>咖啡/茶饮</div><div>打卡拍照</div><div>历史展示</div>
+      </div>
+      <span class="tag mt-s">免费开放</span>
+    </div>
+    <div class="card" style="flex:1;border-radius:0;border-right:0;padding:32px 24px">
+      <div style="font-size:48px;color:var(--accent);opacity:.3">贰</div>
+      <h4>二进院</h4>
+      <p style="font-size:24px;font-weight:300;color:var(--accent)">文化沉浸</p>
+      <div class="stack mt-m" style="font-size:13px;color:var(--text-2);line-height:2">
+        <div>非遗展览</div><div>茶道体验</div><div>香道花道</div><div>雅集课程</div><div>艺术展</div>
+      </div>
+      <span class="tag mt-s">消费体验</span>
+    </div>
+    <div class="card card-accent" style="flex:1;border-radius:0 var(--radius) var(--radius) 0;padding:32px 24px;background:var(--grad-soft)">
+      <div style="font-size:48px;color:var(--accent);opacity:.3">叁</div>
+      <h4>三进院</h4>
+      <p style="font-size:24px;font-weight:300;color:var(--accent)">私享空间</p>
+      <div class="stack mt-m" style="font-size:13px;color:var(--text-2);line-height:2">
+        <div>会员雅集</div><div>高端宴席</div><div>企业活动</div><div>中式婚礼</div><div>私人定制</div>
+      </div>
+      <span class="tag mt-s">预约制</span>
+    </div>
+  </div>
+  <p class="lede mt-l" style="font-size:15px">空间逻辑：<strong>越来越安静 → 越来越私密 → 越来越高客单</strong>。从流量入口到利润中心，三进院落自然形成消费漏斗。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="24" data-total="52"></span></div>
+</section>
+
+<!-- 4.2 一进院 -->
+<section class="slide" data-title="一进院">
+  <p class="kicker">4.2 · 一进院 · 开放体验</p>
+  <h2 class="h2">游客入口 · 流量转化第一站</h2>
+  <div class="grid g2 mt-l" style="gap:20px">
+    <div>
+      <div class="card card-soft" style="padding:18px"><h4 style="color:var(--accent)">游客中心</h4><p class="dim" style="font-size:14px">导览服务、历史介绍、活动预约</p></div>
+      <div class="card card-soft mt-s" style="padding:18px"><h4 style="color:var(--accent)">梅墅文创商店</h4><p class="dim" style="font-size:14px">原创设计、非遗衍生品、伴手礼</p></div>
+      <div class="card card-soft mt-s" style="padding:18px"><h4 style="color:var(--accent)">庭院咖啡</h4><p class="dim" style="font-size:14px">江南庭院式下午茶，客单¥60-120</p></div>
+    </div>
+    <div>
+      <div class="card card-soft" style="padding:18px"><h4 style="color:var(--accent)">历史展示墙</h4><p class="dim" style="font-size:14px">梅墅百年变迁时间轴，王文娟事件互动展示</p></div>
+      <div class="card card-soft mt-s" style="padding:18px"><h4 style="color:var(--accent)">打卡装置</h4><p class="dim" style="font-size:14px">设计感拍照点，引导社交传播</p></div>
+      <div class="card card-soft mt-s" style="padding:18px"><h4 style="color:var(--accent)">茶文化展示区</h4><p class="dim" style="font-size:14px">陆廷灿茶文化主题展，免费参观</p></div>
+    </div>
+  </div>
+  <p class="lede mt-m" style="font-size:14px"><strong>策略：</strong>一进院免费开放，承担"吸引进店→建立认知→引导消费"的漏斗入口功能，转化率目标15-20%。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="25" data-total="52"></span></div>
+</section>
+
+<!-- 4.3 二进院 -->
+<section class="slide" data-title="二进院">
+  <p class="kicker">4.3 · 二进院 · 文化沉浸</p>
+  <h2 class="h2">文化体验的核心场景</h2>
+  <div class="grid g3 mt-l" style="gap:16px">
+    <div class="card card-accent" style="padding:18px"><h4>非遗工坊</h4><p class="dim" style="font-size:13px">嘉定11项非遗文化展示与体验<br>竹刻、草编、南翔小笼制作</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>茶空间</h4><p class="dim" style="font-size:13px">六大茶类品鉴<br>原产地茶叶直供<br>茶道课程</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>香道/花道</h4><p class="dim" style="font-size:13px">传统香道体验<br>四季花艺课程<br>沉浸式感官体验</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>艺术展厅</h4><p class="dim" style="font-size:13px">国内外艺术家驻留创作<br>陶瓷/绘画/雕塑<br>季度主题展览</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>雅集空间</h4><p class="dim" style="font-size:13px">书画/国学/琴棋<br>小型文化沙龙<br>读书会/分享会</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>文创实验室</h4><p class="dim" style="font-size:13px">原创设计开发<br>品牌联名合作<br>限量发售</p></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="26" data-total="52"></span></div>
+</section>
+
+<!-- 4.4 三进院 -->
+<section class="slide" data-title="三进院">
+  <p class="kicker">4.4 · 三进院 · 私享空间</p>
+  <h2 class="h2">高端私享 · 利润中心</h2>
+  <div class="grid g2 mt-l" style="gap:20px">
+    <div class="card card-gold" style="padding:22px">
+      <h4 style="color:var(--accent-3)">品质餐饮包厢</h4>
+      <p class="dim" style="font-size:14px">15间雅包，以《岕茶笺》十三茶境和南翔十八景命名。江南庭院景观包厢，米其林级别茶宴菜。</p>
+      <div class="row mt-s" style="gap:8px"><span class="tag">人均¥300-800</span><span class="tag">预约制</span></div>
+    </div>
+    <div class="card card-gold" style="padding:22px">
+      <h4 style="color:var(--accent-3)">宴会厅</h4>
+      <p class="dim" style="font-size:14px">大宴会厅17桌 + 小宴会厅8桌，最大承接45桌。中式婚礼、企业年会、品牌发布会。</p>
+      <div class="row mt-s" style="gap:8px"><span class="tag">¥5000-8000/桌</span><span class="tag">全年180场</span></div>
+    </div>
+    <div class="card card-gold" style="padding:22px">
+      <h4 style="color:var(--accent-3)">会员专属空间</h4>
+      <p class="dim" style="font-size:14px">私人茶室、藏书院、会员休息室。年费制，提供专属活动和定制服务。</p>
+      <div class="row mt-s" style="gap:8px"><span class="tag">年费¥3000-20000</span><span class="tag">目标1500人</span></div>
+    </div>
+    <div class="card card-gold" style="padding:22px">
+      <h4 style="color:var(--accent-3)">企业活动空间</h4>
+      <p class="dim" style="font-size:14px">团建、董事会、产品发布、客户答谢。古色古香环境+定制化服务。</p>
+      <div class="row mt-s" style="gap:8px"><span class="tag">¥500-1500/人</span><span class="tag">全年120+场</span></div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="27" data-total="52"></span></div>
+</section>
+
+<!-- 4.5 功能布局 -->
+<section class="slide" data-title="功能布局">
+  <p class="kicker">4.5 · 功能布局总览</p>
+  <h2 class="h2">空间功能分配</h2>
+  <div class="table-wrap mt-l">
+    <table>
+      <tr><th>区域</th><th>面积占比</th><th>核心功能</th><th>开放方式</th><th>收入贡献</th></tr>
+      <tr><td style="font-weight:600">一进院</td><td>约20%</td><td>游客中心、文创、咖啡、历史展示</td><td>免费开放</td><td>5-8%</td></tr>
+      <tr><td style="font-weight:600">二进院</td><td>约35%</td><td>非遗、茶道、香道、展览、课程</td><td>消费体验</td><td>15-20%</td></tr>
+      <tr><td style="font-weight:600">三进院</td><td>约35%</td><td>餐饮包厢、宴会厅、会员空间</td><td>预约制</td><td>65-70%</td></tr>
+      <tr><td style="font-weight:600">后勤/庭院</td><td>约10%</td><td>厨房、仓储、办公、庭院景观</td><td>—</td><td>—</td></tr>
+    </table>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="28" data-total="52"></span></div>
+</section>
+
+<!-- 4.6 动线设计 -->
+<section class="slide" data-title="动线设计">
+  <p class="kicker">4.6 · 动线设计</p>
+  <h2 class="h2">客户旅程：从进入到复购</h2>
+  <div class="center mt-l" style="flex-direction:column">
+    <div class="flow" style="justify-content:center">
+      <div class="flow-step"><strong>进入</strong><br><span class="dim" style="font-size:11px">一进院</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>沉浸</strong><br><span class="dim" style="font-size:11px">二进院</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>消费</strong><br><span class="dim" style="font-size:11px">三进院</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><strong>分享</strong><br><span class="dim" style="font-size:11px">社交媒体</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border:2px solid var(--accent)"><strong>复购</strong><br><span class="dim" style="font-size:11px">会员/活动</span></div>
+    </div>
+    <div class="grid g3 mt-xl" style="max-width:800px;width:100%;gap:16px">
+      <div class="card center" style="flex-direction:column;padding:20px"><div class="big-num" style="font-size:36px">15-20%</div><div class="big-num-label">进店转化率</div></div>
+      <div class="card center" style="flex-direction:column;padding:20px"><div class="big-num" style="font-size:36px">¥260</div><div class="big-num-label">综合客单价</div></div>
+      <div class="card center" style="flex-direction:column;padding:20px"><div class="big-num" style="font-size:36px">3次+</div><div class="big-num-label">年复购目标</div></div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="29" data-total="52"></span></div>
+</section>
+
+<!-- 4.7 空间改造策略 -->
+<section class="slide" data-title="空间改造策略">
+  <p class="kicker">4.7 · 改造策略</p>
+  <h2 class="h2">历史建筑活化的"轻改造"原则</h2>
+  <div class="grid g2 mt-l" style="gap:20px">
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">保留</h4><p class="dim" style="font-size:14px;line-height:1.8">三进院落格局、中轴布局、回廊系统、天井、庭院植物、雕花门楼等历史要素</p></div>
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">更新</h4><p class="dim" style="font-size:14px;line-height:1.8">机电系统、厨房设备、灯光音响、智慧管理系统、无障碍设施</p></div>
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">添加</h4><p class="dim" style="font-size:14px;line-height:1.8">展陈系统、数字互动装置、景观灯光、艺术装置、打卡点</p></div>
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">移除</h4><p class="dim" style="font-size:14px;line-height:1.8">过度商业化的装饰、与历史风貌不协调的元素、冗余隔断</p></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="30" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 5 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第五章">
+  <div class="ch-num">05</div>
+  <p class="kicker">第五章</p>
+  <h2 class="h2">产品体系</h2>
+  <p class="lede">十种生活方式，不是十个品牌，而是一个完整的<br>江南生活体验闭环。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="31" data-total="52"></span></div>
+</section>
+
+<!-- 5.1 产品矩阵 -->
+<section class="slide" data-title="产品矩阵">
+  <p class="kicker">5.1 · 产品矩阵</p>
+  <h2 class="h2">十种江南生活方式</h2>
+  <div class="grid g3 mt-l" style="gap:14px">
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">食</h4><p class="dim" style="font-size:13px">茶宴菜 · 港式午茶 · 时令菜单</p></div>
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">茶</h4><p class="dim" style="font-size:13px">六大茶类 · 茶道课程 · 茶文化展</p></div>
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">香</h4><p class="dim" style="font-size:13px">传统香道 · 香料品鉴 · 调香体验</p></div>
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">花</h4><p class="dim" style="font-size:13px">四季花艺 · 庭院花展 · 花道课程</p></div>
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">琴</h4><p class="dim" style="font-size:13px">古琴/昆曲/越剧 · 小型演出</p></div>
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">书</h4><p class="dim" style="font-size:13px">国学课堂 · 书画体验 · 读书会</p></div>
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">器</h4><p class="dim" style="font-size:13px">陶瓷 · 器物 · 非遗手作</p></div>
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">衣</h4><p class="dim" style="font-size:13px">汉服体验 · 传统服饰展示</p></div>
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">宴</h4><p class="dim" style="font-size:13px">中式婚宴 · 生日宴 · 企业宴</p></div>
+    <div class="card card-soft" style="padding:16px;text-align:center"><h4 style="color:var(--accent)">礼</h4><p class="dim" style="font-size:13px">伴手礼 · 定制礼盒 · 品牌联名</p></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="32" data-total="52"></span></div>
+</section>
+
+<!-- 5.2 餐饮体系 -->
+<section class="slide" data-title="餐饮体系">
+  <p class="kicker">5.2 · 餐饮体系</p>
+  <h2 class="h2">三层餐饮架构</h2>
+  <div class="grid g3 mt-l" style="gap:18px">
+    <div class="card" style="padding:22px"><h4 style="color:var(--accent)">港式午茶</h4><p class="dim" style="font-size:13px;line-height:1.7">上午10:00-下午14:00<br>五彩虾饺、菠萝包<br>客单¥80-150<br>翻台率1.8</p><span class="tag mt-s">流量层</span></div>
+    <div class="card card-accent" style="padding:22px"><h4 style="color:var(--accent)">茶宴菜</h4><p class="dim" style="font-size:13px;line-height:1.7">午市+晚市<br>六大茶类入菜<br>客单¥260-500<br>翻台率1.6</p><span class="tag mt-s">利润层</span></div>
+    <div class="card card-gold" style="padding:22px"><h4 style="color:var(--accent-3)">定制私宴</h4><p class="dim" style="font-size:13px;line-height:1.7">预约制<br>米其林级别主厨<br>客单¥500-1500<br>每日限3席</p><span class="tag mt-s">品牌层</span></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="33" data-total="52"></span></div>
+</section>
+
+<!-- 5.3 全年活动日历 -->
+<section class="slide" data-title="全年活动日历">
+  <p class="kicker">5.3 · 全年活动日历</p>
+  <h2 class="h2">二十四节气 × 江南四雅</h2>
+  <div class="table-wrap mt-l">
+    <table>
+      <tr><th>季节</th><th>节气活动</th><th>雅集主题</th><th>展览/演出</th></tr>
+      <tr><td style="font-weight:600">春</td><td>立春茶会 · 清明茶祭 · 谷雨花会</td><td>春茶品鉴 · 花道</td><td>春季陶瓷展 · 昆曲雅集</td></tr>
+      <tr><td style="font-weight:600">夏</td><td>端午香囊 · 大暑纳凉 · 七夕乞巧</td><td>香道 · 琴会</td><td>夏季书画展 · 越剧专场</td></tr>
+      <tr><td style="font-weight:600">秋</td><td>中秋拜月 · 重阳敬老 · 霜降菊会</td><td>茶道 · 器物</td><td>秋季雕塑展 · 古琴音乐会</td></tr>
+      <tr><td style="font-weight:600">冬</td><td>冬至雅集 · 腊八施粥 · 春节庙会</td><td>国学 · 书法</td><td>冬季非遗展 · 新春灯会</td></tr>
+    </table>
+  </div>
+  <p class="lede mt-m" style="font-size:14px">全年活动逻辑：<strong>节气活动引流 → 雅集课程转化 → 展览演出提升品牌</strong>，形成"月月有主题、周周有活动"的内容节奏。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="34" data-total="52"></span></div>
+</section>
+
+<!-- 5.4 会员体系 -->
+<section class="slide" data-title="会员体系">
+  <p class="kicker">5.4 · 会员体系</p>
+  <h2 class="h2">三级会员制度</h2>
+  <div class="grid g3 mt-l" style="gap:18px">
+    <div class="card" style="padding:24px;text-align:center">
+      <h4 style="color:var(--accent)">雅客</h4>
+      <div class="big-num" style="font-size:40px">¥3,000</div>
+      <div class="big-num-label">年费</div>
+      <div class="stack mt-m" style="font-size:13px;color:var(--text-2);line-height:2">
+        <div>全年茶室使用</div><div>每月1次雅集</div><div>消费9折</div><div>生日礼遇</div>
+      </div>
+    </div>
+    <div class="card card-accent" style="padding:24px;text-align:center">
+      <h4 style="color:var(--accent)">雅士</h4>
+      <div class="big-num" style="font-size:40px">¥8,000</div>
+      <div class="big-num-label">年费</div>
+      <div class="stack mt-m" style="font-size:13px;color:var(--text-2);line-height:2">
+        <div>雅客全部权益</div><div>每月2次课程</div><div>消费8折</div><div>专属活动邀请</div>
+      </div>
+    </div>
+    <div class="card card-gold" style="padding:24px;text-align:center">
+      <h4 style="color:var(--accent-3)">雅集</h4>
+      <div class="big-num" style="font-size:40px">¥20,000</div>
+      <div class="big-num-label">年费</div>
+      <div class="stack mt-m" style="font-size:13px;color:var(--text-2);line-height:2">
+        <div>雅士全部权益</div><div>私人茶室使用权</div><div>定制私宴1次</div><div>艺术家见面会</div>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="35" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 6 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第六章">
+  <div class="ch-num">06</div>
+  <p class="kicker">第六章</p>
+  <h2 class="h2">商业模型</h2>
+  <p class="lede">多元收入结构，八条收入线，<br>任何一项收入下降，项目都不会死亡。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="36" data-total="52"></span></div>
+</section>
+
+<!-- 6.1 收入模型 -->
+<section class="slide" data-title="收入模型">
+  <p class="kicker">6.1 · 收入模型</p>
+  <h2 class="h2">八大收入线</h2>
+  <div class="table-wrap mt-l">
+    <table>
+      <tr><th>收入来源</th><th>占比</th><th>年度收入（基准）</th><th>测算逻辑</th></tr>
+      <tr><td style="font-weight:600">品质餐饮</td><td>40%</td><td>2,600万</td><td>日均300人 × ¥260 × 330天</td></tr>
+      <tr><td style="font-weight:600">宴会婚礼</td><td>20%</td><td>1,300万</td><td>180场 × 均价¥72,000</td></tr>
+      <tr><td style="font-weight:600">企业活动</td><td>10%</td><td>650万</td><td>120场 × 均价¥54,000</td></tr>
+      <tr><td style="font-weight:600">会员体系</td><td>8%</td><td>520万</td><td>1,500人 × 均价¥3,500</td></tr>
+      <tr><td style="font-weight:600">文化课程</td><td>6%</td><td>390万</td><td>600场/年 × 均价¥650</td></tr>
+      <tr><td style="font-weight:600">文创零售</td><td>6%</td><td>390万</td><td>日均¥11,800</td></tr>
+      <tr><td style="font-weight:600">场地租赁</td><td>5%</td><td>325万</td><td>品牌快闪/拍摄/活动</td></tr>
+      <tr><td style="font-weight:600">品牌合作/IP</td><td>5%</td><td>325万</td><td>联名/授权/政府合作</td></tr>
+      <tr style="font-weight:700;border-top:2px solid var(--border-strong)"><td>合计</td><td>100%</td><td style="color:var(--accent)">6,500万</td><td></td></tr>
+    </table>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="37" data-total="52"></span></div>
+</section>
+
+<!-- 6.2 成本结构 -->
+<section class="slide" data-title="成本结构">
+  <p class="kicker">6.2 · 成本结构</p>
+  <h2 class="h2">OPEX 运营成本模型</h2>
+  <div class="grid g2 mt-l" style="gap:24px">
+    <div>
+      <div class="stack">
+        <div class="card card-soft" style="padding:14px 18px"><div class="row" style="justify-content:space-between"><span>食材成本</span><span style="font-weight:600">27%</span></div><div class="progress-bar mt-s"><div class="progress-fill" style="width:27%"></div></div></div>
+        <div class="card card-soft" style="padding:14px 18px"><div class="row" style="justify-content:space-between"><span>人工成本</span><span style="font-weight:600">21%</span></div><div class="progress-bar mt-s"><div class="progress-fill" style="width:21%"></div></div></div>
+        <div class="card card-soft" style="padding:14px 18px"><div class="row" style="justify-content:space-between"><span>折旧摊销</span><span style="font-weight:600">7%</span></div><div class="progress-bar mt-s"><div class="progress-fill" style="width:7%"></div></div></div>
+        <div class="card card-soft" style="padding:14px 18px"><div class="row" style="justify-content:space-between"><span>物业及能源</span><span style="font-weight:600">7%</span></div><div class="progress-bar mt-s"><div class="progress-fill" style="width:7%"></div></div></div>
+        <div class="card card-soft" style="padding:14px 18px"><div class="row" style="justify-content:space-between"><span>行政管理</span><span style="font-weight:600">4%</span></div><div class="progress-bar mt-s"><div class="progress-fill" style="width:4%"></div></div></div>
+      </div>
+    </div>
+    <div class="card card-accent" style="padding:24px;display:flex;flex-direction:column;justify-content:center">
+      <div class="center" style="flex-direction:column">
+        <div class="big-num" style="font-size:56px">22%</div>
+        <div class="big-num-label">目标 EBITDA 率</div>
+        <p class="dim mt-m" style="font-size:14px;text-align:center">综合成本率约78%，<br>与优质复合文旅运营项目一致</p>
+        <div class="ornament"></div>
+        <p class="dim" style="font-size:13px;text-align:center">营销推广 4% · 活动运营 3%<br>维修保养 2% · 其他 3%</p>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="38" data-total="52"></span></div>
+</section>
+
+<!-- 6.3 商业模式画布 -->
+<section class="slide" data-title="商业模式画布">
+  <p class="kicker">6.3 · 商业模式画布</p>
+  <h2 class="h2">Business Model Canvas</h2>
+  <div class="grid g2 mt-l" style="gap:12px;font-size:13px">
+    <div class="card card-soft" style="padding:14px"><strong>关键伙伴</strong><br><span class="dim">非遗传承人 · 艺术家 · 品牌方 · 政府 · 旅行社</span></div>
+    <div class="card card-soft" style="padding:14px"><strong>关键活动</strong><br><span class="dim">餐饮运营 · 内容策展 · 会员管理 · 品牌营销</span></div>
+    <div class="card card-soft" style="padding:14px"><strong>核心资源</strong><br><span class="dim">历史建筑 · 院落空间 · 文化IP · 运营团队</span></div>
+    <div class="card card-soft" style="padding:14px"><strong>价值主张</strong><br><span class="dim">江南生活方式的当代复兴 · 一站式文化目的地</span></div>
+    <div class="card card-soft" style="padding:14px"><strong>客户关系</strong><br><span class="dim">会员制 · 私域社群 · 个性化服务</span></div>
+    <div class="card card-soft" style="padding:14px"><strong>渠道通路</strong><br><span class="dim">抖音 · 小红书 · 公众号 · 旅行社 · 企业直销</span></div>
+    <div class="card card-soft" style="padding:14px"><strong>客户细分</strong><br><span class="dim">商务宴请 · 品质家庭 · 文化消费者 · 企业 · 婚礼</span></div>
+    <div class="card card-accent" style="padding:14px"><strong>成本结构</strong><br><span class="dim">食材27% · 人工21% · 折旧7% · 物业7%</span></div>
+    <div class="card card-accent" style="padding:14px"><strong>收入来源</strong><br><span class="dim">餐饮40% · 宴会20% · 企业10% · 会员8% · 课程6% · 文创6% · 场地5% · 品牌5%</span></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="39" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 7 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第七章">
+  <div class="ch-num">07</div>
+  <p class="kicker">第七章</p>
+  <h2 class="h2">投资模型</h2>
+  <p class="lede">完整的CAPEX、OPEX、现金流预测和投资回报分析，<br>达到投融资文件标准。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="40" data-total="52"></span></div>
+</section>
+
+<!-- 7.1 CAPEX -->
+<section class="slide" data-title="CAPEX">
+  <p class="kicker">7.1 · 一次性投资</p>
+  <h2 class="h2">CAPEX 投资明细</h2>
+  <div class="grid g2 mt-l" style="gap:20px">
+    <div class="table-wrap">
+      <table>
+        <tr><th>项目</th><th>金额（万元）</th><th>占比</th></tr>
+        <tr><td>建筑修缮</td><td>900</td><td>17%</td></tr>
+        <tr><td>结构加固</td><td>350</td><td>7%</td></tr>
+        <tr><td>机电系统更新</td><td>500</td><td>9%</td></tr>
+        <tr><td>室内装修</td><td>1,200</td><td>22%</td></tr>
+        <tr><td>厨房及后勤设备</td><td>450</td><td>8%</td></tr>
+        <tr><td>展陈及数字互动</td><td>350</td><td>7%</td></tr>
+        <tr><td>景观庭院</td><td>280</td><td>5%</td></tr>
+        <tr><td>家具软装</td><td>420</td><td>8%</td></tr>
+        <tr><td>智慧管理系统</td><td>180</td><td>3%</td></tr>
+        <tr><td>开业筹备费</td><td>220</td><td>4%</td></tr>
+        <tr><td>不可预见费</td><td>485</td><td>9%</td></tr>
+        <tr style="font-weight:700;border-top:2px solid var(--border-strong)"><td>总投资</td><td style="color:var(--accent)">5,335万</td><td>100%</td></tr>
+      </table>
+    </div>
+    <div class="card card-accent" style="padding:24px;display:flex;flex-direction:column;justify-content:center">
+      <h4 style="color:var(--accent)">投资重点提示</h4>
+      <ul style="font-size:14px;color:var(--text-2);line-height:2;padding-left:18px">
+        <li>室内装修占比最大（22%），需精细控制</li>
+        <li>机电改造+结构加固共850万，是历史建筑活化核心支出</li>
+        <li>不可预见费预留约10%，低于此比例风险较高</li>
+        <li>前期尽调不充分是超预算的主要原因</li>
+      </ul>
+      <div class="ornament"></div>
+      <p class="dim" style="font-size:13px">历史建筑活化项目的投资重点通常集中在机电改造、结构适配和室内更新。</p>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="41" data-total="52"></span></div>
+</section>
+
+<!-- 7.2 五年现金流 -->
+<section class="slide" data-title="五年现金流">
+  <p class="kicker">7.2 · 五年现金流预测</p>
+  <h2 class="h2">基准情景 · 5年现金流</h2>
+  <div class="table-wrap mt-l">
+    <table>
+      <tr><th>年份</th><th>营业收入</th><th>EBITDA</th><th>经营现金流</th><th>累计现金流</th></tr>
+      <tr><td>建设期</td><td>0</td><td style="color:var(--bad)">-5,335</td><td style="color:var(--bad)">-5,335</td><td style="color:var(--bad)">-5,335</td></tr>
+      <tr><td>第1年</td><td>4,200</td><td>630</td><td>420</td><td style="color:var(--bad)">-4,915</td></tr>
+      <tr><td>第2年</td><td>5,600</td><td>980</td><td>760</td><td style="color:var(--bad)">-4,155</td></tr>
+      <tr><td>第3年</td><td>6,500</td><td>1,300</td><td>1,080</td><td style="color:var(--bad)">-3,075</td></tr>
+      <tr><td>第4年</td><td>7,100</td><td>1,490</td><td>1,260</td><td style="color:var(--bad)">-1,815</td></tr>
+      <tr><td>第5年</td><td>7,800</td><td>1,640</td><td>1,430</td><td style="color:var(--bad)">-385</td></tr>
+    </table>
+    <p class="dim mt-s" style="font-size:12px">* 单位：万元。若采用银行贷款、政府补助或社会资本共同投资，股东现金回收时间会进一步缩短。</p>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="42" data-total="52"></span></div>
+</section>
+
+<!-- 7.3 投资回报指标 -->
+<section class="slide" data-title="投资回报指标">
+  <p class="kicker">7.3 · 投资回报</p>
+  <h2 class="h2">三种情景测算</h2>
+  <div class="table-wrap mt-l">
+    <table>
+      <tr><th>指标</th><th>保守</th><th>基准</th><th>乐观</th></tr>
+      <tr><td>年客流（万人）</td><td>18</td><td>25</td><td>32</td></tr>
+      <tr><td>综合客单价（元）</td><td>220</td><td>260</td><td>320</td></tr>
+      <tr><td>营业收入（万元）</td><td>4,800</td><td>6,500</td><td>8,200</td></tr>
+      <tr><td>EBITDA率</td><td>16%</td><td>20%</td><td>24%</td></tr>
+      <tr><td>税后净利率</td><td>8%</td><td>12%</td><td>15%</td></tr>
+      <tr><td style="font-weight:600">投资回收期</td><td style="font-weight:600">7.0年</td><td style="font-weight:600;color:var(--accent)">5.5年</td><td style="font-weight:600">4.2年</td></tr>
+      <tr><td>项目IRR</td><td>11%</td><td>16%</td><td>20%</td></tr>
+    </table>
+  </div>
+  <div class="card card-accent mt-l" style="padding:16px 20px">
+    <p style="font-size:14px;color:var(--text-2);margin:0"><strong style="color:var(--accent)">投资人视角：</strong>历史建筑活化及城市更新类项目，IRR通常需要结合项目风险、资金结构和公共价值综合判断，而不是单独追求最高收益。</p>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="43" data-total="52"></span></div>
+</section>
+
+<!-- 7.4 敏感性分析 -->
+<section class="slide" data-title="敏感性分析">
+  <p class="kicker">7.4 · 压力测试</p>
+  <h2 class="h2">敏感性分析：最坏情况能否存活？</h2>
+  <div class="grid g2 mt-l" style="gap:18px">
+    <div class="card card-soft" style="padding:18px"><h4 style="color:var(--warn)">客流下降10%</h4><p class="dim" style="font-size:14px">收入5,850万 · EBITDA 18% · <strong style="color:var(--good)">仍盈利</strong></p></div>
+    <div class="card card-soft" style="padding:18px"><h4 style="color:var(--warn)">客单下降10%</h4><p class="dim" style="font-size:14px">收入5,850万 · 净利润降20% · <strong style="color:var(--good)">仍盈利</strong></p></div>
+    <div class="card card-soft" style="padding:18px"><h4 style="color:var(--warn)">人工上涨15%</h4><p class="dim" style="font-size:14px">EBITDA约18% · <strong style="color:var(--good)">仍盈利</strong></p></div>
+    <div class="card card-accent" style="padding:18px"><h4 style="color:var(--bad)">极端情景</h4><p class="dim" style="font-size:14px">客流-20% + 人工+15% + 营销+20%<br><strong style="color:var(--warn)">现金流仍为正，回本延长至约7年</strong></p></div>
+  </div>
+  <p class="lede mt-l" style="font-size:15px">结论：项目具有一定的抗风险能力。即使极端情景下，仍能保持现金流为正。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="44" data-total="52"></span></div>
+</section>
+
+<!-- 7.5 资产价值增长 -->
+<section class="slide" data-title="资产价值增长">
+  <p class="kicker">7.5 · 价值增长</p>
+  <h2 class="h2">四张"隐性资产"</h2>
+  <div class="grid g2 mt-l" style="gap:20px">
+    <div class="card" style="padding:22px;text-align:center">
+      <div class="big-num" style="font-size:42px">1,500→3,000人</div>
+      <div class="big-num-label">会员资产</div>
+      <p class="dim" style="font-size:13px;margin-top:8px">第1年→第5年，高粘性用户池</p>
+    </div>
+    <div class="card" style="padding:22px;text-align:center">
+      <div class="big-num" style="font-size:42px">区域→上海</div>
+      <div class="big-num-label">品牌资产</div>
+      <p class="dim" style="font-size:13px;margin-top:8px">从南翔品牌到上海文化名片</p>
+    </div>
+    <div class="card" style="padding:22px;text-align:center">
+      <div class="big-num" style="font-size:42px">50→1,000+</div>
+      <div class="big-num-label">内容资产</div>
+      <p class="dim" style="font-size:13px;margin-top:8px">活动场次→内容素材库</p>
+    </div>
+    <div class="card card-accent" style="padding:22px;text-align:center">
+      <div class="big-num" style="font-size:42px">修复→标杆</div>
+      <div class="big-num-label">物业资产</div>
+      <p class="dim" style="font-size:13px;margin-top:8px">区域标杆项目，带动北入口升值</p>
+    </div>
+  </div>
+  <p class="lede mt-l" style="font-size:15px">梅墅的价值不能只计算利润。这四项隐性资产，未来决定估值，而不是营业额。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="45" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 8 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第八章">
+  <div class="ch-num">08</div>
+  <p class="kicker">第八章</p>
+  <h2 class="h2">运营体系</h2>
+  <p class="lede">从组织架构到SOP，从营销到招商，<br>建立完整的运营管理系统。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="46" data-total="52"></span></div>
+</section>
+
+<!-- 8.1 组织架构 -->
+<section class="slide" data-title="组织架构">
+  <p class="kicker">8.1 · 组织架构</p>
+  <h2 class="h2">运营团队架构</h2>
+  <div class="center mt-l" style="flex-direction:column">
+    <div class="card" style="padding:16px 32px;text-align:center"><strong>总经理</strong></div>
+    <div style="color:var(--text-3);margin:4px 0">│</div>
+    <div class="grid g4" style="gap:10px;max-width:850px;width:100%">
+      <div class="card card-soft" style="padding:14px;text-align:center"><strong>餐饮部</strong><br><span class="dim" style="font-size:12px">主厨 · 厨房 · 服务</span></div>
+      <div class="card card-soft" style="padding:14px;text-align:center"><strong>文化部</strong><br><span class="dim" style="font-size:12px">策展 · 课程 · 非遗</span></div>
+      <div class="card card-soft" style="padding:14px;text-align:center"><strong>市场部</strong><br><span class="dim" style="font-size:12px">品牌 · 营销 · 私域</span></div>
+      <div class="card card-soft" style="padding:14px;text-align:center"><strong>运营部</strong><br><span class="dim" style="font-size:12px">会员 · 招商 · 行政</span></div>
+    </div>
+  </div>
+  <div class="card card-accent mt-l" style="padding:16px 20px">
+    <p style="font-size:14px;color:var(--text-2);margin:0"><strong style="color:var(--accent)">关键原则：</strong>管理层及核心员工来自五星级酒店，具有极强的专业素养。文化部是区别于传统餐饮的核心部门，负责内容策展和活动运营。</p>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="47" data-total="52"></span></div>
+</section>
+
+<!-- 8.2 营销策略 -->
+<section class="slide" data-title="营销策略">
+  <p class="kicker">8.2 · 营销策略</p>
+  <h2 class="h2">全渠道营销矩阵</h2>
+  <div class="grid g3 mt-l" style="gap:16px">
+    <div class="card card-accent" style="padding:18px"><h4>抖音</h4><p class="dim" style="font-size:13px">短视频内容：庭院美学、茶道过程、活动花絮 · 达人探店合作 · 直播带货（文创/课程）</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>小红书</h4><p class="dim" style="font-size:13px">图文种草：打卡攻略、穿搭指南、美食测评 · KOC矩阵 · 话题运营</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>公众号</h4><p class="dim" style="font-size:13px">深度内容：历史文化、节气活动、会员故事 · 私域沉淀 · 活动报名</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>企业直销</h4><p class="dim" style="font-size:13px">商务宴请、企业活动、团建定制 · CRM管理 · 长期合作</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>旅行社/OTA</h4><p class="dim" style="font-size:13px">南翔古镇旅游线路嵌入 · 携程/美团套餐 · 团体预订</p></div>
+    <div class="card card-accent" style="padding:18px"><h4>品牌合作</h4><p class="dim" style="font-size:13px">汽车/奢侈品/茶品牌联名活动 · 品牌发布会 · 跨界快闪</p></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="48" data-total="52"></span></div>
+</section>
+
+<!-- 8.3 招商方案 -->
+<section class="slide" data-title="招商方案">
+  <p class="kicker">8.3 · 招商方案</p>
+  <h2 class="h2">自营 vs 联营 vs 招商</h2>
+  <div class="table-wrap mt-l">
+    <table>
+      <tr><th>业态</th><th>模式</th><th>理由</th></tr>
+      <tr><td>品质餐饮</td><td style="font-weight:600;color:var(--accent)">自营</td><td>核心收入来源，品质控制关键</td></tr>
+      <tr><td>茶道/香道/花道</td><td style="font-weight:600;color:var(--accent)">自营+合作</td><td>自营课程+邀请非遗传承人合作</td></tr>
+      <tr><td>文创零售</td><td>联营</td><td>品牌联名+分成模式，降低库存风险</td></tr>
+      <tr><td>艺术展览</td><td>合作</td><td>邀请艺术家驻留，场地+分成</td></tr>
+      <tr><td>咖啡/茶饮</td><td>自营</td><td>流量入口，需要统一品质</td></tr>
+      <tr><td>汉服体验</td><td>招商</td><td>专业运营方，租金+分成</td></tr>
+    </table>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="49" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 9 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第九章">
+  <div class="ch-num">09</div>
+  <p class="kicker">第九章</p>
+  <h2 class="h2">实施计划</h2>
+  <p class="lede">五阶段推进，从设计到正式运营，<br>每一步都有明确的时间节点和交付标准。</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="50" data-total="52"></span></div>
+</section>
+
+<!-- 9.1 五阶段实施 -->
+<section class="slide" data-title="五阶段实施">
+  <p class="kicker">9.1 · 实施路径</p>
+  <h2 class="h2">五阶段推进策略</h2>
+  <div class="timeline mt-l" style="max-width:750px">
+    <div class="timeline-item"><div class="year">第一阶段 · 设计（3-4个月）</div><div class="event">建筑测绘 · 方案设计 · 施工图 · 政府审批 · 品牌VI设计</div></div>
+    <div class="timeline-item"><div class="year">第二阶段 · 施工（8-12个月）</div><div class="event">结构加固 · 机电更新 · 室内装修 · 景观庭院 · 展陈安装</div></div>
+    <div class="timeline-item"><div class="year">第三阶段 · 招商（与施工并行）</div><div class="event">品牌洽谈 · 非遗合作 · 艺术家签约 · 供应商体系搭建</div></div>
+    <div class="timeline-item"><div class="year">第四阶段 · 试营业（2-3个月）</div><div class="event">团队培训 · 流程测试 · 媒体预热 · KOL邀请 · 会员预售</div></div>
+    <div class="timeline-item"><div class="year" style="color:var(--accent)">第五阶段 · 正式运营</div><div class="event" style="color:var(--accent);font-weight:500">全面开放 · 全年活动启动 · 持续迭代</div></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="51" data-total="52"></span></div>
+</section>
+
+<!-- 9.2 里程碑 -->
+<section class="slide" data-title="关键里程碑">
+  <p class="kicker">9.2 · 关键里程碑</p>
+  <h2 class="h2">项目关键节点</h2>
+  <div class="grid g2 mt-l" style="gap:16px">
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">M1 · 方案获批</h4><p class="dim" style="font-size:14px">政府审批通过，取得施工许可</p><span class="tag mt-s">第4个月</span></div>
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">M2 · 结构完工</h4><p class="dim" style="font-size:14px">结构加固+机电更新完成，具备装修条件</p><span class="tag mt-s">第10个月</span></div>
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">M3 · 装修竣工</h4><p class="dim" style="font-size:14px">室内装修+景观庭院+展陈全部完成</p><span class="tag mt-s">第16个月</span></div>
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">M4 · 试营业</h4><p class="dim" style="font-size:14px">团队到位，流程跑通，媒体预热启动</p><span class="tag mt-s">第18个月</span></div>
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">M5 · 正式运营</h4><p class="dim" style="font-size:14px">全面开放，全年活动体系启动</p><span class="tag mt-s">第20个月</span></div>
+    <div class="card card-accent" style="padding:20px"><h4 style="color:var(--accent)">M6 · 盈亏平衡</h4><p class="dim" style="font-size:14px">年营收达4,800万，实现月度盈利</p><span class="tag mt-s">运营第2年</span></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="52" data-total="52"></span></div>
+</section>
+
+<!-- ===== CHAPTER 10 DIVIDER ===== -->
+<section class="slide section-divider chapter-intro" data-title="第十章">
+  <div class="ch-num">10</div>
+  <p class="kicker">第十章</p>
+  <h2 class="h2">风险控制</h2>
+  <p class="lede">Red Team对抗式审查：如果我是投资人，<br>我会怎么挑战这个方案？</p>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="53" data-total="52"></span></div>
+</section>
+
+<!-- 10.1 Red Team六大挑战 -->
+<section class="slide" data-title="Red Team挑战">
+  <p class="kicker">10.1 · Red Team</p>
+  <h2 class="h2">六大核心挑战</h2>
+  <div class="grid g2 mt-l" style="gap:16px">
+    <div class="card card-accent" style="padding:18px"><h4 style="color:var(--bad)">Challenge 1</h4><p style="font-weight:600">为什么游客要进来？</p><p class="dim" style="font-size:13px">必须创造独特体验，一进院免费开放+打卡装置+历史展示形成吸引力。</p></div>
+    <div class="card card-accent" style="padding:18px"><h4 style="color:var(--bad)">Challenge 2</h4><p style="font-weight:600">本地人为何一年来三次？</p><p class="dim" style="font-size:13px">全年活动日历+会员体系+内容持续更新，提供重复到访的理由。</p></div>
+    <div class="card card-accent" style="padding:18px"><h4 style="color:var(--bad)">Challenge 3</h4><p style="font-weight:600">商务宴请为何不去蟠龙天地？</p><p class="dim" style="font-size:13px">历史文化底蕴+私密院落+定制私宴，提供不可替代的体验差异。</p></div>
+    <div class="card card-accent" style="padding:18px"><h4 style="color:var(--bad)">Challenge 4</h4><p style="font-weight:600">年轻人为何拍照传播？</p><p class="dim" style="font-size:13px">设计感打卡点+庭院美学+汉服体验+展览装置，制造社交货币。</p></div>
+    <div class="card card-accent" style="padding:18px"><h4 style="color:var(--bad)">Challenge 5</h4><p style="font-weight:600">为什么不能复制？</p><p class="dim" style="font-size:13px">Location+Heritage+Operation三重壁垒，任何古镇都无法简单复制。</p></div>
+    <div class="card card-accent" style="padding:18px"><h4 style="color:var(--bad)">Challenge 6</h4><p style="font-weight:600">历史叙事风险如何控制？</p><p class="dim" style="font-size:13px">建立史料等级制度，张志崇/王文娟事件严禁娱乐化消费。</p></div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="54" data-total="52"></span></div>
+</section>
+
+<!-- 10.2 风险矩阵 -->
+<section class="slide" data-title="风险矩阵">
+  <p class="kicker">10.2 · 风险矩阵</p>
+  <h2 class="h2">风险评级与应对</h2>
+  <div class="table-wrap mt-l">
+    <table>
+      <tr><th>风险</th><th>概率</th><th>影响</th><th>应对策略</th></tr>
+      <tr><td>历史真实性争议</td><td><span style="color:var(--warn)">中</span></td><td><span style="color:var(--bad)">高</span></td><td>史料等级标注，聘请历史顾问</td></tr>
+      <tr><td>收入预测过于乐观</td><td><span style="color:var(--bad)">高</span></td><td><span style="color:var(--bad)">高</span></td><td>三情景测算，月现金流模型</td></tr>
+      <tr><td>政府支持不确定</td><td><span style="color:var(--warn)">中</span></td><td><span style="color:var(--warn)">中</span></td><td>按"无补贴也能成立"设计</td></tr>
+      <tr><td>客流不足</td><td><span style="color:var(--warn)">中</span></td><td><span style="color:var(--bad)">高</span></td><td>多元收入+内容驱动+精准营销</td></tr>
+      <tr><td>运营团队能力不足</td><td><span style="color:var(--warn)">中</span></td><td><span style="color:var(--bad)">高</span></td><td>五星级酒店背景+文化人才引进</td></tr>
+      <tr><td>建筑改造超预算</td><td><span style="color:var(--bad)">高</span></td><td><span style="color:var(--warn)">中</span></td><td>10%不可预见费+前期深度尽调</td></tr>
+    </table>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="55" data-total="52"></span></div>
+</section>
+
+<!-- 10.3 投资保障 -->
+<section class="slide" data-title="投资保障">
+  <p class="kicker">10.3 · 投资保障</p>
+  <h2 class="h2">投资退出机制</h2>
+  <div class="grid g3 mt-l" style="gap:18px">
+    <div class="card card-accent" style="padding:22px;text-align:center">
+      <h4 style="color:var(--accent)">路径一</h4>
+      <p style="font-size:16px;font-weight:600">持续分红</p>
+      <p class="dim" style="font-size:13px">适合长期持有<br>稳定现金流回报</p>
+    </div>
+    <div class="card card-accent" style="padding:22px;text-align:center">
+      <h4 style="color:var(--accent)">路径二</h4>
+      <p style="font-size:16px;font-weight:600">股权转让</p>
+      <p class="dim" style="font-size:13px">品牌成熟后引入基金<br>溢价退出</p>
+    </div>
+    <div class="card card-accent" style="padding:22px;text-align:center">
+      <h4 style="color:var(--accent)">路径三</h4>
+      <p style="font-size:16px;font-weight:600">资产增值</p>
+      <p class="dim" style="font-size:13px">物业+品牌+IP整体升值<br>城市更新资产退出</p>
+    </div>
+  </div>
+  <div class="card card-gold mt-l" style="padding:20px">
+    <h4 style="color:var(--accent-3)">建议资本结构</h4>
+    <div class="row mt-s" style="gap:12px;flex-wrap:wrap">
+      <span class="tag">运营团队 20%</span><span class="tag">产业投资人 35%</span><span class="tag">地方国资 25%</span><span class="tag">专项资金 10%</span><span class="tag">银行贷款 10%</span>
+    </div>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="56" data-total="52"></span></div>
+</section>
+
+<!-- ===== CONCLUSION ===== -->
+<section class="slide section-divider" data-title="结语" style="justify-content:center">
+  <div style="text-align:center">
+    <p class="kicker">conclusion</p>
+    <h2 class="h2" style="font-size:42px">一座百年宅邸的第四次重生，<br>不是装修升级，<br>而是<strong style="color:var(--accent)">重新定义</strong>。</h2>
+    <div class="ornament" style="margin:24px auto"></div>
+    <p class="lede" style="text-align:center;max-width:50ch">从"一家餐厅"到"江南生活方式目的地"，<br>梅墅的未来不是餐饮赛道的竞争，<br>而是文化消费新物种的创造。</p>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="57" data-total="52"></span></div>
+</section>
+
+<!-- ===== THANKS ===== -->
+<section class="slide center" data-title="感谢">
+  <div style="text-align:center">
+    <div style="font-family:var(--font-display);font-size:120px;color:var(--accent);opacity:.12;line-height:1">梅墅</div>
+    <h2 class="h2" style="margin-top:-40px">感谢阅读</h2>
+    <p class="lede" style="text-align:center">南翔梅墅文化复兴总体规划（2026-2036）</p>
+    <div class="row mt-l" style="justify-content:center;gap:12px">
+      <span class="tag">上海市嘉定区南翔镇德华路617号</span>
+      <span class="tag">021-39160777</span>
+    </div>
+    <p class="dim mt-l" style="font-size:13px">本报告为项目可研阶段规划方案，具体数据以施工图设计和运营数据为准。</p>
+  </div>
+  <div class="deck-footer"><span>南翔梅墅 · 文化复兴总体规划</span><span class="slide-number" data-current="58" data-total="52"></span></div>
+</section>
+
+</div>
+
+<script>
+/* html-ppt :: runtime.js - Keyboard-driven deck runtime */
+(function () {
+  'use strict';
+  const ANIMS = ['fade-up','fade-down','fade-left','fade-right','rise-in','drop-in','zoom-pop','blur-in','glitch-in','typewriter','neon-glow','shimmer-sweep','gradient-flow','stagger-list','counter-up','path-draw','parallax-tilt','card-flip-3d','cube-rotate-3d','page-turn-3d','perspective-zoom','marquee-scroll','kenburns','confetti-burst','spotlight','morph-shape','ripple-reveal'];
+  function ready(fn){ if(document.readyState!='loading')fn(); else document.addEventListener('DOMContentLoaded',fn);}
+  function getPreviewIdx() { const m = /[?&]preview=(\d+)/.exec(location.search || ''); return m ? parseInt(m[1], 10) - 1 : -1; }
+  ready(function () {
+    const deck = document.querySelector('.deck'); if (!deck) return;
+    const slides = Array.from(deck.querySelectorAll('.slide')); if (!slides.length) return;
+    const previewOnlyIdx = getPreviewIdx(); const isPreviewMode = previewOnlyIdx >= 0 && previewOnlyIdx < slides.length;
+    if (isPreviewMode) {
+      function showSlide(i) { slides.forEach((s, j) => { const active = (j === i); s.classList.toggle('is-active', active); s.style.display = active ? '' : 'none'; if (active) { s.style.opacity = '1'; s.style.transform = 'none'; s.style.pointerEvents = 'auto'; } }); }
+      showSlide(previewOnlyIdx);
+      const hideSel = '.progress-bar, .notes-overlay, .overview, .notes, aside.notes, .speaker-notes';
+      document.querySelectorAll(hideSel).forEach(el => { el.style.display = 'none'; });
+      document.documentElement.setAttribute('data-preview', '1'); document.body.setAttribute('data-preview', '1');
+      function getPreviewThemeBase() { const base = document.documentElement.getAttribute('data-theme-base'); if (base) return base; const tl = document.getElementById('theme-link'); if (tl) { const raw = tl.getAttribute('href') || ''; const ls = raw.lastIndexOf('/'); if (ls >= 0) return raw.substring(0, ls + 1); } return 'assets/themes/'; }
+      const previewThemeBase = getPreviewThemeBase();
+      window.addEventListener('message', function(e) { if (!e.data) return; if (e.data.type === 'preview-goto') { const n = parseInt(e.data.idx, 10); if (n >= 0 && n < slides.length) showSlide(n); } else if (e.data.type === 'preview-theme' && e.data.name) { let link = document.getElementById('theme-link'); if (!link) { link = document.createElement('link'); link.rel = 'stylesheet'; link.id = 'theme-link'; document.head.appendChild(link); } link.href = previewThemeBase + e.data.name + '.css'; document.documentElement.setAttribute('data-theme', e.data.name); } });
+      try { window.parent && window.parent.postMessage({ type: 'preview-ready' }, '*'); } catch(e) {}
+      return;
+    }
+    let idx = 0; const total = slides.length;
+    const CHANNEL_NAME = 'html-ppt-presenter-' + location.pathname; let bc; try { bc = new BroadcastChannel(CHANNEL_NAME); } catch(e) { bc = null; }
+    let bar = document.querySelector('.progress-bar'); if (!bar) { bar = document.createElement('div'); bar.className = 'progress-bar'; bar.innerHTML = '<span></span>'; document.body.appendChild(bar); }
+    const barFill = bar.querySelector('span');
+    let notes = document.querySelector('.notes-overlay'); if (!notes) { notes = document.createElement('div'); notes.className = 'notes-overlay'; document.body.appendChild(notes); }
+    let overview = document.querySelector('.overview'); if (!overview) { overview = document.createElement('div'); overview.className = 'overview'; slides.forEach((s, i) => { const t = document.createElement('div'); t.className = 'thumb'; t.style.padding = '0 0 56.25% 0'; t.style.height = '0'; t.style.position = 'relative'; t.style.overflow = 'hidden'; const title = s.getAttribute('data-title') || (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1)); const mini = document.createElement('div'); mini.className = 'mini-slide'; mini.style.position = 'absolute'; mini.style.top = '0'; mini.style.left = '0'; mini.style.width = '1920px'; mini.style.height = '1080px'; mini.style.transformOrigin = 'top left'; mini.style.pointerEvents = 'none'; mini.style.background = 'var(--bg)'; const clone = s.cloneNode(true); clone.className = 'slide is-active'; clone.style.position = 'absolute'; clone.style.inset = '0'; clone.style.transform = 'none'; clone.style.opacity = '1'; clone.style.padding = '72px 96px'; mini.appendChild(clone); t.appendChild(mini); const overlay = document.createElement('div'); overlay.style.cssText = 'position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 40%,transparent 100%);color:#fff;z-index:10;pointer-events:none'; const n = document.createElement('div'); n.textContent = i + 1; n.style.cssText = 'position:absolute;top:12px;left:16px;font-weight:700;font-size:16px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.8)'; const text = document.createElement('div'); text.textContent = title.trim().slice(0,80); text.style.cssText = 'position:absolute;bottom:12px;left:16px;right:16px;font-weight:600;font-size:14px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.8)'; overlay.appendChild(n); overlay.appendChild(text); t.appendChild(overlay); t.addEventListener('click', () => { go(i); toggleOverview(false); }); overview.appendChild(t); }); document.body.appendChild(overview); }
+    function go(n, fromRemote){ n = Math.max(0, Math.min(total-1, n)); slides.forEach((s,i) => { s.classList.toggle('is-active', i===n); s.classList.toggle('is-prev', i<n); }); idx = n; barFill.style.width = ((n+1)/total*100)+'%'; const numEl = document.querySelector('.slide-number'); if (numEl) { numEl.setAttribute('data-current', n+1); numEl.setAttribute('data-total', total); } const note = slides[n].querySelector('.notes, aside.notes, .speaker-notes'); notes.innerHTML = note ? note.innerHTML : ''; const hashTarget = '#/'+(n+1); if (location.hash !== hashTarget) { history.replaceState(null,'', hashTarget); } slides[n].querySelectorAll('[data-anim]').forEach(el => { const a = el.getAttribute('data-anim'); el.classList.remove('anim-'+a); void el.offsetWidth; el.classList.add('anim-'+a); }); slides[n].querySelectorAll('.counter').forEach(el => { const target = parseFloat(el.getAttribute('data-to')||el.textContent); const dur = parseInt(el.getAttribute('data-dur')||'1200',10); const start = performance.now(); function tick(now){ const t = Math.min(1,(now-start)/dur); const v = (1-Math.pow(1-t,3))*target; el.textContent = (target % 1 === 0) ? Math.round(v) : v.toFixed(1); if (t<1) requestAnimationFrame(tick); } requestAnimationFrame(tick); }); if (!fromRemote && bc) { bc.postMessage({ type: 'go', idx: n }); } }
+    if (bc) { bc.onmessage = function(e) { if (!e.data) return; if (e.data.type === 'go' && typeof e.data.idx === 'number') { go(e.data.idx, true); } else if (e.data.type === 'theme' && e.data.name) { const i = themes.indexOf(e.data.name); if (i >= 0) themeIdx = i; applyTheme(e.data.name); } }; }
+    function toggleNotes(force){ notes.classList.toggle('open', force!==undefined?force:!notes.classList.contains('open')); }
+    function toggleOverview(force){ const isOpen = force!==undefined ? force : !overview.classList.contains('open'); overview.classList.toggle('open', isOpen); if (isOpen) { requestAnimationFrame(() => { const thumbs = overview.querySelectorAll('.thumb'); if (thumbs.length) { const scale = thumbs[0].clientWidth / 1920; overview.querySelectorAll('.mini-slide').forEach(m => { m.style.transform = 'scale(' + scale + ')'; }); } }); } }
+    const root = document.documentElement; const themesAttr = root.getAttribute('data-themes') || document.body.getAttribute('data-themes'); const themes = themesAttr ? themesAttr.split(',').map(s=>s.trim()).filter(Boolean) : []; let themeIdx = 0;
+    let themeBase = root.getAttribute('data-theme-base'); if (!themeBase) { const existingLink = document.getElementById('theme-link'); if (existingLink) { const rawHref = existingLink.getAttribute('href') || ''; const lastSlash = rawHref.lastIndexOf('/'); themeBase = lastSlash >= 0 ? rawHref.substring(0, lastSlash + 1) : 'assets/themes/'; } else { themeBase = 'assets/themes/'; } }
+    function applyTheme(name) { let link = document.getElementById('theme-link'); if (!link) { link = document.createElement('link'); link.rel = 'stylesheet'; link.id = 'theme-link'; document.head.appendChild(link); } link.href = themeBase + name + '.css'; root.setAttribute('data-theme', name); const ind = document.querySelector('.theme-indicator'); if (ind) ind.textContent = name; }
+    function cycleTheme(fromRemote){ if (!themes.length) return; themeIdx = (themeIdx+1) % themes.length; const name = themes[themeIdx]; applyTheme(name); if (!fromRemote && bc) bc.postMessage({ type: 'theme', name: name }); }
+    let animIdx = 0; function cycleAnim(){ animIdx = (animIdx+1) % ANIMS.length; const a = ANIMS[animIdx]; const target = slides[idx].querySelector('[data-anim-target]') || slides[idx]; ANIMS.forEach(x => target.classList.remove('anim-'+x)); void target.offsetWidth; target.classList.add('anim-'+a); target.setAttribute('data-anim', a); const ind = document.querySelector('.anim-indicator'); if (ind) ind.textContent = a; }
+    document.addEventListener('keydown', function (e) { if (e.metaKey||e.ctrlKey||e.altKey) return; switch (e.key) { case 'ArrowRight': case ' ': case 'PageDown': case 'Enter': go(idx+1); e.preventDefault(); break; case 'ArrowLeft': case 'PageUp': case 'Backspace': go(idx-1); e.preventDefault(); break; case 'Home': go(0); break; case 'End': go(total-1); break; case 'f': case 'F': if (!document.fullscreenElement) document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen(); else document.exitFullscreen&&document.exitFullscreen(); break; case 's': case 'S': break; case 'n': case 'N': toggleNotes(); break; case 'o': case 'O': toggleOverview(); break; case 't': case 'T': cycleTheme(); break; case 'a': case 'A': cycleAnim(); break; case 'Escape': toggleOverview(false); toggleNotes(false); break; } });
+    function fromHash(){ const m = /^#\/(\d+)/.exec(location.hash||''); if (m) go(Math.max(0, parseInt(m[1],10)-1)); }
+    window.addEventListener('hashchange', fromHash); fromHash(); go(idx);
+  });
+})();
+</script>
+</body>
+</html>
