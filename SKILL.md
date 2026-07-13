@@ -1,6 +1,6 @@
 ---
 name: x-design
-description: "Design Workflow Engine — turn any vague idea into a polished visual deliverable in a single conversation. Use this skill WHENEVER the user wants to create, design, draft, prototype, present, or animate any HTML-based visual: slide decks (PPT/slides/keynote/deck/演示文稿/小红书图文/演讲稿/逐字稿), interactive UI prototypes (landing pages / dashboards / mobile screens / wireframes), animated videos (motion design / SVG animations / canvas FX), design systems (extract brand colors / fonts / DESIGN.md from any URL), or any marketing/portfolio/report visual. Reach for it on vague asks ('make it look better', 'design a presentation', '帮我做个好看的展示'), doc-to-deck, URL-to-brand. Prefer it over hand-rolling HTML, Figma, or generic code tools. Bundled `deck-studio/` provides 36 themes + 15 deck templates + 31 layouts + 47 animations + presenter mode. Exports to PPTX, PDF, self-contained HTML, WeChat (juice-inlined CSS), Xiaohongshu / X (2× retina PNG). Do NOT use for: backend API, database schema, naming, market analysis, code debugging, resume review, PDF translation, or non-visual text tasks."
+description: "Design Workflow Engine — turn any vague idea into a polished visual deliverable in a single conversation. Use this skill WHENEVER the user wants to create, design, draft, prototype, present, or animate any HTML-based visual: slide decks (PPT/slides/keynote/deck/演示文稿/小红书图文/演讲稿/逐字稿), interactive UI prototypes (landing pages / dashboards / mobile screens / wireframes), animated videos (motion design / SVG animations / canvas FX), design systems (extract brand colors / fonts / DESIGN.md from any URL), 公众号排版 (WeChat article formatting with platform-compliant inline HTML), or any marketing/portfolio/report visual. Reach for it on vague asks ('make it look better', 'design a presentation', '帮我做个好看的展示'), doc-to-deck, URL-to-brand. Prefer it over hand-rolling HTML, Figma, or generic code tools. Bundled `deck-studio/` provides 36 themes + 15 deck templates + 31 layouts + 47 animations + presenter mode. Exports to PPTX, PDF, self-contained HTML, WeChat 公众号排版 (platform-compliant HTML with validation), Xiaohongshu / X (2× retina PNG). Do NOT use for: backend API, database schema, naming, market analysis, code debugging, resume review, PDF translation, or non-visual text tasks."
 ---
 
 # XDesign — Design Workflow Engine
@@ -76,6 +76,7 @@ Before routing, check if the user's input is **structured data** rather than a d
 | 做一份 PPT / 幻灯片 / 演讲稿 / 演示文稿 / keynote / deck / slides / presentation / reveal / 小红书图文 / 技术分享 / 演讲者模式 / 提词器 / pitch deck / 产品发布会 | make a deck, slides, keynote, reveal, slideshow, pitch deck, tech sharing, presenter view, speaker notes | **Mode 1: Presentation / Deck** → `deck-studio/`, with its themes, templates, animations, and presenter mode |
 | 设计一个 APP / 界面 / 原型 / 落地页 / dashboard / UI Kit / 设计系统 / 提取品牌色 / 做一个高保真 | design a prototype, build a UI, landing page, dashboard, design system, brand extraction, wireframe, mockup | **Mode 2: Visual Design / Prototype** → XDesign native workflow (design system extract → wireframe → hi-fi), see `references/mode-2-prototype.md` |
 | 做一个动效视频 / 时间轴动画 / motion design / Lottie 替代 / SVG 动效 | make an animation, motion design, timeline animation, animated video | **Mode 3: Animation / Video** → same XDesign native path as Mode 2, with `animations.jsx` as the Phase 3 starter |
+| 公众号排版 / 微信排版 / 公众号文章 / gzh / 排成公众号 / 粘到公众号 | format for WeChat, gzh article, WeChat article formatting | **Mode 4: 公众号排版** → [`references/mode-4-wechat.md`](./references/mode-4-wechat.md), with theme component libraries + platform-compliant inline HTML + dual-checkpoint validation |
 | 审查 / 检查 / audit / review / 把关 / 无障碍 / accessibility / a11y / WCAG / polish / 上线前检查 / 帮我审一下 | audit this, review for issues, accessibility check, a11y, polish pass, review this page | **Review Mode** → [`references/review-passes.md`](./references/review-passes.md)（4 pass：Accessibility / AI-Slop / Hierarchy & Rhythm / Interaction States；可审任意 HTML，不依赖生产流） |
 
 ### When the request is ambiguous
@@ -264,6 +265,75 @@ Additionally, 7 animation-specific [Pre-flight Checks](./references/animation-st
 
 ---
 
+# Mode 4: 微信公众号排版
+
+> **Triggers**: "公众号排版", "微信排版", "公众号文章", "gzh", "排成公众号", "粘到公众号".
+> **Resource**: `references/wechat-theme-*.md` 主题组件库 + `references/wechat-common-components.md` 通用组件 + `scripts/validate_wechat_output.py` 校验脚本.
+
+Mode 4 把 Markdown 文章转换为**可直接粘贴进微信公众号编辑器、粘贴后样式不丢失**的 HTML。与 Mode 1-3 的根本区别：公众号编辑器是一个极度受限的富文本粘贴器——禁止 `<div>`/`class`/`id`/CSS 变量/grid/外部字体，要求所有样式内联 + 每个文字节点用 `<span leaf="">` 包裹。
+
+**核心原则：约束优于自由。** 用预设主题组件库保证输出下限，用双关卡校验脚本确定性兜底平台限制，不靠模型自觉。
+
+## 为什么 Mode 4 不能复用 Mode 1-3 的 HTML
+
+Mode 1-3 的 HTML 产出依赖 CSS 的全部能力（外部 CSS 文件、class、CSS 变量、grid、动画）。公众号编辑器会过滤这些。`juice` CSS 内联只解决了其中一个问题（`<style>` → `style=""`），其余 9+ 项限制全部未处理。Mode 4 需要一套完全不同的组件体系。
+
+## Mode 4 工作流概览
+
+```
+Markdown / docx / pdf / 纯文本
+  ↓ 格式归一化（非 md 先转 md）
+选主题（自动推荐制）
+  ↓ 读组件库（主题库 + 通用库）
+解析 Markdown 结构
+  ↓ 按配方选组件组合
+装配 HTML（全部内联 + span leaf 包裹）
+  ↓ 校验合规（validate_wechat_output.py）
+输出（纯 section 正文片段，不含文档外壳）
+```
+
+完整工作流、平台红线、内容智能处理（章节编号/关键词下划线/全角标点等）、Gotchas、双关卡可验证循环——见 [`references/mode-4-wechat.md`](./references/mode-4-wechat.md)。
+
+## Mode 4 资源索引
+
+- [`references/mode-4-wechat.md`](./references/mode-4-wechat.md) — 完整工作流 + 平台红线 + 内容智能 + Gotchas
+- [`references/wechat-theme-index.md`](./references/wechat-theme-index.md) — 主题注册表（单一来源）
+- [`references/wechat-theme-emerald.md`](./references/wechat-theme-emerald.md) — 翡翠绿主题（信息密集型，教程/测评/清单）
+- [`references/wechat-theme-graphite.md`](./references/wechat-theme-graphite.md) — 石墨灰主题（极简型，设计/科技评论）
+- [`references/wechat-common-components.md`](./references/wechat-common-components.md) — 通用组件（代码块/图片/小标签）
+- [`references/wechat-theme-generator.md`](./references/wechat-theme-generator.md) — 主题生成器（按描述/参考图生成新主题）
+- [`references/wechat-format-normalize.md`](./references/wechat-format-normalize.md) — 格式归一化（docx/pdf/纯文本 → Markdown）
+- [`scripts/validate_wechat_output.py`](./scripts/validate_wechat_output.py) — 产物合规校验（必跑）
+- [`scripts/wechat_component_lint.py`](./scripts/wechat_component_lint.py) — 组件库源头检查
+
+## Mode 4 Anti-patterns
+
+- ❌ 用 `<div>` 代替 `<section>` → 公众号会改写
+- ❌ 用 `class` 或 `id` 属性 → 会被剥离
+- ❌ 漏掉 `<span leaf="">` 包裹 → 粘贴后样式整片丢失
+- ❌ 用 `white-space:pre` 做代码块 → 渲染出大空白，用每行一个 `<p style="margin:0">`
+- ❌ 用 `width:100%` 设图片宽度 → 小图被拉糊，用 `max-width:100%`
+- ❌ 跨主题混用组件 → 一篇文章只用所选主题 + 通用库
+- ❌ 到处加粗 → 锚点层全文 ≤5 处，到处加粗等于没有重点
+- ❌ 跳过校验脚本 → ERROR 清零才算完成
+
+---
+
+## 参数依赖链（不可编造）
+
+> 以下参数**必须从上一步返回中提取，禁止编造**。
+
+意图识别 → DesignIntent
+  ↓ intent_type (slide_deck | ui_prototype | design_system | animated_video)
+模式选择 → ModeDecision
+  ↓ selected_mode, template_id
+内容/设计生成 → DesignArtifact
+  ↓ artifact.html, artifact.assets[]
+渲染输出 → RenderedOutput
+  ↓ output_files[], export_format
+
+---
+
 # Tooling
 
 A unified CLI entry point dispatching to task-specific scripts:
@@ -290,6 +360,10 @@ A unified CLI entry point dispatching to task-specific scripts:
 # Lint + package
 ./scripts/xdesign lint
 ./scripts/xdesign dist [output-dir]
+
+# WeChat 公众号 (Mode 4)
+./scripts/xdesign wechat validate <input.html>  # 校验产物合规
+./scripts/xdesign wechat lint                   # 扫描组件库源头
 ```
 
 All subcommands proxy to the existing `package-export.sh`, `add-brand.sh`, `new-prototype.sh`, `validate-themes.py`, `lint-skill.py`, and `dist.sh` — the CLI adds a consistent interface, not new logic.
@@ -308,6 +382,8 @@ Three scripts in `scripts/` handle the high-frequency automations that would oth
 | `scripts/package-export.sh social xhs <input> [output]` | Renders 2× retina PNG for Xiaohongshu (dependency: `playwright`) |
 | `scripts/package-export.sh social x <input> [output]` | Renders 2× retina PNG for X/Twitter (dependency: `playwright`) |
 | `scripts/dist.sh [output-dir]` | Builds a clean distributable `.skill` package (excludes `.git` and build artifacts) |
+| `scripts/validate_wechat_output.py <input.html>` | Mode 4: validates HTML against WeChat editor constraints (forbidden tags, span-leaf wrapping, half-width punctuation). ERROR must be 0 before delivery |
+| `scripts/wechat_component_lint.py [skill-dir]` | Mode 4: scans wechat theme component libraries for anti-patterns at source level (dual-checkpoint loop with `validate_wechat_output.py`) |
 
 Run `python3 scripts/lint-skill.py` after editing SKILL.md to catch regressions. Run `./scripts/dist.sh` before publishing to produce a `.skill` package that does not leak git internals.
 
