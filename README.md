@@ -4,7 +4,7 @@
 >
 > 告诉 XDesign 你要做什么，它帮你完成 **定向 → 结构 → 高保真** ——  PRODUCT + 设计 + 前端，合体。
 
-**最新版本**：v2.8 | MIT License
+**最新版本**：v2.9 | MIT License
 
 ---
 
@@ -32,13 +32,14 @@ Patterns (叙事配方: 8 种多页弧)
 
 ---
 
-## 三模式路由
+## 四模式路由
 
 | 模式 | 触发词 | 输出 |
 |------|--------|------|
 | **Mode 1 / Presentation** | PPT、slides、演讲、pitch deck、逐字稿 | 36 主题 / 31 布局 / 15 模板 / 47 动效 / 演讲者模式 |
 | **Mode 2 / Visual Design** | 落地页、APP、dashboard、原型、组件、UI Kit | 线框图→高保真 / React+Babel / DESIGN.md 抽取 |
 | **Mode 3 / Animation** | 动效视频、时间轴、motion design | Canvas + requestAnimationFrame 时间轴动画 |
+| **Mode 4 / 公众号排版** | 公众号排版、微信排版、gzh | 2 套主题组件库 / 平台合规内联 HTML / 双关卡校验 |
 
 > ⚠️ 模糊意图时先问一次 —— 30 秒问题省 1 小时返工。
 
@@ -71,7 +72,18 @@ Patterns (叙事配方: 8 种多页弧)
 [粘贴 CSV]
 ```
 
-→ 自动跳过设计系统 → 识别数据结构 → 直接生成图表看板。
+ 自动跳过设计系统 → 识别数据结构 → 直接生成图表看板。
+
+### D. 公众号排版
+
+```
+把这篇文章排成公众号：article.md
+风格：信息密度高的教程
+```
+
+ 选主题 → 读组件库 → 解析 Markdown → 装配合规 HTML → 校验脚本兜底 → 输出可直接粘贴的正文片段。
+
+**核心：约束优于自由。** 预设主题组件库保证输出下限，双关卡校验脚本（`validate_wechat_output.py` + `wechat_component_lint.py`）确定性兜底平台限制——不靠模型自觉。
 
 **模糊需求？** XDesign 自动用 3 轮多选提问帮你收敛（给谁用 / 转化目标 / 视觉参考）。
 
@@ -96,6 +108,10 @@ Patterns (叙事配方: 8 种多页弧)
 # v2.8: 弹出可复用子构件（Swizzle）
 ./scripts/xdesign eject templates/single-page/kpi-grid.html kpi-card my-kpi.html
 
+# v2.9: 公众号排版校验（Mode 4）
+./scripts/xdesign wechat validate output.html   # 校验产物合规
+./scripts/xdesign wechat lint                   # 扫描组件库源头
+
 # 检查 / 打包
 ./scripts/xdesign lint
 ./scripts/xdesign dist
@@ -103,7 +119,19 @@ Patterns (叙事配方: 8 种多页弧)
 
 ---
 
-## v2.8 新能力
+## v2.9 新能力：公众号排版（Mode 4）
+
+| 能力 | 说明 |
+|------|------|
+| **平台合规 HTML** | 禁 `<div>`/`class`/`id`/grid/CSS 变量；全内联 `style`；`<span leaf="">` 包裹每个文字节点——粘贴到公众号编辑器后样式不丢失 |
+| **双关卡校验** | `validate_wechat_output.py`（产物关：13 条正则 + HTMLParser 遍历 leaf 包裹率 + 半角标点）+ `wechat_component_lint.py`（源头关：扫组件库反模式）构成可复现的"改→验→修"闭环 |
+| **2 套主题组件库** | 翡翠绿 emerald（信息密集型，教程/测评/清单）+ 石墨灰 graphite（极简型，设计/科技评论）。每套 17 个原创组件 + 文章类型配方表 + Markdown 映射规则 |
+| **通用增量组件** | 代码块（深/浅色，等宽不折行）、图片/GIF（带动图角标）、小标签/步骤标签/金句块——所有主题共用 |
+| **内容智能** | 章节自动编号（末章 ∞）、每段 1-3 个关键词下划线、引言卡与目录提取、作者签名去重合并、中文全角标点自动规范 |
+| **主题生成器** | 一句话描述或参考图 → 生成 45-75 个区块的完整组件库 → 转标准格式 → 登记 + 校验 |
+| **格式归一化** | docx / pdf / 纯文本 → Markdown，非 Markdown 输入自动转格式后再排版 |
+
+## v2.8 能力
 
 | 能力 | 说明 |
 |------|------|
@@ -167,9 +195,12 @@ Patterns (叙事配方: 8 种多页弧)
 | HTML（默认） | 直接输出 |
 | PDF | `xdesign export pdf <file>` |
 | PPTX（review 用） | `xdesign export pptx <file>` |
-| 微信 | `xdesign export social wechat <file>` |
+| 公众号排版（Mode 4） | `xdesign wechat validate <file>` 校验合规 |
+| 微信 juice 内联（旧） | `xdesign export social wechat <file>` |
 | 小红书 | `xdesign export social xhs <file>` |
 | X/Twitter | `xdesign export social x <file>` |
+
+> Mode 4 公众号排版与旧 `export social wechat` 的区别：前者是完整的排版工作流（主题组件库 + 内容智能 + 双关卡校验），后者仅做 juice CSS 内联（不保证粘贴后不丢样式）。
 
 ---
 
@@ -184,13 +215,22 @@ XDesign/
 │   ├── patterns.md                    # 8 种叙事配方 + Swizzle 机制
 │   ├── agent-playbook.md              # agent 专属决策指南
 │   ├── mode-2-prototype.md            # Mode 2/3: 反 slop + Pre-flight
+│   ├── mode-4-wechat.md               # Mode 4: 公众号排版工作流
 │   ├── animation-standards.md         # Mode 3: 理由清单 + 物理正确性
 │   ├── design-direction-advisor.md    # 方向顾问 + Four Dials
 │   ├── brand-asset-protocol.md        # 品牌资产 5 步协议
 │   ├── workflow-guide.md              # PPAF 循环 + Tweaks
+│   ├── wechat-theme-index.md          # 公众号主题注册表（单一来源）
+│   ├── wechat-theme-emerald.md        # 翡翠绿主题（信息密集型）
+│   ├── wechat-theme-graphite.md       # 石墨灰主题（极简型）
+│   ├── wechat-common-components.md    # 公众号通用组件（代码块/图片/标签）
+│   ├── wechat-theme-generator.md      # 主题生成器（按描述/参考图造主题）
+│   ├── wechat-format-normalize.md     # 格式归一化（docx/pdf → Markdown）
 │   └── ...                            # 其余参考文档
 ├── scripts/
 │   ├── xdesign                        # 统一 CLI 入口
+│   ├── validate_wechat_output.py      # Mode 4: 公众号产物合规校验
+│   ├── wechat_component_lint.py       # Mode 4: 组件库源头检查
 │   └── package-export.sh / lint-skill.py / ...
 ├── evals/                             # 8 个 eval (含 3 个 vibe-test)
 ├── deck-studio/                       # 静态 PPT 引擎子模块
@@ -216,6 +256,8 @@ XDesign/
 | 混用两套 token → 颜色跑偏 | deck-studio 用 `var(--text-1)`，brand 用自有 token，二选一 |
 | AI slop | v2.6+ 双层反 slop + Pre-flight Check |
 | 主题定制太笨重 | v2.8 delta 主题：10 行覆盖即可 |
+| 公众号粘贴丢样式 | v2.9 Mode 4：全内联 + `<span leaf>` 包裹 + 双关卡校验脚本兜底 |
+| 公众号排版风格飘 | v2.9 Mode 4：预设主题组件库 + 文章类型配方表，不让模型现场发挥 |
 
 ---
 
