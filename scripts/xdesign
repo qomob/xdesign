@@ -23,6 +23,8 @@
 #   eject <input.html> <block-id> [output.html]
 #   lint
 #   dist [output-dir]
+#   wechat validate <input.html>
+#   wechat lint
 #
 # Examples:
 #   xdesign export pdf deck.html
@@ -67,6 +69,10 @@ COMMANDS:
   lint                                    Lint this skill against conventions
 
   dist [output-dir]                       Build a clean .skill package
+
+  wechat
+    validate <input.html>                 Validate HTML for WeChat editor compliance
+    lint                                  Scan wechat theme component libraries
 
 FLAGS:
   --help, -h                              Show this help
@@ -225,6 +231,31 @@ PYEOF
 
   dist)
     exec bash "$SCRIPT_DIR/dist.sh" "$@"
+    ;;
+
+  wechat)
+    if [[ $# -lt 1 ]]; then
+      echo "[ERR] 'wechat' requires a subcommand: validate | lint." >&2
+      exit 1
+    fi
+    SUBCMD="$1"
+    shift
+    case "$SUBCMD" in
+      validate)
+        if [[ $# -lt 1 ]]; then
+          echo "[ERR] 'wechat validate' requires <input.html>." >&2
+          exit 1
+        fi
+        exec python3 "$SCRIPT_DIR/validate_wechat_output.py" "$@"
+        ;;
+      lint)
+        exec python3 "$SCRIPT_DIR/wechat_component_lint.py" "$SKILL_ROOT"
+        ;;
+      *)
+        echo "[ERR] Unknown wechat subcommand '$SUBCMD'. Use validate | lint." >&2
+        exit 1
+        ;;
+    esac
     ;;
 
   --help|-h)
